@@ -74,26 +74,50 @@
     justify-content: center;
 }
 
+.about-section {
+  position: relative;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-image: url('../img/church1.jpg'); /* or another bg for About */
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed; /* parallax on desktop */
+}
+
+.about-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65); /* blackish */
+  pointer-events: none;
+}
+
+/* make text inside About light so it reads over bg */
+.about-section h2,
+.about-section p,
+.about-section li {
+  color: #fff;
+}
+.about-section .text-muted {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* your existing reveal animation still applies to .reveal-on-scroll */
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(40px) scale(0.98);
-  transition:
-    opacity 0.8s ease-out,
-    transform 0.8s ease-out;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
-
 .reveal-on-scroll.is-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-/* optional: slight parallax feel on hero->about transition */
-.about-section {
-  background-color: #050608; /* or a very dark tone to match hero bottom */
-  color: #fff;
-}
-.about-section .text-muted {
-  color: rgba(255, 255, 255, 0.7) !important;
+/* optional: disable fixed on mobile like contact */
+@media (max-width: 991.98px) {
+  .about-section {
+    background-attachment: scroll;
+  }
 }
 
 /* Contact: blackish parallax */
@@ -103,13 +127,14 @@
   padding-bottom: 5rem;
   color: #fff;
   background: url('../img/church1.jpg') center center / cover no-repeat fixed;
+
   /* change to your own background image */
 }
 
 .contact-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8); /* blackish overlay */
+  background-color: rgba(0, 0, 0, 0.8); /* blackish overlay */
 }
 
 /* keep text readable on dark bg */

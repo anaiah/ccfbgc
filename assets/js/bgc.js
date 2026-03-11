@@ -46,30 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    //force parallax
-    const contactSection = document.querySelector('#contact');
-
-    // Only run on small screens (match your media query breakpoint)
-    const isMobile = window.matchMedia('(max-width: 991.98px)').matches;
-    if (!contactSection || !isMobile) return;
-
-    function updateParallax() {
-      const rect = contactSection.getBoundingClientRect();
-      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-      // Only animate when section is at least partially visible
-      if (rect.bottom >= 0 && rect.top <= windowHeight) {
-        const scrollY = window.scrollY || window.pageYOffset;
-        const speed = 0.3; // tweak: 0.2 subtle, 0.5 stronger
-        const offset = (scrollY - contactSection.offsetTop) * speed;
-        contactSection.style.backgroundPosition = `center ${offset}px`;
-      }
-    }
-
-    window.addEventListener('scroll', updateParallax, { passive: true });
-    updateParallax();
     
-
 
 });
 
