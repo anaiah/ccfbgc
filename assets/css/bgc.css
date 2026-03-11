@@ -78,21 +78,28 @@
   position: relative;
   padding-top: 5rem;
   padding-bottom: 5rem;
-  background-image: url('../img/church1.jpg'); /* or another bg for About */
-  background-position: center center;
+  min-height: 80vh;
+  background-image: url('../img/bgcpatrick.png'); /* use the side image here */
+  background-position: left center;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed; /* parallax on desktop */
 }
 
+/* darken the right side where text is, so it's readable */
 .about-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65); /* blackish */
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.7) 60%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
   pointer-events: none;
 }
 
-/* make text inside About light so it reads over bg */
+/* make text light over dark bg */
 .about-section h2,
 .about-section p,
 .about-section li {
@@ -102,7 +109,7 @@
   color: rgba(255, 255, 255, 0.75) !important;
 }
 
-/* your existing reveal animation still applies to .reveal-on-scroll */
+/* reveal animation (unchanged) */
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(40px) scale(0.98);
@@ -113,13 +120,13 @@
   transform: translateY(0) scale(1);
 }
 
-/* optional: disable fixed on mobile like contact */
+/* disable fixed on mobile to avoid glitches */
 @media (max-width: 991.98px) {
   .about-section {
     background-attachment: scroll;
+    background-position: center center;
   }
 }
-
 /* Contact: blackish parallax */
 .contact-section {
   position: relative;
