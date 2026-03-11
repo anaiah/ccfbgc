@@ -1,13 +1,4 @@
 
-
-.text-shadow {
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
-}
-
-.text-shadow-soft {
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-}
-
 /* Optional: make hero buttons a bit bolder */
 .hero-section .btn-light {
   color: #0d6efd;
@@ -25,7 +16,8 @@
   position: relative;
   min-height: 100vh;
   padding-top: 70px; /* adjust to your navbar height */
-  background: url('../assets/img/church1.jpg') center bottom / cover no-repeat;
+  background: url('../img/church1.jpg') center bottom / cover no-repeat;
+
 }
 
 .hero-overlay {
