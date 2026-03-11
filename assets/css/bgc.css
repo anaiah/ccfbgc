@@ -16,7 +16,7 @@
   position: relative;
   min-height: 100vh;
   padding-top: 70px; /* adjust to your navbar height */
-  background: url('../img/church1.jpg') center bottom / cover no-repeat;
+  background: url('/assets/img/church1.jpg') center bottom / cover no-repeat;
 
 }
 
