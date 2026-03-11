@@ -1,0 +1,40 @@
+
+/* Custom styles for Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://via.placeholder.com/1500x500/007bff/ffffff?text=Church+Community'); /* Placeholder background image */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+.section-padding {
+    padding: 80px 0;
+}
+.google-map-container {
+    overflow: hidden;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    position: relative;
+    height: 0;
+}
+.google-map-container iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border: 0;
+}
+/* Placeholder for chart */
+.chart-placeholder {
+    background-color: #f8f9fa;
+    border: 1px dashed #ccc;
+    padding: 50px 20px;
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    height: 300px; /* Adjust height as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
