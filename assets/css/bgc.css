@@ -79,7 +79,7 @@
   padding-top: 5rem;
   padding-bottom: 5rem;
   min-height: 80vh;
-  background-image: url('../img/bgcpatrick.png'); /* use the side image here */
+  background-image: url('../img/pastormsg.jpg'); /* use the side image here */
   background-position: left center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -133,7 +133,7 @@
   padding-top: 5rem;
   padding-bottom: 5rem;
   color: #fff;
-  background: url('../img/church1.jpg') center center / cover no-repeat fixed;
+  background: url('../img/ladiesbible.jpg') center center / cover no-repeat fixed;
 
   /* change to your own background image */
 }
