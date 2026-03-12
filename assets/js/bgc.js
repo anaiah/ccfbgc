@@ -46,7 +46,25 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    
+     const sections = document.querySelectorAll('.hero-section, .about-section, .contact-section');
+
+    // Only do JS parallax on small screens – desktop keeps background-attachment: fixed
+    const isMobile = window.matchMedia('(max-width: 991.98px)').matches;
+    if (!isMobile || sections.length === 0) return;
+
+    function updateParallax() {
+      const scrollY = window.scrollY || window.pageYOffset;
+
+      sections.forEach(sec => {
+        const speed = 0.3; // tweak: 0.2 subtle, 0.5 stronger
+        const offset = (scrollY - sec.offsetTop) * speed;
+        sec.style.backgroundPosition = `center ${offset}px`;
+      });
+    }
+
+    window.addEventListener('scroll', updateParallax, { passive: true });
+    updateParallax();
+
 
 });
 

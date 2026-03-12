@@ -173,3 +173,20 @@
     background-attachment: scroll;
   }
 }
+
+/*parallax*/
+/* desktop parallax */
+.hero-section,
+.about-section,
+.contact-section {
+  background-attachment: fixed;
+}
+
+@media (max-width: 991.98px) {
+  /* let JS handle it on mobile */
+  .hero-section,
+  .about-section,
+  .contact-section {
+    background-attachment: scroll;
+  }
+}
