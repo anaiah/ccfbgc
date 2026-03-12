@@ -99,12 +99,15 @@
   pointer-events: none;
 }
 
+
+/* make text light over dark bg */
 .about-section h2,
 .about-section p,
 .about-section li {
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
-}
+  color: #fff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 
+}
 .about-section .text-muted {
   color: rgba(255, 255, 255, 0.75) !important;
 }
