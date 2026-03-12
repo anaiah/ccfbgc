@@ -64,7 +64,53 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.addEventListener('scroll', updateParallax, { passive: true });
     updateParallax();
+    
+    //** MISION VISION */
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
 
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const delay = parseInt(el.getAttribute('data-delay') || '0', 10);
+        el.style.transitionDelay = delay + 'ms';
+        el.classList.add('is-visible');
+        observer.unobserve(el);
+      }
+    });
+  },
+  {
+    threshold: 0.2
+  }
+);
+
+revealElements.forEach(el => observer.observe(el));
+    const mvCards = document.querySelectorAll('.mv-reveal');
+    
+    if (!mvCards.length) return;
+
+    const mvObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const card = entry.target;
+            const delay = parseInt(card.getAttribute('data-delay') || '0', 10);
+
+            // stagger using transition-delay
+            card.style.transitionDelay = delay + 'ms';
+            card.classList.add('is-visible');
+
+            mvObserver.unobserve(card);
+          }
+        });
+      },
+      {
+        threshold: 0.2
+      }
+    );
+
+    mvCards.forEach(card => mvObserver.observe(card));
 
 });
 
