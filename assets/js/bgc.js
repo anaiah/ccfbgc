@@ -182,24 +182,6 @@ document.addEventListener("DOMContentLoaded", function() {
             // and fetch data to populate the chart inside the .chart-placeholder div.
         });
 
-        const revealElements2 = document.querySelectorAll('.reveal-on-scroll');
-
-        const observer2 = new IntersectionObserver(
-        entries => {
-            entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target); // animate once
-            }
-            });
-        },
-        {
-            threshold: 0.2,
-            rootMargin: '0px 0px -50px 0px'
-        }
-        );
-
-        revealElements2.forEach(el => observer2.observe(el));
-
+        
 });
 
