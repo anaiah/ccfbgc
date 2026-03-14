@@ -213,8 +213,8 @@
 
 /*MISSION VISION VALUES*/
 /* ===== Mission & Vision Section (MVV) ===== */
+/* ===== Mission & Vision Section (MVV) ===== */
 
-/* Section background (no parallax) */
 .mv-section {
   position: relative;
   padding-top: 5rem;
@@ -224,17 +224,12 @@
   overflow: hidden;
 }
 
-/* Dark + blur overlay over the background */
 .mv-bg-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.65);
-
-  /* <<< ADJUST BACKGROUND BLUR HERE >>> */
-  /* Increase the px value for stronger blur, decrease for softer */
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  /* ^ Safari prefix */
   pointer-events: none;
 }
 
@@ -242,11 +237,7 @@
 .mv-card {
   position: relative;
   z-index: 1;
-
-  /* <<< ADJUST CARD TRANSPARENCY HERE >>> */
-  /* Last number (0.85) is opacity: 1 = solid white, 0 = fully transparent */
   background: rgba(255, 255, 255, 0.55);
-
   border-radius: 1rem;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
   padding: 2rem 2.25rem;
@@ -261,13 +252,12 @@
   color: #333;
 }
 
-/* Reveal-on-scroll base (you already use this for other sections) */
+/* Reveal-on-scroll base */
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(40px) scale(0.98);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
-
 .reveal-on-scroll.is-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
@@ -279,11 +269,10 @@
     padding: 1.5rem 1.5rem;
   }
 }
-
-
+/* Chart placeholder with header */
 .chart-placeholder {
   width: 100%;            /* or a fixed width like 800px **/
-  height: 360px;         /** total height for header + chart area */
+  height: 320px;         /** total height for header + chart area */
   display: flex;
   flex-direction: column;
   gap: 8px;

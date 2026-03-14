@@ -281,286 +281,230 @@ window.bgc = bgc; // expose to global
 document.addEventListener("DOMContentLoaded", function() {
     bgc.init();
    
-    //EVENT FOR LOGIN
-    document.addEventListener('userLoggedIn', (e) => {
+    // EVENT FOR LOGIN
+document.addEventListener('userLoggedIn', (e) => {
+    bgc.loadHeadcountChart();
 
-        bgc.loadHeadcountChart()
+    //====connect to socket after login
+    const user = JSON.parse(localStorage.getItem('bgc_user')) || {};
+    let authz = [];
+    authz.push(user.grp_id);
+    authz.push(user.full_name);
+    authz.push(user.id);
 
-        //====connect to socket after  login
-        const user = JSON.parse(localStorage.getItem('bgc_user'))
+    console.log('=== authz ', authz[1], authz[2]);
 
-        let authz = []
-        authz.push( user.grp_id )
-        authz.push( user.full_name )
-        authz.push( user.id )
-                
-        console.log('=== authz ',authz[1], authz[2])
+    //==HANDSHAKE FIRST WITH SOCKET.IO
+    const userName = { token: authz[1], emp_id: authz[2], mode: user.grp_id };
 
-        //==HANDSHAKE FIRST WITH SOCKET.IO
-        const userName = { token : authz[1] , emp_id: authz[2], mode: user.grp_id}//full name token
-
-        bgc.socket = io.connect(`${myIp}`, {
-            //withCredentials: true,
-            transports: ['websocket', 'polling'], // Same as server
-            upgrade: true, // Ensure WebSocket upgrade is attempted
-            rememberTransport: false, //Don't keep transport after refresh
-            query:`userName=${JSON.stringify(userName)}`
-            // extraHeaders: {
-            //   "osndp-header": "osndp"
-            // }
-        });//========================initiate socket handshake ================
-
-        bgc.socket.on('connect', () => {
-            console.log('Connected to Socket.IO server using:', bgc.socket.io.engine.transport.name); // Check the transport
-        });
-
-        bgc.socket.on('disconnect', () => {
-            console.log('Disconnected from Socket.IO server');
-        });
-       
-        //===receive messges from volunters
-        bgc.socket.on('xinit', (msg) => {
-            util.Toasted(msg, 3000, true);
-            util.speak(`${user.full_name}, there's an Incoming update!`)
-
-            console.log('socket.io()',msg)
-
-            bgc.loadHeadcountChart(); // Refresh chart data when update received
-        })
-
-        console.log('user logged in:', e.detail.data.grp_id, e.detail.data.full_name); // user data from login response
-
-        // e.g. update UI, close modal, etc.
-        // Get references to the modals
-        
-        const loginModalElement = document.getElementById('loginModal');
-        // const loginModal = new bootstrap.Modal(loginModalElement);
-        const loginModal = bootstrap.Modal.getInstance(loginModalElement)
-                        || new bootstrap.Modal(loginModalElement);
-
-        // Close the login modal
-        loginModal.hide();
-
-
-        const dataInputModalElement = document.getElementById('dataInputModal');
-        const adminInputModalElement = document.getElementById('adminInputModal'); // New admin modal
-
-        // Initialize Bootstrap Modal objects
-        const dataInputModal = new bootstrap.Modal(dataInputModalElement);
-        const adminInputModal = new bootstrap.Modal(adminInputModalElement); // New admin modal object
-
-        
-        console.log( 'what is', e.detail.data.grp_id)
-        // Simulate server-side check after a brief delay for transition
-        setTimeout(() => {
-            switch(e.detail.data.grp_id) {
-                case '1': // Standard user
-                case '3':
-                case '5':   
-                case '6':
-                case '7':   
-                    const user = e.detail.data; // has ministry_segment, etc.
-
-                    const segmentSelect = document.getElementById('segmentSelect');
-                    if (!segmentSelect) return;
-
-                    // Clear old options
-                    segmentSelect.innerHTML = '';
-
-                    const raw = user.ministry_segment || ''; // e.g. "Youth,Music,Sharers"
-
-                    // Split, trim, and filter out empties
-                    const segments = raw
-                        .split(',')
-                        .map(s => s.trim())
-                        .filter(s => s.length > 0);
-
-                    // Optional: add a default/placeholder option
-                    const placeholder = document.createElement('option');
-                    placeholder.value = '';
-                    placeholder.textContent = 'Select segment';
-                    placeholder.disabled = true;
-                    placeholder.selected = true;
-                    segmentSelect.appendChild(placeholder);
-
-                    // Add one <option> per segment
-                    segments.forEach(seg => {
-                        const opt = document.createElement('option');
-                        opt.value = seg;
-                        opt.textContent = seg;
-                        segmentSelect.appendChild(opt);
-                    });
-
-
-                    console.log('Login simulated for standard user.');
-                    dataInputModal.show(); // Show data input modal
-                    break;
-                case '4': // Admin or unknown
-                    console.log('Login simulated for admin user (or unknown).');
-                    adminInputModal.show(); // Show admin dashboard modal
-            }
-        }, 300); // 300ms delay for smoother transition
-
+    bgc.socket = io.connect(`${myIp}`, {
+        transports: ['websocket', 'polling'],
+        upgrade: true,
+        rememberTransport: false,
+        query: `userName=${JSON.stringify(userName)}`
     });
 
-
-    // 1. Select all links that start with "#"
-    const links = document.querySelectorAll('a[href^="#"]');
-
-    links.forEach(link => {
-        link.addEventListener("click", function(e) {
-            e.preventDefault();
-
-            const targetId = this.getAttribute("href"); // e.g. "#about" or "#"
-            if (!targetId || targetId === '#') {
-                return; // nothing to scroll to
-            }
-
-            const targetSection = document.querySelector(targetId);
-            if (!targetSection) return;
-
-            targetSection.scrollIntoView({ behavior: "smooth" });
-            });
+    bgc.socket.on('connect', () => {
+        console.log('Connected to Socket.IO server using:', bgc.socket.io.engine.transport.name);
     });
-    
 
-    const sections = document.querySelectorAll('.hero-section, .about-section, .contact-section');
+    bgc.socket.on('disconnect', () => {
+        console.log('Disconnected from Socket.IO server');
+    });
+   
+    //===receive messages from volunteers
+    bgc.socket.on('xinit', (msg) => {
+        util.Toasted(msg, 3000, true);
+        util.speak(`${user.full_name}, there's an Incoming update!`);
+        console.log('socket.io()', msg);
+        bgc.loadHeadcountChart();
+    });
 
-    // Only do JS parallax on small screens – desktop keeps background-attachment: fixed
-    const isMobile = window.matchMedia('(max-width: 991.98px)').matches;
-    if (!isMobile || sections.length === 0) return;
+    console.log('user logged in:', e.detail.data.grp_id, e.detail.data.full_name);
 
-    function updateParallax() {
-      const scrollY = window.scrollY || window.pageYOffset;
+    // Get references to the modals
+    const loginModalElement = document.getElementById('loginModal');
+    const loginModal = bootstrap.Modal.getInstance(loginModalElement) || new bootstrap.Modal(loginModalElement);
 
-      sections.forEach(sec => {
-        const speed = 0.3; // tweak: 0.2 subtle, 0.5 stronger
-        const offset = (scrollY - sec.offsetTop) * speed;
-        sec.style.backgroundPosition = `center ${offset}px`;
-      });
-    }
+    // Close the login modal
+    loginModal.hide();
 
-    window.addEventListener('scroll', updateParallax, { passive: true });
-    updateParallax();
-    
-    //** MISION VISION */
-    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    const dataInputModalElement = document.getElementById('dataInputModal');
+    const adminInputModalElement = document.getElementById('adminInputModal');
 
-    const observer = new IntersectionObserver(
-        entries => {
-            entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const el = entry.target;
-                const delay = parseInt(el.getAttribute('data-delay') || '0', 10);
-                el.style.transitionDelay = delay + 'ms';
-                el.classList.add('is-visible');
-                observer.unobserve(el);
-            }
-            });
-        },
-        {
-            threshold: 0.2
+    // Initialize Bootstrap Modal objects
+    const dataInputModal = new bootstrap.Modal(dataInputModalElement);
+    const adminInputModal = new bootstrap.Modal(adminInputModalElement);
+
+    console.log('what is', e.detail.data.grp_id);
+
+    // Simulate server-side check after a brief delay for transition
+    setTimeout(() => {
+        switch (e.detail.data.grp_id) {
+            case '1':
+            case '3':
+            case '5':
+            case '6':
+            case '7':
+                const userData = e.detail.data; // has ministry_segment, etc.
+                const segmentSelect = document.getElementById('segmentSelect');
+                if (!segmentSelect) return;
+
+                // Clear old options
+                segmentSelect.innerHTML = '';
+
+                const raw = userData.ministry_segment || ''; // e.g. "Youth,Music,Sharers"
+
+                // Split, trim, and filter out empties
+                const segments = raw
+                    .split(',')
+                    .map(s => s.trim())
+                    .filter(s => s.length > 0);
+
+                // Optional: add a default/placeholder option
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = 'Select segment';
+                placeholder.disabled = true;
+                placeholder.selected = true;
+                segmentSelect.appendChild(placeholder);
+
+                // Add one <option> per segment
+                segments.forEach(seg => {
+                    const opt = document.createElement('option');
+                    opt.value = seg;
+                    opt.textContent = seg;
+                    segmentSelect.appendChild(opt);
+                });
+
+                console.log('Login simulated for standard user.');
+                dataInputModal.show();
+                break;
+            case '4':
+                console.log('Login simulated for admin user (or unknown).');
+                adminInputModal.show();
+                break;
         }
-    );
+    }, 300);
+});
 
-    revealElements.forEach(el => observer.observe(el));
-        const mvCards = document.querySelectorAll('.mv-reveal');
-        
-        if (!mvCards.length) return;
 
-        const mvObserver = new IntersectionObserver(
-        entries => {
-            entries.forEach(entry => {
+// Smooth scroll for anchor links
+const links = document.querySelectorAll('a[href^="#"]');
+links.forEach(link => {
+    link.addEventListener("click", function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute("href");
+        if (!targetId || targetId === '#') return;
+        const targetSection = document.querySelector(targetId);
+        if (!targetSection) return;
+        targetSection.scrollIntoView({ behavior: "smooth" });
+    });
+});
+
+
+// PARALLAX: only attach on mobile; do NOT return early (so other code runs)
+const sections = document.querySelectorAll('.hero-section, .about-section, .contact-section');
+const isMobile = window.matchMedia('(max-width: 991.98px)').matches;
+
+function updateParallax() {
+  const scrollY = window.scrollY || window.pageYOffset;
+  sections.forEach(sec => {
+    const speed = 0.3; // tweak: 0.2 subtle, 0.5 stronger
+    const offset = (scrollY - sec.offsetTop) * speed;
+    sec.style.backgroundPosition = `center ${offset}px`;
+  });
+}
+
+if (sections.length > 0 && isMobile) {
+  window.addEventListener('scroll', updateParallax, { passive: true });
+  updateParallax();
+}
+
+
+// REVEAL-ON-SCROLL (generic)
+const revealElements = document.querySelectorAll('.reveal-on-scroll');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const el = entry.target;
+            const delay = parseInt(el.getAttribute('data-delay') || '0', 10);
+            el.style.transitionDelay = delay + 'ms';
+            el.classList.add('is-visible');
+            observer.unobserve(el);
+        }
+    });
+}, { threshold: 0.2 });
+
+revealElements.forEach(el => observer.observe(el));
+
+// MV-specific observer (optional/staggered) — use correct selector so it actually finds cards
+const mvCards = document.querySelectorAll('.mv-card, .mv-reveal, .reveal-on-scroll');
+if (mvCards.length > 0) {
+    const mvObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const card = entry.target;
                 const delay = parseInt(card.getAttribute('data-delay') || '0', 10);
-
-                // stagger using transition-delay
                 card.style.transitionDelay = delay + 'ms';
                 card.classList.add('is-visible');
-
                 mvObserver.unobserve(card);
             }
-            });
-        },
-        {
-            threshold: 0.2
-        }
-    );
-
-    
+        });
+    }, { threshold: 0.2 });
 
     mvCards.forEach(card => mvObserver.observe(card));
+}
 
-    //==== from index.html==//
-    // Update current year in footer
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Get references to the modals
-        const loginModalElement = document.getElementById('loginModal');
-        const dataInputModalElement = document.getElementById('dataInputModal');
-        const adminInputModalElement = document.getElementById('adminInputModal'); // New admin modal
+//==== from index.html: footer year + modal init + login form handling ====
+const yearEl = document.getElementById('currentYear');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-        // Initialize Bootstrap Modal objects
-        const loginModal = new bootstrap.Modal(loginModalElement);
-        const dataInputModal = new bootstrap.Modal(dataInputModalElement);
-        const adminInputModal = new bootstrap.Modal(adminInputModalElement); // New admin modal object
+const loginModalElement = document.getElementById('loginModal');
+const dataInputModalElement = document.getElementById('dataInputModal');
+const adminInputModalElement = document.getElementById('adminInputModal');
 
-        // Get reference to the login form
-        const loginForm = document.getElementById('loginForm');
-        const inputEmail = document.getElementById('inputEmail'); // Get email input
+const loginModal = new bootstrap.Modal(loginModalElement);
+const dataInputModal = new bootstrap.Modal(dataInputModalElement);
+const adminInputModal = new bootstrap.Modal(adminInputModalElement);
 
-        // Add event listener for the login form submission
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
+const loginForm = document.getElementById('loginForm');
+const inputEmail = document.getElementById('inputEmail');
 
-            const email = inputEmail.value.toLowerCase().trim(); // Get email and clean it
+if (loginForm && inputEmail) {
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = inputEmail.value.toLowerCase().trim();
+        loginModal.hide();
+        setTimeout(() => {
+            if (email === 'user@gmail.com') {
+                dataInputModal.show();
+            } else {
+                adminInputModal.show();
+            }
+        }, 300);
+    });
+}
 
-            // Close the login modal first
-            loginModal.hide();
+const dataInputForm = document.getElementById('dataInputForm');
+if (dataInputForm) {
+    dataInputForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const selectedService = document.getElementById('serviceSelect')?.value;
+        const selectedSegment = document.getElementById('segmentSelect')?.value;
+        const countValue = document.getElementById('countInput')?.value;
+        alert(`Data for Service: "${selectedService}", Segment: "${selectedSegment}" with Count: "${countValue}" submitted!`);
+        dataInputModal.hide();
+        dataInputForm.reset();
+    });
+}
 
-            // Simulate server-side check after a brief delay for transition
-            setTimeout(() => {
-                if (email === 'user@gmail.com') {
-                    console.log('Login simulated for standard user.');
-                    dataInputModal.show(); // Show data input modal
-                } else {
-                    console.log('Login simulated for admin user (or unknown).');
-                    adminInputModal.show(); // Show admin dashboard modal
-                }
-            }, 300); // 300ms delay for smoother transition
-
-            // Optionally, you might clear the login form fields here
-            // loginForm.reset();
-        });
-
-        // Add event listener for the data input form submission
-        const dataInputForm = document.getElementById('dataInputForm');
-        dataInputForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const selectedService = document.getElementById('serviceSelect').value;
-            const selectedSegment = document.getElementById('segmentSelect').value;
-            const countValue = document.getElementById('countInput').value;
-
-            console.log('Data Submitted:');
-            console.log('Service:', selectedService);
-            console.log('Segment:', selectedSegment);
-            console.log('Count:', countValue);
-
-            // In a real app, you'd send this data to a server.
-            // You might then close the modal or show a success message.
-            alert(`Data for Service: "${selectedService}", Segment: "${selectedSegment}" with Count: "${countValue}" submitted!`);
-            dataInputModal.hide(); // Close modal after submission
-            dataInputForm.reset(); // Clear form
-        });
-
-        // Optional: Admin modal interaction (e.g., loading chart data) can go here
-        adminInputModalElement.addEventListener('shown.bs.modal', function () {
-            console.log('Admin Modal is fully open. Time to load chart data!');
-            // Here you would typically initialize a chart library (e.g., Chart.js)
-            // and fetch data to populate the chart inside the .chart-placeholder div.
-        });
+if (adminInputModalElement) {
+    adminInputModalElement.addEventListener('shown.bs.modal', function () {
+        console.log('Admin Modal is fully open. Time to load chart data!');
+    });
+}
 
         
 });
