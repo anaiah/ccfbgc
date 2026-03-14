@@ -171,15 +171,7 @@ const bgc = {
     
             } //end options
         
-            const xoptions = {
-  chart: { type: 'bar', height: '100%' }, // height 100% so it fills container
-  series: [{ name: 'Headcount', data: [10, 20, 30] }],
-  xaxis: { categories: ['A', 'B', 'C'] },
-  // optional responsive / grid / padding settings
-};
 
-            bgc.chart1 = new ApexCharts(document.querySelector("#ccfbgcchart"), xoptions);
-            bgc.chart1.render();
         }, 
 
     loadHeadcountChart: async () => {
@@ -189,16 +181,26 @@ const bgc = {
             const payload = await res.json();
             if (!payload.ok) throw new Error(payload.message || 'No data');
             /**** */
-            // create chart with built-in legend hidden
+
+            const palette = [
+                '#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b',
+                '#e377c2','#7f7f7f','#bcbd22','#17becf'
+                ];
+
+            // ensure palette length >= series length
+            const colors = payload.series.map((_,i) => palette[i % palette.length]);
+
             const options = {
-            chart: { type: 'bar', height: 400, width: '100%' },
-            series: payload.series,          // same shape from server
+            chart: { type: 'bar', height: 260, width: '100%' },
+            colors,                       // <- set explicit colors
+            series: payload.series,
             xaxis: { categories: payload.categories },
-            legend: { show: false },         // disable built-in legend
+            legend: { show: false },
+            // create chart with built-in legend hidden
             //plotOptions: { bar: { horizontal: false } }
             plotOptions: {
                 bar: {
-                horizontal: false,        // or true if you want horizontal bars
+                horizontal: true,        // or true if you want horizontal bars
                 columnWidth: '55%',
                 dataLabels: {
                     position: 'top'         // places labels above each bar
@@ -214,42 +216,39 @@ const bgc = {
                 }
             }
             };
+
             const el = document.querySelector('#ccfbgcchart');
             const chart = new ApexCharts(el, options);
             await chart.render();
 
             // build custom legend
             // assume `chart` is your ApexCharts instance and `payload.series` exists
-const legendContainer = document.getElementById('customLegend');
-legendContainer.innerHTML = '';
+            // build custom legend using same colors array
+            const legendContainer = document.getElementById('customLegend');
+            legendContainer.innerHTML = '';
 
-const colors = (chart.w && chart.w.globals && chart.w.globals.colors) || chart.opts.colors || [];
+            payload.series.forEach((s, i) => {
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+                const sw = document.createElement('span');
+                sw.className = 'legend-swatch';
+                sw.style.background = colors[i]; // use explicit color
 
-// create legend items
-payload.series.forEach((s, i) => {
-  const item = document.createElement('div');
-  item.className = 'legend-item';
-  item.dataset.seriesName = s.name;
+                const label = document.createElement('span');
+                label.textContent = s.name;
+                label.style.fontSize = '12px';
+                label.style.color = '#333';
 
-  const sw = document.createElement('span');
-  sw.className = 'legend-swatch';
-  sw.style.background = colors[i] || '#888'; // color from chart
+                item.appendChild(sw);
+                item.appendChild(label);
+                legendContainer.appendChild(item);
 
-  const label = document.createElement('span');
-  label.textContent = s.name;
-  label.style.fontSize = '12px';
-  label.style.color = '#333';
-
-  item.appendChild(sw);
-  item.appendChild(label);
-  legendContainer.appendChild(item);
-
-  // toggle series on click
-  item.addEventListener('click', () => {
-    chart.toggleSeries(s.name);
-    item.classList.toggle('muted');
-  });
-});
+                // toggle series on click
+                item.addEventListener('click', () => {
+                    chart.toggleSeries(s.name);
+                    item.classList.toggle('muted');
+                });
+            });
 
             /**** */
         } catch (err) {
@@ -257,6 +256,116 @@ payload.series.forEach((s, i) => {
         }
     },
 
+    checkNavLinks: () => {
+        const ul = document.querySelector('.navbar-nav.ms-auto.me-2');
+        if (!ul) return;
+        
+       // read profile safely
+            let profile = null;
+            try { profile = JSON.parse(localStorage.getItem('bgc_user')); } catch (e) { profile = null; }
+            const grp = profile && profile.grp_id ? String(profile.grp_id) : null;
+
+            // find existing login li (by data-bs-target or link text)
+            const loginLi = ul.querySelector('li.nav-item > a[data-bs-target="#loginModal"]')?.closest('li.nav-item')
+                        || Array.from(ul.querySelectorAll('li.nav-item')).find(li => li.textContent.trim().toLowerCase() === 'login');
+
+            // helper to create LI with anchor
+            const createNavItem = (id, text, attrs = {}) => {
+            const li = document.createElement('li');
+            li.className = 'nav-item';
+            const a = document.createElement('a');
+            a.className = 'nav-link';
+            if (id) a.id = id;
+            a.href = attrs.href || '#';
+            a.textContent = text;
+            Object.entries(attrs).forEach(([k,v]) => {
+                if (k === 'dataset') Object.entries(v).forEach(([dk,dv]) => a.dataset[dk] = dv);
+                else a.setAttribute(k, v);
+            });
+            li.appendChild(a);
+            return li;
+            };
+
+            let newLi;
+
+            //2,5,6,7,8 are standard users; 4 is admin; else show login
+            switch(grp) {
+                case '1':
+                case '2':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                    newLi = createNavItem('dataentryBtn', 'Data Entry', { 'data-bs-toggle': 'modal', 'data-bs-target': '#dataInputModal', href: '#' });
+                    bgc.connectSocket()
+                break;
+
+                case '4': //owner
+                    newLi = createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
+                    bgc.connectSocket()
+                break;
+
+                default:
+                    newLi = createNavItem('', 'Login', { 'data-bs-toggle': 'modal', 'data-bs-target': '#loginModal', href: '#' });
+                break;
+
+            }//endsw
+
+            if (grp !== '4') {
+            } else if (grp === '4') {
+            newLi = createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
+            } else {
+            newLi = createNavItem('', 'Login', { 'data-bs-toggle': 'modal', 'data-bs-target': '#loginModal', href: '#' });
+            }
+
+
+            if (loginLi) {
+                ul.replaceChild(newLi, loginLi);
+            } else {
+                ul.insertBefore(newLi, ul.firstElementChild);
+            }
+
+    },
+
+    connectSocket:async()=>{
+        //====connect to socket after login
+        const user = JSON.parse(localStorage.getItem('bgc_user')) || {};
+        let authz = [];
+        authz.push(user.grp_id);
+        authz.push(user.full_name);
+        authz.push(user.id);
+
+        console.log('=== authz ', authz);
+
+        //==HANDSHAKE FIRST WITH SOCKET.IO
+        const userName = { token: authz[1], emp_id: authz[2], mode: user.grp_id };
+
+        bgc.socket = io.connect(`${myIp}`, {
+            transports: ['websocket', 'polling'],
+            upgrade: true,
+            rememberTransport: false,
+            query: `userName=${JSON.stringify(userName)}`
+        });
+
+        bgc.socket.on('connect', () => {
+            console.log('Connected to Socket.IO server using:', bgc.socket.io.engine.transport.name);
+        });
+
+        bgc.socket.on('disconnect', () => {
+            console.log('Disconnected from Socket.IO server');
+        });
+    
+        //===receive messages from volunteers
+        bgc.socket.on('xinit', (msg) => {
+            util.Toasted(msg, 3000, true);
+            util.speak(`${user.full_name}, there's an Incoming update!`);
+            console.log('socket.io()', msg);
+            bgc.loadHeadcountChart();
+        });
+
+        console.log('user logged in:', user.grp_id, user.full_name);
+
+    },
 
     init: function() {
         //collapse menu link when clickd
@@ -277,235 +386,209 @@ payload.series.forEach((s, i) => {
 
 window.bgc = bgc; // expose to global
 
-
 document.addEventListener("DOMContentLoaded", function() {
     bgc.init();
-   
+    bgc.checkNavLinks();
+
     // EVENT FOR LOGIN
-document.addEventListener('userLoggedIn', (e) => {
-    bgc.loadHeadcountChart();
+    document.addEventListener('userLoggedIn', (e) => {
+        
+        bgc.loadHeadcountChart(); //load chart
+       
+        //====connect to socket after login
+        bgc.connectSocket()
 
-    //====connect to socket after login
-    const user = JSON.parse(localStorage.getItem('bgc_user')) || {};
-    let authz = [];
-    authz.push(user.grp_id);
-    authz.push(user.full_name);
-    authz.push(user.id);
+        console.log('user logged in:', e.detail.data.grp_id, e.detail.data.full_name);
 
-    console.log('=== authz ', authz[1], authz[2]);
+        // Get references to the modals
+        const loginModalElement = document.getElementById('loginModal');
+        const loginModal = bootstrap.Modal.getInstance(loginModalElement) || new bootstrap.Modal(loginModalElement);
 
-    //==HANDSHAKE FIRST WITH SOCKET.IO
-    const userName = { token: authz[1], emp_id: authz[2], mode: user.grp_id };
+        // Close the login modal
+        loginModal.hide();
 
-    bgc.socket = io.connect(`${myIp}`, {
-        transports: ['websocket', 'polling'],
-        upgrade: true,
-        rememberTransport: false,
-        query: `userName=${JSON.stringify(userName)}`
+        const dataInputModalElement = document.getElementById('dataInputModal');
+        const adminInputModalElement = document.getElementById('adminInputModal');
+
+        // Initialize Bootstrap Modal objects
+        const dataInputModal = new bootstrap.Modal(dataInputModalElement);
+        const adminInputModal = new bootstrap.Modal(adminInputModalElement);
+
+        console.log('what is', e.detail.data.grp_id);
+
+        // Simulate server-side check after a brief delay for transition
+        setTimeout(() => {
+            switch (e.detail.data.grp_id) {
+                case '1':
+                case '3':
+                case '5':
+                case '6':
+                case '7':
+                    const userData = e.detail.data; // has ministry_segment, etc.
+                    const segmentSelect = document.getElementById('segmentSelect');
+                    if (!segmentSelect) return;
+
+                    // Clear old options
+                    segmentSelect.innerHTML = '';
+
+                    const raw = userData.ministry_segment || ''; // e.g. "Youth,Music,Sharers"
+
+                    // Split, trim, and filter out empties
+                    const segments = raw
+                        .split(',')
+                        .map(s => s.trim())
+                        .filter(s => s.length > 0);
+
+                    // Optional: add a default/placeholder option
+                    const placeholder = document.createElement('option');
+                    placeholder.value = '';
+                    placeholder.textContent = 'Select segment';
+                    placeholder.disabled = true;
+                    placeholder.selected = true;
+                    segmentSelect.appendChild(placeholder);
+
+                    // Add one <option> per segment
+                    segments.forEach(seg => {
+                        const opt = document.createElement('option');
+                        opt.value = seg;
+                        opt.textContent = seg;
+                        segmentSelect.appendChild(opt);
+                    });
+
+                    console.log('Login simulated for standard user.');
+                    //dataInputModal.show();
+                    bgc.checkNavLinks(); //update nav links immediately
+
+                    break;
+                case '4':
+                    console.log('Login simulated for admin user (or unknown).');
+                    adminInputModal.show();
+                    break;
+            }
+        }, 300);
     });
 
-    bgc.socket.on('connect', () => {
-        console.log('Connected to Socket.IO server using:', bgc.socket.io.engine.transport.name);
+    // listener for admin chart
+    const adminModalEl = document.getElementById('adminInputModal');
+    if (adminModalEl) {
+        adminModalEl.addEventListener('shown.bs.modal', function () {
+            if (typeof bgc !== 'undefined' && typeof bgc.loadHeadcountChart === 'function') {
+            bgc.loadHeadcountChart();
+            }
+        });
+    }
+    // Smooth scroll for anchor links
+    const links = document.querySelectorAll('a[href^="#"]');
+    links.forEach(link => {
+        link.addEventListener("click", function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            if (!targetId || targetId === '#') return;
+            const targetSection = document.querySelector(targetId);
+            if (!targetSection) return;
+            targetSection.scrollIntoView({ behavior: "smooth" });
+        });
     });
 
-    bgc.socket.on('disconnect', () => {
-        console.log('Disconnected from Socket.IO server');
-    });
-   
-    //===receive messages from volunteers
-    bgc.socket.on('xinit', (msg) => {
-        util.Toasted(msg, 3000, true);
-        util.speak(`${user.full_name}, there's an Incoming update!`);
-        console.log('socket.io()', msg);
-        bgc.loadHeadcountChart();
-    });
+    // PARALLAX: only attach on mobile; do NOT return early (so other code runs)
+    const sections = document.querySelectorAll('.hero-section, .about-section, .contact-section');
+    const isMobile = window.matchMedia('(max-width: 991.98px)').matches;
 
-    console.log('user logged in:', e.detail.data.grp_id, e.detail.data.full_name);
+    function updateParallax() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        sections.forEach(sec => {
+            const speed = 0.3; // tweak: 0.2 subtle, 0.5 stronger
+            const offset = (scrollY - sec.offsetTop) * speed;
+            sec.style.backgroundPosition = `center ${offset}px`;
+        });
+    }
 
-    // Get references to the modals
-    const loginModalElement = document.getElementById('loginModal');
-    const loginModal = bootstrap.Modal.getInstance(loginModalElement) || new bootstrap.Modal(loginModalElement);
+    if (sections.length > 0 && isMobile) {
+        window.addEventListener('scroll', updateParallax, { passive: true });
+        updateParallax();
+    }
 
-    // Close the login modal
-    loginModal.hide();
-
-    const dataInputModalElement = document.getElementById('dataInputModal');
-    const adminInputModalElement = document.getElementById('adminInputModal');
-
-    // Initialize Bootstrap Modal objects
-    const dataInputModal = new bootstrap.Modal(dataInputModalElement);
-    const adminInputModal = new bootstrap.Modal(adminInputModalElement);
-
-    console.log('what is', e.detail.data.grp_id);
-
-    // Simulate server-side check after a brief delay for transition
-    setTimeout(() => {
-        switch (e.detail.data.grp_id) {
-            case '1':
-            case '3':
-            case '5':
-            case '6':
-            case '7':
-                const userData = e.detail.data; // has ministry_segment, etc.
-                const segmentSelect = document.getElementById('segmentSelect');
-                if (!segmentSelect) return;
-
-                // Clear old options
-                segmentSelect.innerHTML = '';
-
-                const raw = userData.ministry_segment || ''; // e.g. "Youth,Music,Sharers"
-
-                // Split, trim, and filter out empties
-                const segments = raw
-                    .split(',')
-                    .map(s => s.trim())
-                    .filter(s => s.length > 0);
-
-                // Optional: add a default/placeholder option
-                const placeholder = document.createElement('option');
-                placeholder.value = '';
-                placeholder.textContent = 'Select segment';
-                placeholder.disabled = true;
-                placeholder.selected = true;
-                segmentSelect.appendChild(placeholder);
-
-                // Add one <option> per segment
-                segments.forEach(seg => {
-                    const opt = document.createElement('option');
-                    opt.value = seg;
-                    opt.textContent = seg;
-                    segmentSelect.appendChild(opt);
-                });
-
-                console.log('Login simulated for standard user.');
-                dataInputModal.show();
-                break;
-            case '4':
-                console.log('Login simulated for admin user (or unknown).');
-                adminInputModal.show();
-                break;
-        }
-    }, 300);
-});
-
-
-// Smooth scroll for anchor links
-const links = document.querySelectorAll('a[href^="#"]');
-links.forEach(link => {
-    link.addEventListener("click", function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute("href");
-        if (!targetId || targetId === '#') return;
-        const targetSection = document.querySelector(targetId);
-        if (!targetSection) return;
-        targetSection.scrollIntoView({ behavior: "smooth" });
-    });
-});
-
-
-// PARALLAX: only attach on mobile; do NOT return early (so other code runs)
-const sections = document.querySelectorAll('.hero-section, .about-section, .contact-section');
-const isMobile = window.matchMedia('(max-width: 991.98px)').matches;
-
-function updateParallax() {
-  const scrollY = window.scrollY || window.pageYOffset;
-  sections.forEach(sec => {
-    const speed = 0.3; // tweak: 0.2 subtle, 0.5 stronger
-    const offset = (scrollY - sec.offsetTop) * speed;
-    sec.style.backgroundPosition = `center ${offset}px`;
-  });
-}
-
-if (sections.length > 0 && isMobile) {
-  window.addEventListener('scroll', updateParallax, { passive: true });
-  updateParallax();
-}
-
-
-// REVEAL-ON-SCROLL (generic)
-const revealElements = document.querySelectorAll('.reveal-on-scroll');
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const el = entry.target;
-            const delay = parseInt(el.getAttribute('data-delay') || '0', 10);
-            el.style.transitionDelay = delay + 'ms';
-            el.classList.add('is-visible');
-            observer.unobserve(el);
-        }
-    });
-}, { threshold: 0.2 });
-
-revealElements.forEach(el => observer.observe(el));
-
-// MV-specific observer (optional/staggered) — use correct selector so it actually finds cards
-const mvCards = document.querySelectorAll('.mv-card, .mv-reveal, .reveal-on-scroll');
-if (mvCards.length > 0) {
-    const mvObserver = new IntersectionObserver((entries) => {
+    // REVEAL-ON-SCROLL (generic)
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const card = entry.target;
-                const delay = parseInt(card.getAttribute('data-delay') || '0', 10);
-                card.style.transitionDelay = delay + 'ms';
-                card.classList.add('is-visible');
-                mvObserver.unobserve(card);
+                const el = entry.target;
+                const delay = parseInt(el.getAttribute('data-delay') || '0', 10);
+                el.style.transitionDelay = delay + 'ms';
+                el.classList.add('is-visible');
+                observer.unobserve(el);
             }
         });
     }, { threshold: 0.2 });
 
-    mvCards.forEach(card => mvObserver.observe(card));
-}
+    revealElements.forEach(el => observer.observe(el));
 
+    // MV-specific observer (optional/staggered) — use correct selector so it actually finds cards
+    const mvCards = document.querySelectorAll('.mv-card, .mv-reveal, .reveal-on-scroll');
+    if (mvCards.length > 0) {
+        const mvObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const card = entry.target;
+                    const delay = parseInt(card.getAttribute('data-delay') || '0', 10);
+                    card.style.transitionDelay = delay + 'ms';
+                    card.classList.add('is-visible');
+                    mvObserver.unobserve(card);
+                }
+            });
+        }, { threshold: 0.2 });
 
-//==== from index.html: footer year + modal init + login form handling ====
-const yearEl = document.getElementById('currentYear');
-if (yearEl) yearEl.textContent = new Date().getFullYear();
+        mvCards.forEach(card => mvObserver.observe(card));
+    }
+    //==== from index.html: footer year + modal init + login form handling ====
+    const yearEl = document.getElementById('currentYear');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-const loginModalElement = document.getElementById('loginModal');
-const dataInputModalElement = document.getElementById('dataInputModal');
-const adminInputModalElement = document.getElementById('adminInputModal');
+    const loginModalElement = document.getElementById('loginModal');
+    const dataInputModalElement = document.getElementById('dataInputModal');
+    const adminInputModalElement = document.getElementById('adminInputModal');
 
-const loginModal = new bootstrap.Modal(loginModalElement);
-const dataInputModal = new bootstrap.Modal(dataInputModalElement);
-const adminInputModal = new bootstrap.Modal(adminInputModalElement);
+    const loginModal = new bootstrap.Modal(loginModalElement);
+    const dataInputModal = new bootstrap.Modal(dataInputModalElement);
+    const adminInputModal = new bootstrap.Modal(adminInputModalElement);
 
-const loginForm = document.getElementById('loginForm');
-const inputEmail = document.getElementById('inputEmail');
+    const loginForm = document.getElementById('loginForm');
+    const inputEmail = document.getElementById('inputEmail');
 
-if (loginForm && inputEmail) {
-    loginForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const email = inputEmail.value.toLowerCase().trim();
-        loginModal.hide();
-        setTimeout(() => {
-            if (email === 'user@gmail.com') {
-                dataInputModal.show();
-            } else {
-                adminInputModal.show();
-            }
-        }, 300);
-    });
-}
+    if (loginForm && inputEmail) {
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = inputEmail.value.toLowerCase().trim();
+            loginModal.hide();
+            setTimeout(() => {
+                if (email === 'user@gmail.com') {
+                    dataInputModal.show();
+                } else {
+                    adminInputModal.show();
+                }
+            }, 300);
+        });
+    }
 
-const dataInputForm = document.getElementById('dataInputForm');
-if (dataInputForm) {
-    dataInputForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const selectedService = document.getElementById('serviceSelect')?.value;
-        const selectedSegment = document.getElementById('segmentSelect')?.value;
-        const countValue = document.getElementById('countInput')?.value;
-        alert(`Data for Service: "${selectedService}", Segment: "${selectedSegment}" with Count: "${countValue}" submitted!`);
-        dataInputModal.hide();
-        dataInputForm.reset();
-    });
-}
+    const dataInputForm = document.getElementById('dataInputForm');
+    if (dataInputForm) {
+        dataInputForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const selectedService = document.getElementById('serviceSelect')?.value;
+            const selectedSegment = document.getElementById('segmentSelect')?.value;
+            const countValue = document.getElementById('countInput')?.value;
+            alert(`Data for Service: "${selectedService}", Segment: "${selectedSegment}" with Count: "${countValue}" submitted!`);
+            dataInputModal.hide();
+            dataInputForm.reset();
+        });
+    }
 
-if (adminInputModalElement) {
-    adminInputModalElement.addEventListener('shown.bs.modal', function () {
-        console.log('Admin Modal is fully open. Time to load chart data!');
-    });
-}
-
+    if (adminInputModalElement) {
+        adminInputModalElement.addEventListener('shown.bs.modal', function () {
+            console.log('Admin Modal is fully open. Time to load chart data!');
+        });
+    }
         
 });
 

@@ -298,7 +298,7 @@
 
     <!-- Admin Input Modal (For other emails) -->
     <div class="modal fade" id="adminInputModal" tabindex="-1" aria-labelledby="adminInputModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Larger modal for chart -->
+        <div class="modal-dialog modal-fullscreen modal-dialog-centered"> <!-- Larger modal for chart -->
             <div class="modal-content">
                 <div class="modal-header bg-info text-white">
                     <h5 class="modal-title" id="adminInputModalLabel"><i class="fas fa-cogs me-2"></i>Admin Dashboard</h5>
@@ -306,18 +306,15 @@
                 </div>
                 <div class="modal-body">
                     <!-- <p class="lead text-center">Welcome, Admin! Here's a quick overview of the data.</p> -->
-                    <div class="chart-placeholder ">
-                      <h4>Bar Chart Analytics</h4>
 
-                      <div style="display:flex; gap:12px; align-items:flex-start;">
-                        <div id="ccfbgcchart" style="flex:1; height:400px;"></div>
-                        <div id="customLegend" style="width:220px;"></div>
-                      </div>
-                      <!-- Optional helper text / icon
-                      <p>This is where your dynamic bar chart will be rendered.</p>
-                      <i class="fas fa-chart-line fa-5x text-muted"></i>
-                      -->
+                    <div class="chart-placeholder">
+                    <div class="chart-row">
+                    <div id="ccfbgcchart" style="height:280px;"></div>
+                    <div id="customLegend"></div>
                     </div>
+                    </div>
+
+
                     <hr>
                     <div class="text-center mt-4">
                         <button class="btn btn-primary me-2"><i class="fas fa-file-export me-1"></i> Export Data</button>
