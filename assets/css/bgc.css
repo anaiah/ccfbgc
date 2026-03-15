@@ -273,50 +273,33 @@
 
 .chart-placeholder { position: relative; }
 #customLegend {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 200px;
-  max-height: calc(100% - 24px);
-  overflow-y: auto;
-  background: rgba(255,255,255,0.9); /* optional translucent bg */
+  display: flex;
+  flex-wrap: wrap;         /* allow multiple rows on small screens /
+  justify-content: center; / center horizontally /
+  gap: 12px 18px;          / row-gap then column-gap */
+  align-items: center;
+  background: #fff;
+  padding: 8px 12px;
   border-radius: 6px;
-  padding: 8px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  z-index: 20;
+  z-index: 9999;
 }
-.chart-placeholder h4 { display: none; } /* hide title if present */
-#ccfbgcchart {
-  width: 100%;
-  height: 100%;
-  min-height: 200px;
-  box-sizing:border-box;
-  padding: right 220px;
-}
-/* legend container */
 
-
-
-/* each legend row */
-.legend-item {
+#customLegend .legend-item {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;     /* keep label and swatch together */
   cursor: pointer;
-  white-space: nowrap;
   padding: 4px 6px;
   border-radius: 4px;
 }
 
-/* muted state when toggled off */
-.legend-item.muted { opacity: 0.45; }
-
-/* color swatch */
-.legend-swatch {
+#customLegend .legend-swatch {
   width: 12px;
   height: 12px;
   border-radius: 2px;
-  display: inline-block;
-  flex: 0 0 12px;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.05) inset;
+  flex: 0 0 auto;
 }
+
+#customLegend .muted { opacity: 0.45; }

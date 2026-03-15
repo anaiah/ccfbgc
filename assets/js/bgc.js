@@ -175,87 +175,130 @@ const bgc = {
         }, 
 
     loadHeadcountChart: async () => {
-    
-        try {
-            const res = await fetch(`${myIp}/bgc/headcount-by-ministry`);
-            const payload = await res.json();
-            if (!payload.ok) throw new Error(payload.message || 'No data');
-            /**** */
+        
+    try {
+        const res = await fetch(`${myIp}/bgc/headcount-by-ministry`);
+        const payload = await res.json();
+        if (!payload.ok) throw new Error(payload.message || 'No data');
 
-            const palette = [
-                '#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b',
-                '#e377c2','#7f7f7f','#bcbd22','#17becf'
-                ];
+        const palette = [
+            '#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b',
+            '#e377c2','#7f7f7f','#bcbd22','#17becf'
+        ];
+        const colors = payload.series.map((_, i) => palette[i % palette.length]);
 
-            // ensure palette length >= series length
-            const colors = payload.series.map((_,i) => palette[i % palette.length]);
-
-            const options = {
-            chart: { type: 'bar', height: 260, width: '100%' },
-            colors,                       // <- set explicit colors
+        const options = {
+            chart: { type: 'bar', height: 265, width: '100%' },
+            colors,
             series: payload.series,
             xaxis: { categories: payload.categories },
             legend: { show: false },
-            // create chart with built-in legend hidden
-            //plotOptions: { bar: { horizontal: false } }
             plotOptions: {
-                bar: {
-                horizontal: true,        // or true if you want horizontal bars
+            bar: {
+                horizontal: false,
                 columnWidth: '55%',
-                dataLabels: {
-                    position: 'top'         // places labels above each bar
-                }
-                }
+                dataLabels: { position: 'top' }
+            }
             },
             dataLabels: {
-                enabled: true,
-                offsetY: -6,               // move label slightly above bar (tweak as needed)
-                style: {
-                fontSize: '12px',
-                colors: ['#000']         // black text
-                }
+            enabled: true,
+            offsetY: -6,
+            style: { fontSize: '12px', colors: ['#000'] }
             }
-            };
+        };
 
-            const el = document.querySelector('#ccfbgcchart');
-            const chart = new ApexCharts(el, options);
-            await chart.render();
+        const el = document.querySelector('#ccfbgcchart');
+        if (!el) throw new Error('#ccfbgcchart element not found');
 
-            // build custom legend
-            // assume `chart` is your ApexCharts instance and `payload.series` exists
-            // build custom legend using same colors array
-            const legendContainer = document.getElementById('customLegend');
+        // destroy previous chart if exists
+        if (bgc.chart1 && typeof bgc.chart1.destroy === 'function') {
+            try { await bgc.chart1.destroy(); } catch (e) { /* ignore */ }
+            bgc.chart1 = null;
+        }
+
+        // create and render new chart
+        bgc.chart1 = new ApexCharts(el, options);
+        await bgc.chart1.render();
+
+        //const chartContainer = document.querySelector('.chart-placeholder');
+       
+        // build custom legend
+        const legendContainer = document.getElementById('customLegend');
+        if (legendContainer) {
             legendContainer.innerHTML = '';
+            const paletteFromChart = (bgc.chart1.opts && bgc.chart1.opts.colors) ||
+                                    (bgc.chart1.w && bgc.chart1.w.globals && bgc.chart1.w.globals.colors) ||
+                                    colors;
 
-            payload.series.forEach((s, i) => {
-                const item = document.createElement('div');
-                item.className = 'legend-item';
-                const sw = document.createElement('span');
-                sw.className = 'legend-swatch';
-                sw.style.background = colors[i]; // use explicit color
+        payload.series.forEach((s, i) => {
+        const item = document.createElement('div');
+        item.className = 'legend-item';
+        item.dataset.seriesName = s.name;
 
-                const label = document.createElement('span');
-                label.textContent = s.name;
-                label.style.fontSize = '12px';
-                label.style.color = '#333';
+        const sw = document.createElement('span');
+        sw.className = 'legend-swatch';
+        sw.style.backgroundColor = paletteFromChart[i] || '#888';
 
-                item.appendChild(sw);
-                item.appendChild(label);
-                legendContainer.appendChild(item);
+        const label = document.createElement('span');
+        label.textContent = s.name;
+        label.style.fontSize = '12px';
+        label.style.color = '#333';
 
-                // toggle series on click
-                item.addEventListener('click', () => {
-                    chart.toggleSeries(s.name);
-                    item.classList.toggle('muted');
-                });
-            });
+        item.appendChild(sw);
+        item.appendChild(label);
+        legendContainer.appendChild(item);
 
-            /**** */
+        item.addEventListener('click', () => {
+            if (bgc.chart1 && typeof bgc.chart1.toggleSeries === 'function') {
+            bgc.chart1.toggleSeries(s.name);
+            item.classList.toggle('muted');
+            }
+        });
+        });
+        }
         } catch (err) {
-            console.error('Failed to load headcount chart:', err);
+        console.error('Failed to load headcount chart:', err);
         }
     },
+    //===get segments for user
+    getSegments:()=>{
 
+        const userData = JSON.parse(localStorage.getItem('bgc_user')); // has ministry_segment, etc.
+        console.log('your segment', userData)
+        const segmentSelect = document.getElementById('segmentSelect');
+        
+        if (!segmentSelect) return;
+
+        // Clear old options
+        segmentSelect.innerHTML = '';
+
+        const raw = userData.ministry_segment || ''; // e.g. "Youth,Music,Sharers"
+
+        // Split, trim, and filter out empties
+        const segments = raw
+            .split(',')
+            .map(s => s.trim())
+            .filter(s => s.length > 0);
+
+        // Optional: add a default/placeholder option
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = 'Select segment';
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        segmentSelect.appendChild(placeholder);
+
+        // Add one <option> per segment
+        segments.forEach(seg => {
+            const opt = document.createElement('option');
+            opt.value = seg;
+            opt.textContent = seg;
+            segmentSelect.appendChild(opt);
+        });
+
+    },
+
+    //=====get links for user
     checkNavLinks: () => {
         const ul = document.querySelector('.navbar-nav.ms-auto.me-2');
         if (!ul) return;
@@ -298,6 +341,7 @@ const bgc = {
                 case '8':
                     newLi = createNavItem('dataentryBtn', 'Data Entry', { 'data-bs-toggle': 'modal', 'data-bs-target': '#dataInputModal', href: '#' });
                     bgc.connectSocket()
+                    bgc.getSegments()
                 break;
 
                 case '4': //owner
@@ -367,6 +411,15 @@ const bgc = {
 
     },
 
+    getCredentials:()=>{
+        const user = JSON.parse(localStorage.getItem('bgc_user')); // has ministry_segment, etc.
+        
+        bgc.userId = user.id; // Set the user ID in the bgc object for global access
+        bgc.belongMinistry = user.ministry_description; // Set the ministry description in the bgc object for global access
+        bgc.ministryId = user.ministry_id; // Set the ministry ID in the bgc object for global access
+
+    },
+
     init: function() {
         //collapse menu link when clickd
         console.log('bgc init called');
@@ -384,19 +437,23 @@ const bgc = {
     }
 }//end bgc
 
-window.bgc = bgc; // expose to global
+//swindow.bgc = bgc; // expose to global
 
 document.addEventListener("DOMContentLoaded", function() {
     bgc.init();
-    bgc.checkNavLinks();
+    
+    bgc.checkNavLinks()
+    
+    window.bgc = bgc;
 
-    // EVENT FOR LOGIN
+    // ***************EVENT FOR LOGIN ************
     document.addEventListener('userLoggedIn', (e) => {
         
-        bgc.loadHeadcountChart(); //load chart
-       
+        
         //====connect to socket after login
         bgc.connectSocket()
+
+        //bgc.getCredentials(); //get creds from login s
 
         console.log('user logged in:', e.detail.data.grp_id, e.detail.data.full_name);
 
@@ -420,60 +477,39 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(() => {
             switch (e.detail.data.grp_id) {
                 case '1':
-                case '3':
+                case '2':
                 case '5':
                 case '6':
-                case '7':
-                    const userData = e.detail.data; // has ministry_segment, etc.
-                    const segmentSelect = document.getElementById('segmentSelect');
-                    if (!segmentSelect) return;
+                case '7':    
+                case '8':
 
-                    // Clear old options
-                    segmentSelect.innerHTML = '';
-
-                    const raw = userData.ministry_segment || ''; // e.g. "Youth,Music,Sharers"
-
-                    // Split, trim, and filter out empties
-                    const segments = raw
-                        .split(',')
-                        .map(s => s.trim())
-                        .filter(s => s.length > 0);
-
-                    // Optional: add a default/placeholder option
-                    const placeholder = document.createElement('option');
-                    placeholder.value = '';
-                    placeholder.textContent = 'Select segment';
-                    placeholder.disabled = true;
-                    placeholder.selected = true;
-                    segmentSelect.appendChild(placeholder);
-
-                    // Add one <option> per segment
-                    segments.forEach(seg => {
-                        const opt = document.createElement('option');
-                        opt.value = seg;
-                        opt.textContent = seg;
-                        segmentSelect.appendChild(opt);
-                    });
+                    bgc.getSegments() //minnistry segments
+                    bgc.getCredentials()
 
                     console.log('Login simulated for standard user.');
+                    
                     //dataInputModal.show();
                     bgc.checkNavLinks(); //update nav links immediately
 
+                    
                     break;
                 case '4':
-                    console.log('Login simulated for admin user (or unknown).');
-                    adminInputModal.show();
+                    console.log('Login simulated for admin user.');
+
+                    adminInputModal.show(); //on show chart loadheadcountchart()
+                    bgc.checkNavLinks(); //update nav links immediately
+
                     break;
             }
         }, 300);
     });
 
-    // listener for admin chart
+    // listener for admin chart when admin modal show
     const adminModalEl = document.getElementById('adminInputModal');
     if (adminModalEl) {
         adminModalEl.addEventListener('shown.bs.modal', function () {
             if (typeof bgc !== 'undefined' && typeof bgc.loadHeadcountChart === 'function') {
-            bgc.loadHeadcountChart();
+                bgc.loadHeadcountChart();
             }
         });
     }
@@ -556,33 +592,33 @@ document.addEventListener("DOMContentLoaded", function() {
     const loginForm = document.getElementById('loginForm');
     const inputEmail = document.getElementById('inputEmail');
 
-    if (loginForm && inputEmail) {
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const email = inputEmail.value.toLowerCase().trim();
-            loginModal.hide();
-            setTimeout(() => {
-                if (email === 'user@gmail.com') {
-                    dataInputModal.show();
-                } else {
-                    adminInputModal.show();
-                }
-            }, 300);
-        });
-    }
+    // if (loginForm && inputEmail) { //temporary out this line
+    //     loginForm.addEventListener('submit', function(event) {
+    //         event.preventDefault();
+    //         const email = inputEmail.value.toLowerCase().trim();
+    //         loginModal.hide();
+    //         setTimeout(() => {
+    //             if (email === 'user@gmail.com') {
+    //                 //dataInputModal.show();
+    //             } else {
+    //                 //adminInputModal.show();
+    //             }
+    //         }, 300);
+    //     });
+    // }
 
-    const dataInputForm = document.getElementById('dataInputForm');
-    if (dataInputForm) {
-        dataInputForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const selectedService = document.getElementById('serviceSelect')?.value;
-            const selectedSegment = document.getElementById('segmentSelect')?.value;
-            const countValue = document.getElementById('countInput')?.value;
-            alert(`Data for Service: "${selectedService}", Segment: "${selectedSegment}" with Count: "${countValue}" submitted!`);
-            dataInputModal.hide();
-            dataInputForm.reset();
-        });
-    }
+    // const dataInputForm = document.getElementById('dataInputForm');
+    // if (dataInputForm) {
+    //     dataInputForm.addEventListener('submit', function(event) {
+    //         event.preventDefault();
+    //         const selectedService = document.getElementById('serviceSelect')?.value;
+    //         const selectedSegment = document.getElementById('segmentSelect')?.value;
+    //         const countValue = document.getElementById('countInput')?.value;
+    //         alert(`Data for Service: "${selectedService}", Segment: "${selectedSegment}" with Count: "${countValue}" submitted!`);
+    //         dataInputModal.hide();
+    //         dataInputForm.reset();
+    //     });
+    // }
 
     if (adminInputModalElement) {
         adminInputModalElement.addEventListener('shown.bs.modal', function () {
