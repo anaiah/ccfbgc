@@ -303,3 +303,138 @@
 }
 
 #customLegend .muted { opacity: 0.45; }
+
+/*apex chart*/
+.apexcharts-datalabels text {
+  transform-origin: center;
+  transform-box: fill-box; /* ensures origin is inside the SVG element */
+  transform: rotate(-45deg); /*change angle as desired */
+}
+#chartDetailed table{
+  font-size: 12px;
+}
+#chartDetailed table td:nth-child(2) {
+  text-align: left;
+}
+.trend { font-size: 12px; font-weight: bold;}
+.trendup { color: #1aa34a; }    /* green */
+.trenddown { color: #f30f07; }  /* red */
+/* calendar */
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.15rem;
+  text-align: center;
+}
+
+.calendar-cell {
+  padding: 0.35rem 0;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  font-size: 0.9rem;
+}
+
+.calendar-cell.header {
+  font-weight: 600;
+  background: #f8f9fa;
+  cursor: default;
+}
+
+.calendar-cell.border {
+  border: 1px solid transparent;
+}
+
+/* do NOT override .selected-day on hover */
+.calendar-cell:not(.header):not(.selected-day):hover {
+  border-color: #0d6efd33;
+  background: #f0f7ff;
+
+  transform: translateY(-1px);
+}
+
+.calendar-cell.today {
+  border-color: #0d6efd;
+  background: #e7f1ff;
+  font-weight: 600;
+}
+
+.calendar-cell:not(.header):not(.selected-day):not(.today):hover {
+  border-color: #0d6efd33;
+  background: #f0f7ff;
+  transform: translateY(-1px);
+}
+
+.calendar-cell.selected-day {
+  background: #0d6efd;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 0.35rem 0.75rem rgba(13, 110, 253, 0.35);
+}
+
+.calendar-cell.empty {
+  visibility: hidden;
+}
+/* Card: stronger shadow */
+#dateTimeSection .card {
+  box-shadow: 0 0.5rem 1rem rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 0.75rem;
+}
+
+#dateTimeSection.show-card .card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* From / To row: stack on mobile */
+@media (max-width: 576px) {
+  #dateTimeSection .row.g-2.align-items-center.mb-3 {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  #dateTimeSection .row.g-2.align-items-center.mb-3 > .col-auto {
+    width: 100%;
+  }
+  #dateTimeSection .row.g-2.align-items-center.mb-3 select,
+  #dateTimeSection .row.g-2.align-items-center.mb-3 button {
+    width: 100%;
+  }
+}
+
+/* Room row: nicer spacing on mobile */
+@media (max-width: 576px) {
+  #dateTimeSection .row.g-2.align-items-center.mb-3:first-of-type {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  #dateTimeSection #roomSelect {
+    width: 100%;
+  }
+}
+
+/* Table: smaller font, tighter padding */
+#dayReservationsTable {
+  font-size: 0.75rem !important;
+}
+
+#dayReservationsTable th,
+#dayReservationsTable td {
+  padding: 0.25rem 0.4rem !important;
+  font-size:0.75rem !important;
+  vertical-align: middle;
+}
+@media (max-width: 576px) {
+  #timeRow {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  #timeRow > .col-auto {
+    width: 100%;
+  }
+  #timeRow select,
+  #timeRow button {
+    width: 100%;
+  }
+}

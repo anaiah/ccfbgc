@@ -65,206 +65,470 @@ const bgc = {
     },
 
     //load chart
-        loadChart: ()=>{
-            console.log('loading from  controller  chart.....')
-           
-            //let colors = ['#0277bd', '#00838f', '#00695c', '#2e7d32','#558b2f','#9e9d24','#ff8f00','#d84315'];
-            let colors = [ '#0277bd','#d84315',  '#2e7d32','#ff8f00']
-                    
-            // Fisher-Yates shuffle
-            // for (let i = colors.length - 1; i > 0; i--) {
-            //     const j = Math.floor(Math.random() * (i + 1));
-            //     [colors[i], colors[j]] = [colors[j], colors[i]]; // swap elements
-            // }//endfor   
-
-            // Map data
-           
-
-           // console.log('categories',categories)
-
-
-            var options = {
-                series:[], 
-                colors:colors,
-                chart: {
-                    type: 'bar',
-                    height: 350,
-                    width: 400,
-                    redrawOnParentResize: false,
-                    redrawOnWindowResize: false,
-                            
-                },
+    loadChart: ()=>{
+        console.log('loading from  controller  chart.....')
+        
+        //let colors = ['#0277bd', '#00838f', '#00695c', '#2e7d32','#558b2f','#9e9d24','#ff8f00','#d84315'];
+        let colors = [ '#0277bd','#d84315',  '#2e7d32','#ff8f00']
                 
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            position: 'top',
-                            //orientation:'vertical'
-                        }
-                    }
-                },
-                
-                dataLabels: {
-                    enabled: true,
-                    dropShadow: {
-                        enabled: true,
-                        left: 1,
-                        top: 1,
-                        opacity: 0.5
-                    },
-                    formatter: function (val) {
-                        if (val >= 1000000) {
-                            return (val / 1000000).toFixed(1) + 'M';
-                        } else if (val >= 1000) {
-                            return (val / 1000).toFixed(1) + 'K';
-                        }
-                        
-                        return val;
-                    },
-                    offsetY:-20,
-                    style: {
-                        fontSize: "12px",
-                        colors: ["#d84315","#00695c"]
-                    },
-                
-                },
-                
-                stroke: {
-                show: true,
-                width: 2,
-                colors: ['transparent']
-                },
-                xaxis: {
-                    categories: [],
+        // Fisher-Yates shuffle
+        // for (let i = colors.length - 1; i > 0; i--) {
+        //     const j = Math.floor(Math.random() * (i + 1));
+        //     [colors[i], colors[j]] = [colors[j], colors[i]]; // swap elements
+        // }//endfor   
 
-                    title: {
-                        text: 'Store Status',
-                        style: {
-                            fontSize: '10px',
-                            fontWeight: 'bold',
-                            fontFamily: 'Helvetica, Arial, sans-serif',
-                            color: '#6699ff' // set your desired color
-                        }
-                    }
-                },
-                yaxis: {
-                    title: {
-                        text: '',
-                        style: {
-                            fontSize: '10px',
-                            fontWeight: 'bold',
-                            fontFamily: 'Helvetica, Arial, sans-serif',
-                            color: '#6699ff' // set your desired color
-                        }
-                    }    
-                },
-                fill: {
-                    opacity: 1
-                },
-                tooltip: {
-                    y: {
-                        formatter: function (val) {
-                            return val 
-                        }
-                }
-                }
-    
-            } //end options
+        // Map data
         
 
-        }, 
+        // console.log('categories',categories)
+
+
+        var options = {
+            series:[], 
+            colors:colors,
+            chart: {
+                type: 'bar',
+                height: 350,
+                width: 400,
+                redrawOnParentResize: false,
+                redrawOnWindowResize: false,
+                        
+            },
+            
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        position: 'top',
+                        //orientation:'vertical'
+                    }
+                }
+            },
+            
+            dataLabels: {
+                enabled: true,
+                dropShadow: {
+                    enabled: true,
+                    left: 1,
+                    top: 1,
+                    opacity: 0.5
+                },
+                formatter: function (val) {
+                    if (val >= 1000000) {
+                        return (val / 1000000).toFixed(1) + 'M';
+                    } else if (val >= 1000) {
+                        return (val / 1000).toFixed(1) + 'K';
+                    }
+                    
+                    return val;
+                },
+                offsetY:-20,
+                style: {
+                    fontSize: "12px",
+                    colors: ["#d84315","#00695c"]
+                },
+            
+            },
+            
+            stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+            },
+            xaxis: {
+                categories: [],
+
+                title: {
+                    text: 'Store Status',
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'bold',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        color: '#6699ff' // set your desired color
+                    }
+                }
+            },
+            yaxis: {
+                title: {
+                    text: '',
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 'bold',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        color: '#6699ff' // set your desired color
+                    }
+                }    
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val 
+                    }
+            }
+            }
+
+        } //end options
+    
+
+    }, 
+
+    //===== chart filter xaxis categories ===
+    // Populate select
+    updateChart:(sel)=>{
+
+        sel = sel || document.getElementById('ministrySelect');
+        let selectedIdx;
+        if (sel.value === 'all') {
+            selectedIdx = bgc.aCategories.map((_, i) => i);
+        } else if (sel.multiple) {
+            selectedIdx = Array.from(sel.selectedOptions).map(o => parseInt(o.value, 10));    
+        } else {
+            // single-select case (placeholder blocks empty)
+            selectedIdx = [parseInt(sel.value, 10)];
+        }
+        // guard
+        if (selectedIdx.some(i => Number.isNaN(i))) return;
+            
+        const newCats = selectedIdx.map(i => bgc.aCategories[i]);
+            
+        const newSeries = bgc.payload.series.map(s => ({
+            name: s.name,
+            data: selectedIdx.map(i => s.data[i])
+        }));
+
+        // guard
+        if (!Array.isArray(selectedIdx) || selectedIdx.some(i => Number.isNaN(i))) return;
+
+        // Determine which series have any non-null value at the selected indices
+        const seriesHasValue = bgc.payload.series.map(s =>
+            selectedIdx.some(i => Array.isArray(s.data) && s.data[i] != null)
+        );
+
+        // Show/hide series in ApexCharts and update custom legend classes
+        bgc.payload.series.forEach((s, idx) => {
+            const name = s.name;
+            if (seriesHasValue[idx]) {
+            if (bgc.chart1) bgc.chart1.showSeries(name);
+            // update legend UI: remove muted class
+            const item = document.querySelector(`
+                #customLegend .legend-item[data-series-name="${CSS.escape(name)}"]
+                `);
+            if (item) item.classList.remove('d-none');
+            } else {
+            if (bgc.chart1) bgc.chart1.hideSeries(name);
+            const item = document.querySelector(`
+                #customLegend .legend-item[data-series-name="${CSS.escape(name)}"]
+                `);
+            if (item) item.classList.add('d-none');
+            }
+        });
+
+        if(bgc.chart1){
+            bgc.chart1.updateOptions({ xaxis: { categories: newCats } }, false);
+            bgc.chart1.updateSeries(newSeries, true);
+        }        
+    },
+    //=======admin main chart loader====
+    aCategories:[],
+    payload:[],
 
     loadHeadcountChart: async () => {
+
+        /*
+        payload.categories = ['LIVE PROD', 'USHERS', 'WELCOME'] // x-axis labels
+        payload.series = [ { name: 'AM - LIVE PROD', data: [7, 23, 0] }, { name: 'PM - LIVE PROD', data: [5, 0, 0] } ]
+        */
+        try {
+            const res = await fetch(`${myIp}/bgc/headcount-by-ministry`);
+            const payload = await res.json();
+
+            if (!payload.ok) throw new Error(payload.message || 'No data');
+
+            const palette = [
+                '#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b',
+                '#e377c2','#7f7f7f','#bcbd22','#17becf'
+            ];
+            const colors = payload.series.map((_, i) => palette[i % palette.length]);
+
+            bgc.payload = payload;
+            bgc.aCategories = payload.categories//pass to bgc array
+
+            bgc.buildMinistryTable(bgc.payload, 'chartDetailed')
+
+            /*************** */
+            /************ end  */
+
+            const options = {
+                chart: { type: 'bar', height: 265, width: '100%' },
+                colors,
+                series: payload.series,
+                xaxis: {
+                    categories: payload.categories,
+                    labels: {
+                        rotate: -65,               // or -90
+                        rotateAlways: true,
+                        //hideOverlappingLabels: true,
+                        trim: true,
+                        style: { fontSize: '10px', colors: ['#1d0868'] } // array or single color
+                    }
+                },
+                
+                legend: { show: false }, //will make own legend
+
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '95%',
+                        dataLabels: { position: 'top' }
+                    }
+                },
+
+                dataLabels: {
+                    enabled: true,
+                    offsetY: -10,
+                    //formatter: val => (val == null ? '' : val),
+                    style: { fontSize: '10px', colors: ['#200505'] }
+                }
+            };
+
+            const el = document.querySelector('#ccfbgcchart');
+            if (!el) throw new Error('#ccfbgcchart element not found');
+
+            // destroy previous chart if exists
+            if (bgc.chart1 && typeof bgc.chart1.destroy === 'function') {
+                try { await bgc.chart1.destroy(); } catch (e) { /* ignore */ }
+                bgc.chart1 = null;
+            }
+
+            // create and render new chart
+            bgc.chart1 = new ApexCharts(el, options);
+            await bgc.chart1.render();
+
+            //const chartContainer = document.querySelector('.chart-placeholder');
         
-    try {
-        const res = await fetch(`${myIp}/bgc/headcount-by-ministry`);
-        const payload = await res.json();
-        if (!payload.ok) throw new Error(payload.message || 'No data');
+            // build custom legend
+            const legendContainer = document.getElementById('customLegend');
+            if (legendContainer) {
+                legendContainer.innerHTML = '';
+                const paletteFromChart = (bgc.chart1.opts && bgc.chart1.opts.colors) ||
+                                        (bgc.chart1.w && bgc.chart1.w.globals && bgc.chart1.w.globals.colors) ||
+                                        colors;
 
-        const palette = [
-            '#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b',
-            '#e377c2','#7f7f7f','#bcbd22','#17becf'
-        ];
-        const colors = payload.series.map((_, i) => palette[i % palette.length]);
+                payload.series.forEach((s, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'legend-item';
+                    item.dataset.seriesName = s.name;
 
-        const options = {
-            chart: { type: 'bar', height: 265, width: '100%' },
-            colors,
-            series: payload.series,
-            xaxis: { categories: payload.categories },
-            legend: { show: false },
-            plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '55%',
-                dataLabels: { position: 'top' }
-            }
-            },
-            dataLabels: {
-            enabled: true,
-            offsetY: -6,
-            style: { fontSize: '12px', colors: ['#000'] }
-            }
-        };
+                    const sw = document.createElement('span');
+                    sw.className = 'legend-swatch';
+                    sw.style.backgroundColor = paletteFromChart[i] || '#888';
 
-        const el = document.querySelector('#ccfbgcchart');
-        if (!el) throw new Error('#ccfbgcchart element not found');
+                    const label = document.createElement('span');
+                    label.textContent = s.name;
+                    label.style.fontSize = '12px';
+                    label.style.color = '#333';
 
-        // destroy previous chart if exists
-        if (bgc.chart1 && typeof bgc.chart1.destroy === 'function') {
-            try { await bgc.chart1.destroy(); } catch (e) { /* ignore */ }
-            bgc.chart1 = null;
-        }
+                    item.appendChild(sw);
+                    item.appendChild(label);
+                    legendContainer.appendChild(item);
 
-        // create and render new chart
-        bgc.chart1 = new ApexCharts(el, options);
-        await bgc.chart1.render();
+                    item.addEventListener('click', () => {
+                        if (bgc.chart1 && typeof bgc.chart1.toggleSeries === 'function') {
+                            bgc.chart1.toggleSeries(s.name);
+                            item.classList.toggle('muted');
+                        }
+                    });
+                });
 
-        //const chartContainer = document.querySelector('.chart-placeholder');
-       
-        // build custom legend
-        const legendContainer = document.getElementById('customLegend');
-        if (legendContainer) {
-            legendContainer.innerHTML = '';
-            const paletteFromChart = (bgc.chart1.opts && bgc.chart1.opts.colors) ||
-                                    (bgc.chart1.w && bgc.chart1.w.globals && bgc.chart1.w.globals.colors) ||
-                                    colors;
+                //fill-out select tag filter for main  ministries
+                const ministrySelect = document.getElementById('ministrySelect');
+        
+                ministrySelect.innerHTML = ''; // clear
 
-        payload.series.forEach((s, i) => {
-        const item = document.createElement('div');
-        item.className = 'legend-item';
-        item.dataset.seriesName = s.name;
+              const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = 'Please Select';
+                placeholder.disabled = true;
+                placeholder.selected = true;
+                ministrySelect.appendChild(placeholder);
 
-        const sw = document.createElement('span');
-        sw.className = 'legend-swatch';
-        sw.style.backgroundColor = paletteFromChart[i] || '#888';
+                const allOpt = document.createElement('option');
+                allOpt.value = 'all';      // <- use 'all' not ''
+                allOpt.textContent = 'ALL';
+                ministrySelect.appendChild(allOpt);
 
-        const label = document.createElement('span');
-        label.textContent = s.name;
-        label.style.fontSize = '12px';
-        label.style.color = '#333';
+                payload.categories.forEach((cat, idx) => {
+                const opt = document.createElement('option');
+                opt.value = String(idx);
+                opt.textContent = cat;
+                ministrySelect.appendChild(opt);
+                })
 
-        item.appendChild(sw);
-        item.appendChild(label);
-        legendContainer.appendChild(item);
+                ministrySelect.selectedIndex = 0;
 
-        item.addEventListener('click', () => {
-            if (bgc.chart1 && typeof bgc.chart1.toggleSeries === 'function') {
-            bgc.chart1.toggleSeries(s.name);
-            item.classList.toggle('muted');
-            }
-        });
-        });
-        }
+                
+            }//eif
+
         } catch (err) {
-        console.error('Failed to load headcount chart:', err);
+            console.error('Failed to load headcount chart:', err);
         }
     },
+
+    //====== build detald table display
+    buildMinistryTable : ( payload, containerId ) => {
+        console.log('building table', containerId)
+
+        if (!payload || !payload.categories || !payload.series) return;
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        // parse series name to { when: 'AM'|'PM'|'OTHER', segment: '...' }
+        function parseSeriesName(name = '') {
+            const normalized = name.replace(/\u00B7|\u2022|·|•/g, '-').replace(/\s+/g, ' ').trim();
+            const whenMatch = normalized.match(/\b(AM|PM)\b/i);
+            const when = whenMatch ? whenMatch[0].toUpperCase() : 'OTHER';
+            const remainder = normalized.replace(/\b(AM|PM)\b/ig, '').replace(/[-–—:]/g, ' ').trim();
+            const segment = remainder || name;
+            return { when, segment: segment.trim() };
+        }
+
+        // Build map: for each ministry index, collect segments with AM/PM values
+        const tableMap = payload.categories.map(cat => ({ ministry: cat, segments: {} }));
+    
+        payload.series.forEach(series => {
+            const { when, segment } = parseSeriesName(series.name);
+            (series.data || []).forEach((val, idx) => {
+                if (idx < 0 || idx >= tableMap.length) return;
+                if (val == null) return;                // <-- skip null/undefined values entirely
+                const segKey = segment || 'Default';
+                const segMap = tableMap[idx].segments;
+                if (!segMap[segKey]) segMap[segKey] = { AM: null, PM: null, OTHER: null };
+                segMap[segKey][when] = val;
+            });
+        });
+
+        // prune segments that ended up with all nulls (defensive)
+        tableMap.forEach(row => {
+            Object.keys(row.segments).forEach(k => {
+                const v = row.segments[k];
+                if ((v.AM == null) && (v.PM == null) && (v.OTHER == null)) {
+                delete row.segments[k];
+                }
+            });
+        });
+
+        // Build table
+        const table = document.createElement('table');
+        table.className = 'table  table-sm table-striped';
+        table.style.width = '100%';
+        table.innerHTML =    ` <thead>
+        <tr><th>Ministry</th><th>Segment</th><th style="text-align:right">AM</th>
+        <th style="text-align:right">PM</th></tr>
+        </thead><tbody></tbody>`  ;
+
+        const tbody = table.querySelector('tbody');
+
+        //check xlsx
+        tableMap.forEach(row => {
+            const segments = Object.keys(row.segments);
+
+            if (segments.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${esc(row.ministry)}</td><td>-</td><td style="text-align:right">
+                </td><td style="text-align:right"></td>`;
+
+                tbody.appendChild(tr);
+                return;
+            }
+
+            segments.forEach((seg, i) => {
+                const vals = row.segments[seg];
+
+                // compute arrow for PM vs AM
+                const amVal = vals.AM == null ? 0 : Number(vals.AM);
+                const pmVal = vals.PM == null ? 0 : Number(vals.PM);
+                let arrowHtml = '';
+                if (!isNaN(amVal) && !isNaN(pmVal)) {
+                    if (pmVal > amVal) {
+                        arrowHtml = ' <i class="trend trendup ti ti-caret-up"></i>';
+                    } else if (pmVal < amVal) {
+                        arrowHtml = ' <i class="trend trenddown ti ti-caret-down"></i>';
+                    }
+                }//eif
+
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${i === 0 ? esc(row.ministry) : ''}</td>   
+                <td style="text-align:left">${esc(seg)}</td>   
+                <td style="text-align:right">${vals.AM == null ? '0' : vals.AM}</td>   
+                <td style="text-align:right">${vals.PM == null ? '0' : vals.PM}${arrowHtml}</td>`
+                ;
+                // tr.innerHTML =`<td>${i === 0 ? esc(row.ministry) : ''}</td>
+                //        <td>${esc(seg)}</td>       
+                //        <td style="text-align:right">${vals.AM == null ? '0' : vals.AM}</td>       
+                //        <td style="text-align:right">${vals.PM == null ? '0' : vals.PM}</td>`    ;
+                
+                tbody.appendChild(tr);
+            });
+
+            /* use this to produce xls via ednpoint checkxlsxconst exportRows = [];
+tableMap.forEach(row => {
+  const segments = Object.keys(row.segments).sort((a,b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  if (segments.length === 0) {
+    exportRows.push({ Ministry: row.ministry, Segment: '', AM: 0, PM: 0 });
+  } else {
+    segments.forEach(seg => {
+      const vals = row.segments[seg];
+      exportRows.push({
+        Ministry: row.ministry,
+        Segment: seg,
+        AM: vals.AM == null ? 0 : vals.AM,
+        PM: vals.PM == null ? 0 : vals.PM
+      });
+    });
+  }
+});
+
+// send to server (JSON POST)
+fetch('https://your-server/xls-export', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ rows: exportRows, filename: 'ministry_report.xlsx' })
+})
+.then(r => r.blob())
+.then(blob => {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ministry_report.xlsx';
+  document.body.appendChild(a); a.click();
+  a.remove(); URL.revokeObjectURL(url);
+}); 
+            */
+        });
+
+        container.innerHTML = '';
+        container.appendChild(table);
+
+        function num(v) { return (v == null || v === '') ? '0' : v; }
+        
+        function esc(s) {
+            if (s == null) return '';
+            return String(s).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');
+        }
+
+        (bgc && bgc.payload ? bgc.payload : window.payload);
+    } ,
+
+   
     //===get segments for user
     getSegments:()=>{
 
         const userData = JSON.parse(localStorage.getItem('bgc_user')); // has ministry_segment, etc.
-        console.log('your segment', userData)
+        console.log('your segment', userData)   
+        
         const segmentSelect = document.getElementById('segmentSelect');
         
         if (!segmentSelect) return;
@@ -298,13 +562,33 @@ const bgc = {
 
     },
 
+    // helper to create LI with anchor
+    createNavItem :  (id, text, attrs = {}) => {
+        const li = document.createElement('li');
+        li.className = 'nav-item';
+        const a = document.createElement('a');
+        a.className = 'nav-link';
+        if (id) a.id = id;
+        a.href = attrs.href || '#';
+        a.textContent = text;
+        Object.entries(attrs).forEach(([k,v]) => {
+            if (k === 'dataset') Object.entries(v).forEach(([dk,dv]) => a.dataset[dk] = dv);
+            else a.setAttribute(k, v);
+        });
+
+        li.appendChild(a);
+        return li;
+    
+    },
+
     //=====get links for user
     checkNavLinks: () => {
         const ul = document.querySelector('.navbar-nav.ms-auto.me-2');
         if (!ul) return;
         
-       // read profile safely
+            // read profile safely
             let profile = null;
+            
             try { profile = JSON.parse(localStorage.getItem('bgc_user')); } catch (e) { profile = null; }
             const grp = profile && profile.grp_id ? String(profile.grp_id) : null;
 
@@ -312,24 +596,8 @@ const bgc = {
             const loginLi = ul.querySelector('li.nav-item > a[data-bs-target="#loginModal"]')?.closest('li.nav-item')
                         || Array.from(ul.querySelectorAll('li.nav-item')).find(li => li.textContent.trim().toLowerCase() === 'login');
 
-            // helper to create LI with anchor
-            const createNavItem = (id, text, attrs = {}) => {
-            const li = document.createElement('li');
-            li.className = 'nav-item';
-            const a = document.createElement('a');
-            a.className = 'nav-link';
-            if (id) a.id = id;
-            a.href = attrs.href || '#';
-            a.textContent = text;
-            Object.entries(attrs).forEach(([k,v]) => {
-                if (k === 'dataset') Object.entries(v).forEach(([dk,dv]) => a.dataset[dk] = dv);
-                else a.setAttribute(k, v);
-            });
-            li.appendChild(a);
-            return li;
-            };
-
-            let newLi;
+            
+            let newLi, newLIcal;
 
             //2,5,6,7,8 are standard users; 4 is admin; else show login
             switch(grp) {
@@ -339,34 +607,32 @@ const bgc = {
                 case '6':
                 case '7':
                 case '8':
-                    newLi = createNavItem('dataentryBtn', 'Data Entry', { 'data-bs-toggle': 'modal', 'data-bs-target': '#dataInputModal', href: '#' });
+                    newLi = bgc.createNavItem('dataentryBtn', 'Data Entry', { 'data-bs-toggle': 'modal', 'data-bs-target': '#dataInputModal', href: '#' });
+                    document.getElementById('roomresLi').classList.remove('d-none')
+
                     bgc.connectSocket()
                     bgc.getSegments()
+                    bgc.getCredentials()
+
                 break;
 
                 case '4': //owner
-                    newLi = createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
+                    newLi = bgc.createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
                     bgc.connectSocket()
                 break;
 
                 default:
-                    newLi = createNavItem('', 'Login', { 'data-bs-toggle': 'modal', 'data-bs-target': '#loginModal', href: '#' });
+                    newLi = bgc.createNavItem('', 'Login', { 'data-bs-toggle': 'modal', 'data-bs-target': '#loginModal', href: '#' });
                 break;
 
             }//endsw
 
-            if (grp !== '4') {
-            } else if (grp === '4') {
-            newLi = createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
-            } else {
-            newLi = createNavItem('', 'Login', { 'data-bs-toggle': 'modal', 'data-bs-target': '#loginModal', href: '#' });
-            }
-
-
             if (loginLi) {
                 ul.replaceChild(newLi, loginLi);
+                console.log('1')
             } else {
                 ul.insertBefore(newLi, ul.firstElementChild);
+                console.log('2')
             }
 
     },
@@ -420,6 +686,8 @@ const bgc = {
 
     },
 
+    TIME_OPTIONS:[],
+
     init: function() {
         //collapse menu link when clickd
         console.log('bgc init called');
@@ -444,16 +712,13 @@ document.addEventListener("DOMContentLoaded", function() {
     
     bgc.checkNavLinks()
     
-    window.bgc = bgc;
+    window.bgc = bgc; //set global
 
     // ***************EVENT FOR LOGIN ************
     document.addEventListener('userLoggedIn', (e) => {
         
-        
         //====connect to socket after login
         bgc.connectSocket()
-
-        //bgc.getCredentials(); //get creds from login s
 
         console.log('user logged in:', e.detail.data.grp_id, e.detail.data.full_name);
 
@@ -485,13 +750,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     bgc.getSegments() //minnistry segments
                     bgc.getCredentials()
+                    bgc.checkNavLinks(); //update nav links immediately
 
                     console.log('Login simulated for standard user.');
                     
-                    //dataInputModal.show();
-                    bgc.checkNavLinks(); //update nav links immediately
-
-                    
+                    document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
                     break;
                 case '4':
                     console.log('Login simulated for admin user.');
@@ -502,6 +765,19 @@ document.addEventListener("DOMContentLoaded", function() {
                     break;
             }
         }, 300);
+    });
+
+    //**** room reservation */
+    const calendarModal = document.getElementById('calendarModal');
+    calendarModal.addEventListener('show.bs.modal', () => {
+        calendar.buildCurrentMonthCalendar(); // your calendar
+        calendar.initTimeSelects(); // time select
+        //calendar.getRooms(); // room select
+    });
+
+    //********* room reservation when changing rooms */
+    document.getElementById('roomSelect').addEventListener('change', () => {
+        calendar.updateTimeSelectsForRoom();
     });
 
     // listener for admin chart when admin modal show
