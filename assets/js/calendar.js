@@ -2,67 +2,71 @@ const calendar = {
 
     //main methodbuild calendar
      //======= build calendar=========//
-    buildCurrentMonthCalendar: () => {
-      const container = document.getElementById('calendarContainer');
-      container.innerHTML = ''; // clear previous content if any
+    // buildCurrentMonthCalendar: () => {
+    //   const container = document.getElementById('calendarContainer');
+    //   container.innerHTML = ''; // clear previous content if any
 
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth(); // 0-11
+    //   const now = new Date();
+    //   const year = now.getFullYear();
+    //   const month = now.getMonth(); // 0-11
 
-      const firstDay = new Date(year, month, 1);
-      const lastDay = new Date(year, month + 1, 0);
+    //   const firstDay = new Date(year, month, 1);
+    //   const lastDay = new Date(year, month + 1, 0);
 
-      const monthName = firstDay.toLocaleString('default', { month: 'long' });
-      const daysInMonth = lastDay.getDate();
+    //   const monthName = firstDay.toLocaleString('default', { month: 'long' });
+    //   const daysInMonth = lastDay.getDate();
 
-      // Weekday headers (start on Sunday; change as you like)
-      const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    //   // Weekday headers (start on Sunday; change as you like)
+    //   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-      // Title
-      const title = document.createElement('h4');
-      title.className = 'text-center mb-3';
-      title.textContent = `${monthName} ${year}`;
-      container.appendChild(title);
+    //   // Title
+    //   const title = document.createElement('h4');
+    //   title.className = 'text-center mb-3';
+    //   title.textContent = `${monthName} ${year}`;
+    //   container.appendChild(title);
 
-      // Grid container
-      const grid = document.createElement('div');
-      grid.className = 'calendar-grid';
+    //   // Grid container
+    //   const grid = document.createElement('div');
+    //   grid.className = 'calendar-grid';
 
-      // Header row
-      weekdays.forEach(d => {
-        const cell = document.createElement('div');
-        cell.className = 'calendar-cell header';
-        cell.textContent = d;
-        grid.appendChild(cell);
-      });
+    //   // Header row
+    //   weekdays.forEach(d => {
+    //     const cell = document.createElement('div');
+    //     cell.className = 'calendar-cell header';
+    //     cell.textContent = d;
+    //     grid.appendChild(cell);
+    //   });
 
-      // Empty cells before first day
-      const startWeekday = firstDay.getDay(); // 0 (Sun) - 6 (Sat)
-      for (let i = 0; i < startWeekday; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.className = 'calendar-cell empty';
-        grid.appendChild(emptyCell);
-      }
+    //   // Empty cells before first day
+    //   const startWeekday = firstDay.getDay(); // 0 (Sun) - 6 (Sat)
+    //   for (let i = 0; i < startWeekday; i++) {
+    //     const emptyCell = document.createElement('div');
+    //     emptyCell.className = 'calendar-cell empty';
+    //     grid.appendChild(emptyCell);
+    //   }
 
-      // Day cells
-      const todayDate = now.getDate();
-      const isCurrentMonth = (d) => year === now.getFullYear() && month === now.getMonth() && d === todayDate;
+    //   // Day cells
+    //   const todayDate = now.getDate();
+    //   const isCurrentMonth = (d) => year === now.getFullYear() && month === now.getMonth() && d === todayDate;
 
-      for (let d = 1; d <= daysInMonth; d++) {
-        const cell = document.createElement('div');
-        cell.className = 'calendar-cell border';
+    //   for (let d = 1; d <= daysInMonth; d++) {
+    //     const cell = document.createElement('div');
+    //     cell.className = 'calendar-cell border';
 
-        if (isCurrentMonth(d)) {
-          cell.classList.add('today');
-        }
+    //     if (isCurrentMonth(d)) {
+    //       cell.classList.add('today');
+    //     }
 
-        cell.textContent = d;
-        grid.appendChild(cell);
-      }
+    //     cell.textContent = d;
+    //     grid.appendChild(cell);
+    //   }
 
-      container.appendChild(grid);
-    },
+    //   container.appendChild(grid);
+    // },
+
+
+    
+
 
     buildTimeOptionsArray: () => {
         const startHour = 9;  // 9 AM
@@ -80,7 +84,7 @@ const calendar = {
 
     },
 
-    // ==== write calendar in modals
+    // // ==== write calendar in modals
     buildCurrentMonthCalendar : () => {
 
         //build time options first
@@ -90,6 +94,10 @@ const calendar = {
         container.innerHTML = '';
 
         const now = new Date();
+        const todayY = now.getFullYear();
+        const todayM = now.getMonth();
+        const todayD = now.getDate();
+
         const year = now.getFullYear();
         const month = now.getMonth();
 
@@ -123,18 +131,31 @@ const calendar = {
         }
 
         const todayDate = now.getDate();
+
         for (let d = 1; d <= daysInMonth; d++) {
             const cell = document.createElement('div');
             cell.className = 'calendar-cell border';
+            
+            const isToday =
+            year === todayY && month === todayM && d === todayD;
+
+            const isPast =
+            year === todayY && month === todayM && d < todayD;
+
+            if (isToday) cell.classList.add('today');
+            if (isPast)  cell.classList.add('disabled-day');
+            
             if (d === todayDate) cell.classList.add('today');
 
             cell.textContent = d;
 
             // ADD CLICK HANDLER HERE
-            cell.addEventListener('click', () => {
-                const selectedDate = new Date(year, month, d);
-                calendar.onDayClick(selectedDate, cell);
-            });
+            if (!isPast) {
+                cell.addEventListener('click', () => {
+                    const selectedDate = new Date(year, month, d);
+                    calendar.onDayClick(selectedDate, cell);
+                });
+            }
 
             grid.appendChild(cell);
         }

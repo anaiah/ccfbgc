@@ -373,6 +373,15 @@
   box-shadow: 0 0.35rem 0.75rem rgba(13, 110, 253, 0.35);
 }
 
+.calendar-cell.disabled-day {
+  color: #adb5bd;
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+
 .calendar-cell.empty {
   visibility: hidden;
 }
