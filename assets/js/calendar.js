@@ -417,6 +417,8 @@ const calendar = {
     // SAVE ROOMS TO DB
     saveRoom: async()=>{
 
+        util.toggleButtonLoading('btnReserve','Saving Reservation',true)
+
         //get localstorage
         const user = JSON.parse(localStorage.getItem('bgc_user')) || {};
         
@@ -485,12 +487,16 @@ const calendar = {
 
             if (!data.success) {
                 alert(data.error || 'Failed to save reservation.');
+                util.toggleButtonLoading('btnReserve','Saving Reservation',true)
+      
                 return;
             }
 
             util.Toasted('Reservation saved!',3000,false);
             util.speak('Reservation successfully saved!')
             
+            util.toggleButtonLoading('btnReserve','Saving Reservation',true)
+                  
             // optional: refresh rooms for that date
             const dateStr = calendar.formatDateLocalYYYYMMDD( calendar.selectedDate ) ;
 
