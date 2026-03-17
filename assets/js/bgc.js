@@ -767,6 +767,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 300);
     });
 
+    /************ EVENT FOR LOGOUT  */
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('bgc_user');
+        window.location.href = '/';
+    });
+
     //**** room reservation */
     const calendarModal = document.getElementById('calendarModal');
     calendarModal.addEventListener('show.bs.modal', () => {
