@@ -1,73 +1,6 @@
 const calendar = {
 
-    //main methodbuild calendar
-     //======= build calendar=========//
-    // buildCurrentMonthCalendar: () => {
-    //   const container = document.getElementById('calendarContainer');
-    //   container.innerHTML = ''; // clear previous content if any
-
-    //   const now = new Date();
-    //   const year = now.getFullYear();
-    //   const month = now.getMonth(); // 0-11
-
-    //   const firstDay = new Date(year, month, 1);
-    //   const lastDay = new Date(year, month + 1, 0);
-
-    //   const monthName = firstDay.toLocaleString('default', { month: 'long' });
-    //   const daysInMonth = lastDay.getDate();
-
-    //   // Weekday headers (start on Sunday; change as you like)
-    //   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-    //   // Title
-    //   const title = document.createElement('h4');
-    //   title.className = 'text-center mb-3';
-    //   title.textContent = `${monthName} ${year}`;
-    //   container.appendChild(title);
-
-    //   // Grid container
-    //   const grid = document.createElement('div');
-    //   grid.className = 'calendar-grid';
-
-    //   // Header row
-    //   weekdays.forEach(d => {
-    //     const cell = document.createElement('div');
-    //     cell.className = 'calendar-cell header';
-    //     cell.textContent = d;
-    //     grid.appendChild(cell);
-    //   });
-
-    //   // Empty cells before first day
-    //   const startWeekday = firstDay.getDay(); // 0 (Sun) - 6 (Sat)
-    //   for (let i = 0; i < startWeekday; i++) {
-    //     const emptyCell = document.createElement('div');
-    //     emptyCell.className = 'calendar-cell empty';
-    //     grid.appendChild(emptyCell);
-    //   }
-
-    //   // Day cells
-    //   const todayDate = now.getDate();
-    //   const isCurrentMonth = (d) => year === now.getFullYear() && month === now.getMonth() && d === todayDate;
-
-    //   for (let d = 1; d <= daysInMonth; d++) {
-    //     const cell = document.createElement('div');
-    //     cell.className = 'calendar-cell border';
-
-    //     if (isCurrentMonth(d)) {
-    //       cell.classList.add('today');
-    //     }
-
-    //     cell.textContent = d;
-    //     grid.appendChild(cell);
-    //   }
-
-    //   container.appendChild(grid);
-    // },
-
-
-    
-
-
+   
     buildTimeOptionsArray: () => {
         const startHour = 9;  // 9 AM
         const endHour   = 17; // 5 PM
@@ -84,7 +17,7 @@ const calendar = {
 
     },
 
-    // // ==== write calendar in modals
+    // // ==== MAIN write calendar in modals
     buildCurrentMonthCalendar : () => {
 
         //build time options first
@@ -238,7 +171,7 @@ const calendar = {
             const disabled = blockedHours.has(opt.hour);
             if (disabled) o.disabled = true;
 
-            // TURN OFF CHECKING IF BLOCKED OR NOT
+            //TURN OFF CHECKING IF BLOCKED OR NOT
             // console.log(
             //     'option',
             //     opt.hour,
@@ -251,8 +184,85 @@ const calendar = {
         });
     },
 
-    // this also controls the time in select
-    initTimeSelects(blockedHours = new Set()) {
+   
+    // this one update the select time and room also
+    updateTimeSelectsForRoom : () => {
+        //
+        console.log('calling updateTimeSelctsForRoom()')
+        const roomSel = document.getElementById('roomSelect');
+        if (!roomSel) return;
+
+        const selectedId = roomSel.value; // string "1"
+        console.log('waht is room value id ', selectedId, calendar.roomsData)
+        
+        // get ALL entries for that room id
+        const roomEntries = calendar.roomsData.filter(r => String(r.id) === selectedId);
+        console.log('room entries for', selectedId, roomEntries);
+
+        // merge all reservations from those entries
+        const reservations = roomEntries.flatMap(r => r.reservations || []);
+        console.log('ALL reservations for room', selectedId, reservations);
+
+        const blockedHours = new Set();
+
+        reservations.forEach(resv => {
+        const fromStr = resv.date_from;
+        const toStr   = resv.date_to;
+
+        const fromH = parseInt(fromStr.substring(11, 13), 10);
+        const toH   = parseInt(toStr.substring(11, 13), 10);
+
+        console.log('resv range', fromStr, toStr, '=>', fromH, 'to', toH);
+
+        for (let h = fromH; h < toH; h++) {
+            blockedHours.add(h);
+        }
+        });
+
+
+        // replace this one
+        // const room = calendar.roomsData.find(r => String(r.id) === selectedId);
+        // console.log('selected room', selectedId, room);
+
+        // const reservations = room ? room.reservations || [] : [];
+        // console.log('reservations for room', selectedId, reservations);
+
+        // const blockedHours = new Set();       
+        
+        // reservations.forEach(resv => {
+        //     // Expect 'YYYY-MM-DD HH:MM:SS'
+        //     const fromStr = resv.date_from;
+        //     const toStr   = resv.date_to;
+
+        //     const fromH = parseInt(fromStr.substring(11, 13), 10); // '09' -> 9
+        //     const toH   = parseInt(toStr.substring(11, 13), 10);   // '10' -> 10
+
+        //     console.log('resv range', fromStr, toStr, '=>', fromH, 'to', toH);
+
+        //     for (let h = fromH; h < toH; h++) {
+        //         blockedHours.add(h);
+        //     }
+        // });
+
+        console.log('blockedHours =', Array.from(blockedHours));
+
+        calendar.initTimeSelects(blockedHours);
+
+        const statusBadge = document.getElementById('roomStatusBadge');
+        if (statusBadge) {
+            if (reservations.length === 0) {
+                statusBadge.textContent = 'No reservations yet';
+                statusBadge.className = 'badge bg-success-subtle text-success';
+            } else {
+                statusBadge.textContent = `${reservations.length} reservation(s)`;
+                statusBadge.className = 'badge bg-warning-subtle text-warning';
+            }
+        }
+    },
+
+     // CALleD FROM updatetimeselectsforRoom()
+     // this also controls the time in select
+    initTimeSelects:(blockedHours = new Set()) => {
         const fromSel = document.getElementById('timeFrom');
         const toSel   = document.getElementById('timeTo');
         if (!fromSel || !toSel) return;
@@ -270,9 +280,34 @@ const calendar = {
 
         fromSel.value = firstAvailable.hour;
 
-        // helper to fill "To" based on selected from
+        // 2) TO: we do NOT disable options; we stop at first blocked hour
         const fillTo = (fromHour) => {
-            calendar.fillSelect(toSel, fromHour + 1, blockedHours);
+            toSel.innerHTML = '';
+
+            // find the earliest blocked hour AFTER fromHour
+            let stopHour = null;
+            bgc.TIME_OPTIONS.forEach(opt => {
+            if (opt.hour > fromHour && blockedHours.has(opt.hour) && stopHour === null) {
+                stopHour = opt.hour;
+            }
+            });
+
+            bgc.TIME_OPTIONS.forEach(opt => {
+            if (opt.hour <= fromHour) return;
+
+            // if we have a stopHour, do not go past it
+            if (stopHour !== null && opt.hour > stopHour) return;
+
+            const o = document.createElement('option');
+            o.value = String(opt.hour);
+            o.textContent = opt.label;
+            toSel.appendChild(o);
+            });
+
+            // default: first option if exists
+            if (toSel.options.length > 0) {
+            toSel.value = toSel.options[0].value;
+            }
         };
 
         fillTo(firstAvailable.hour);
@@ -283,60 +318,11 @@ const calendar = {
         };
     },
 
-    // this one update the select time and room also
-    updateTimeSelectsForRoom : () => {
-        //
-        console.log('calling updateTimeSelctsForRoom()')
-        const roomSel = document.getElementById('roomSelect');
-        if (!roomSel) return;
-
-        const selectedId = roomSel.value; // string "1"
-
-        const room = calendar.roomsData.find(r => String(r.id) === selectedId);
-        console.log('selected room', selectedId, room);
-
-        const reservations = room ? room.reservations || [] : [];
-        console.log('reservations for room', selectedId, reservations);
-
-        const blockedHours = new Set();       
-        
-        reservations.forEach(resv => {
-            // Expect 'YYYY-MM-DD HH:MM:SS'
-            const fromStr = resv.date_from;
-            const toStr   = resv.date_to;
-
-            const fromH = parseInt(fromStr.substring(11, 13), 10); // '09' -> 9
-            const toH   = parseInt(toStr.substring(11, 13), 10);   // '10' -> 10
-
-            console.log('resv range', fromStr, toStr, '=>', fromH, 'to', toH);
-
-            for (let h = fromH; h < toH; h++) {
-            blockedHours.add(h);
-            }
-        });
-
-        console.log('blockedHours =', Array.from(blockedHours));
-
-        calendar.initTimeSelects(blockedHours);
-
-        const statusBadge = document.getElementById('roomStatusBadge');
-        if (statusBadge) {
-        if (reservations.length === 0) {
-            statusBadge.textContent = 'No reservations yet';
-            statusBadge.className = 'badge bg-success-subtle text-success';
-        } else {
-            statusBadge.textContent = `${reservations.length} reservation(s)`;
-            statusBadge.className = 'badge bg-warning-subtle text-warning';
-        }
-        }
-
-        
-    },
-
     //================== GET ROOMS
     roomsData:[],
-    getRooms : async( dateStr ) => {
+    getRooms: async( dateStr ) => {
         const select = document.getElementById('roomSelect');
+
         if (!select) return;
         
         select.innerHTML = '';
@@ -347,7 +333,7 @@ const calendar = {
         loadingOpt.selected = true;
         select.appendChild(loadingOpt);
         
-        util.speak('Loading rooms kindly wait!!!')
+        util.speak('Loading rooms!!!')
         
         try {
             const res = await fetch(`${myIp}/bgc/getrooms/${dateStr}`);
@@ -356,20 +342,20 @@ const calendar = {
             select.innerHTML = '';
 
             if (!data.success || !Array.isArray(data.rooms) || data.rooms.length === 0) {
-            
-            const opt = document.createElement('option');
-            opt.value = '';
-            opt.textContent = 'No rooms available';
-            opt.disabled = true;
-            opt.selected = true;
-      
-            select.appendChild(opt);
-            calendar.roomsData = [];
-            return;
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'No rooms available';
+                opt.disabled = true;
+                opt.selected = true;
+        
+                select.appendChild(opt);
+                calendar.roomsData = [];
+                return;
             }
 
             console.log('these rooms ',  data.rooms)
-            calendar.roomsData = data.rooms
+            
+            calendar.roomsData = data.rooms // pass to calendar.roomsData[] for universal use
 
              // placeholder "Select Room"
             const placeholder = document.createElement('option');
@@ -378,20 +364,38 @@ const calendar = {
             placeholder.disabled = true;
             placeholder.selected = true;
             select.appendChild(placeholder);
+
+            const seenIds = new Set();
+            // const uniqueById = [];
+
+            // //check for duplicates
+            // data.rooms.forEach(r => {
+            //     if (!seenIds.has(r.id)) {
+            //         seenIds.add(r.id);
+            //         uniqueById.push({ room_description: r.room_description, id: r.id, reservations : r.reservations });
+            //     }
+            // });
             
+            //console.log( uniqueById )
+
             data.rooms.forEach(room => {
+
+                if (seenIds.has(room.id)) return;
+                seenIds.add(room.id);
 
                 const opt = document.createElement('option');
                 opt.value = room.id;
                 opt.textContent = room.room_description;
 
-                // optional: mark rooms that already have reservations
+                //optional: mark rooms that already have reservations
                 if (room.reservations && room.reservations.length > 0) {
-                    opt.textContent += ' (has reservations)';
+                   opt.textContent += ' (has reservations)';
                 }
 
                 select.appendChild(opt);
             });
+
+            calendar.roomsData = data.rooms
 
             // pick first room and build times for it
             select.value = data.rooms[0].id;
@@ -484,7 +488,8 @@ const calendar = {
                 return;
             }
 
-            alert('Reservation saved!');
+            util.Toasted('Reservation saved!',3000,false);
+            util.speak('Reservation successfully saved!')
             
             // optional: refresh rooms for that date
             const dateStr = calendar.formatDateLocalYYYYMMDD( calendar.selectedDate ) ;
@@ -500,7 +505,60 @@ const calendar = {
 
     },
 
-    // RENDER TO GRID THE DAY CLICKD INFO
+    deletebooking: async()=>{
+    
+        const btn = e.target.closest('.btn-delete-booking');
+        if (!btn) return;
+
+        // delete booking
+        const id = btn.getAttribute('data-booking-id');
+        if (!id) return;
+
+        if (!confirm('Delete this booking?')) return;
+
+        try {
+        const res = await fetch(`${myIp}/bgc/deletebooking/${id}`, {
+            method: 'DELETE'
+        });
+        const data = await res.json();
+
+        if (!data.success) {
+                alert(data.error || 'Failed to delete booking');
+                return;
+            }
+
+            // refresh data for current date
+            const dateStr = formatDateLocalYYYYMMDD(calendar.selectedDate);
+            
+            await calendar.getRooms(dateStr);      // reload rooms + reservations
+            calendar.renderDayGrid();             // rebuild grid
+            calendar.updateTimeSelectsForRoom();  // recompute blocked hours
+        } catch (err) {
+            console.error(err);
+            alert('Server error while deleting booking');
+        }
+    },
+
+    // helper for formatting 12hr time
+    // input: '2026-03-22 09:00:00'  -> '09:00a'
+    //        '2026-03-22 16:00:00'  -> '4:00p'
+    formatTime12hShort:(dateTimeStr) => {
+        if (!dateTimeStr) return '';
+        // get 'HH:MM'
+        const timePart = dateTimeStr.substring(11, 16); // '09:00' or '16:00'
+        let [hh, mm] = timePart.split(':').map(Number);
+
+        const suffix = hh >= 12 ? 'p' : 'a';
+        let hour12 = hh % 12;
+        if (hour12 === 0) hour12 = 12;
+
+        // 0-pad only if you want 09:00a instead of 9:00a
+        const hourStr = hour12 < 10 ? '0' + hour12 : String(hour12);
+
+        return `${hourStr}:${mm.toString().padStart(2, '0')}${suffix}`;
+    },
+
+    // RENDER TO GRID /table  THE DAY CLICKD INFO
     renderDayGrid : () => {
         const tbody = document.querySelector('#dayReservationsTable tbody');
         const title  = document.getElementById('dayReservationsTitle');
@@ -523,24 +581,43 @@ const calendar = {
         }
 
         // flatten all reservations for that day
+        //console.log( 'DITO',calendar.roomsData.length)
+        //let countReservation = 0
         calendar.roomsData.forEach(room => {
             (room.reservations || []).forEach(resv => {
             const tr = document.createElement('tr');
 
-            const fromStr = resv.date_from.substring(11, 16); // "HH:MM"
-            const toStr   = resv.date_to.substring(11, 16);   // "HH:MM"
+            // const fromStr = calendar.formatTime12hShort(resv.date_from.substring(11, 16)); // "HH:MM"
+            // const toStr   = calendar.formatTime12hShort(resv.date_to.substring(11, 16));   // "HH:MM"
 
+            const fromStr = calendar.formatTime12hShort(resv.date_from);
+            const toStr   = calendar.formatTime12hShort(resv.date_to);
+            //countReservation ++
+
+            //IMPORTANT!  ADD THE TH HEADERS in index.html
             tr.innerHTML = `
+                <td>${room.booking_id}</td>
                 <td>${room.room_description}</td>
                 <td>${fromStr}</td>
                 <td>${toStr}</td>
                 <td>${resv.added_by_name || ''}</td>
+                <td>${resv.ministry || ''}</td>
             `;
 
             tbody.appendChild(tr);
             });
         });
 
+        // const statusBadge = document.getElementById('roomStatusBadge');
+        // if (statusBadge) {
+        // if (countReservation === 0) {
+        //     statusBadge.textContent = 'No reservations yet';
+        //     statusBadge.className = 'badge bg-success-subtle text-success';
+        // } else {
+        //     statusBadge.textContent = `${countReservation} reservation(s)`;
+        //     statusBadge.className = 'badge bg-warning-subtle text-warning';
+        // }
+        // }
         // no reservations?
         if (!tbody.hasChildNodes()) {
             const tr = document.createElement('tr');
