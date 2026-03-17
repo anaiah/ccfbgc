@@ -718,6 +718,14 @@ document.addEventListener("DOMContentLoaded", function() {
     
     window.bgc = bgc; //set global
 
+    const logoutLi = document.getElementById('logoutLi');
+    const user = localStorage.getItem('bgc_user');
+
+    if (!user) {
+        logoutLi.classList.add('d-none');   // force hide
+    } else {
+        logoutLi.classList.remove('d-none'); // show only when logged in
+    }   
     // ***************EVENT FOR LOGIN ************
     document.addEventListener('userLoggedIn', (e) => {
         
@@ -770,6 +778,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }, 300);
     });
+
 
     /************ EVENT FOR LOGOUT  */
     document.getElementById('logoutBtn').addEventListener('click', () => {
