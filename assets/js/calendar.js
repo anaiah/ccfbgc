@@ -495,7 +495,7 @@ const calendar = {
             util.Toasted('Reservation saved!',3000,false);
             util.speak('Reservation successfully saved!')
             
-            util.toggleButtonLoading('btnReserve','Saving Reservation',true)
+            util.toggleButtonLoading('btnReserve',null,false)
                   
             // optional: refresh rooms for that date
             const dateStr = calendar.formatDateLocalYYYYMMDD( calendar.selectedDate ) ;
