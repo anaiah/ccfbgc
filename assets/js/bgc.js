@@ -629,9 +629,13 @@ fetch('https://your-server/xls-export', {
 
             if (loginLi) {
                 ul.replaceChild(newLi, loginLi);
+                document.getElementById('logoutLi').classList.remove('d-none')
+
                 console.log('1')
             } else {
                 ul.insertBefore(newLi, ul.firstElementChild);
+                document.getElementById('logoutLi').classList.remove('d-none')
+
                 console.log('2')
             }
 
