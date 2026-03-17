@@ -770,7 +770,7 @@ document.addEventListener("DOMContentLoaded", function() {
     /************ EVENT FOR LOGOUT  */
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.removeItem('bgc_user');
-        window.location.href = '/';
+        window.location.href = 'https://anaiah.github.io/ccfbgc/';
     });
 
     //**** room reservation */
