@@ -2,8 +2,8 @@ const calendar = {
 
    
     buildTimeOptionsArray: () => {
-        const startHour = 9;  // 9 AM
-        const endHour   = 17; // 5 PM
+        const startHour = 10;  // 9 AM
+        const endHour   = 21; // 5 PM
 
         for (let h = startHour; h <= endHour; h++) {
             const d = new Date();
