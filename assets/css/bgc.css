@@ -447,3 +447,36 @@
     width: 100%;
   }
 }
+
+/* carousel */
+/*
+ * Custom CSS for About Section Carousel
+ */
+
+/* 1. Set the height for the entire image wrapper */
+/* This will control the visible height of your carousel */
+.col-lg-5 .carousel.slide { /* Targeting the carousel specifically within its column */
+  height: 450px; /* Adjust this value as needed for desired portrait height */
+  overflow: hidden; /* Ensure content outside this height is clipped */
+  border-radius: var(--bs-border-radius-4); /* Ensure rounded corners apply */
+}
+
+/* 2. Make inner carousel components match the wrapper's height */
+#aboutCarousel .carousel-inner,
+#aboutCarousel .carousel-item {
+  height: 100%;
+}
+
+/* 3. Style the images themselves to fit within the set height */
+.carousel-img-fit {
+  height: 100%;       /* Make the image fill the height of its container */
+  object-fit: cover;  /* This is crucial: it crops the image to fit without distorting aspect ratio */
+  object-position: center; /* Centers the cropped image */
+}
+
+/* Optional: Adjust carousel control button positions if needed */
+/* .carousel-control-prev,
+.carousel-control-next {
+  width: 10%;
+} */
+

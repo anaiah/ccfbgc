@@ -726,6 +726,65 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         logoutLi.classList.remove('d-none'); // show only when logged in
     }   
+
+    /* CAROUSEL */
+
+  // Define your array of image paths
+  const carouselImages = [
+    'assets/img/GLC_0537.JPG',
+    'assets/img/IMG_0975.JPG', // <--- Add your other image paths here
+    'assets/img/W2W_0270.JPG',
+    // ... add as many image paths as you need
+  ];
+
+  const carouselIndicatorsContainer = document.getElementById('carouselIndicators');
+  const carouselInnerContainer = document.getElementById('carouselInner');
+
+  if (carouselIndicatorsContainer && carouselInnerContainer && carouselImages.length > 0) {
+    carouselImages.forEach((imagePath, index) => {
+      // 1. Create Carousel Indicator (the dots at the bottom)
+      const indicator = document.createElement('button');
+      indicator.setAttribute('type', 'button');
+      indicator.setAttribute('data-bs-target', '#aboutCarousel');
+      indicator.setAttribute('data-bs-slide-to', index.toString());
+      indicator.setAttribute('aria-label', `Slide ${index + 1}`);
+      if (index === 0) {
+        indicator.classList.add('active');
+        indicator.setAttribute('aria-current', 'true');
+      }
+      carouselIndicatorsContainer.appendChild(indicator);
+
+      // 2. Create Carousel Item (the image slide itself)
+      const carouselItem = document.createElement('div');
+      carouselItem.classList.add('carousel-item');
+      if (index === 0) {
+        carouselItem.classList.add('active');
+      }
+
+      const img = document.createElement('img');
+      img.setAttribute('src', imagePath);
+      img.setAttribute('alt', `About CCF BGC Slide ${index + 1}`);
+      img.classList.add('d-block', 'w-100', 'carousel-img-fit'); // Add custom class for height control
+
+      carouselItem.appendChild(img);
+      carouselInnerContainer.appendChild(carouselItem);
+    });
+
+    // Optional: Manually initialize carousel if data-bs-ride="carousel" isn't enough,
+    // or to set specific options like interval.
+    // var myCarousel = new bootstrap.Carousel(document.getElementById('aboutCarousel'), {
+    //   interval: 4000, // Advance slide every 4 seconds
+    //   pause: 'hover' // Pause on mouse hover
+    // });
+  } else {
+    console.warn("Carousel containers or image array not found. Dynamic carousel population skipped.");
+  }
+
+
+
+    /** END CAROUSEL */
+
+
     // ***************EVENT FOR LOGIN ************
     document.addEventListener('userLoggedIn', (e) => {
         
@@ -871,6 +930,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         mvCards.forEach(card => mvObserver.observe(card));
     }
+
     //==== from index.html: footer year + modal init + login form handling ====
     const yearEl = document.getElementById('currentYear');
     if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -885,34 +945,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const loginForm = document.getElementById('loginForm');
     const inputEmail = document.getElementById('inputEmail');
-
-    // if (loginForm && inputEmail) { //temporary out this line
-    //     loginForm.addEventListener('submit', function(event) {
-    //         event.preventDefault();
-    //         const email = inputEmail.value.toLowerCase().trim();
-    //         loginModal.hide();
-    //         setTimeout(() => {
-    //             if (email === 'user@gmail.com') {
-    //                 //dataInputModal.show();
-    //             } else {
-    //                 //adminInputModal.show();
-    //             }
-    //         }, 300);
-    //     });
-    // }
-
-    // const dataInputForm = document.getElementById('dataInputForm');
-    // if (dataInputForm) {
-    //     dataInputForm.addEventListener('submit', function(event) {
-    //         event.preventDefault();
-    //         const selectedService = document.getElementById('serviceSelect')?.value;
-    //         const selectedSegment = document.getElementById('segmentSelect')?.value;
-    //         const countValue = document.getElementById('countInput')?.value;
-    //         alert(`Data for Service: "${selectedService}", Segment: "${selectedSegment}" with Count: "${countValue}" submitted!`);
-    //         dataInputModal.hide();
-    //         dataInputForm.reset();
-    //     });
-    // }
 
     if (adminInputModalElement) {
         adminInputModalElement.addEventListener('shown.bs.modal', function () {

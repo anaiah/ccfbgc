@@ -84,20 +84,39 @@
 </section>
 
 <!-- About Section -->
+<!-- About Section -->
 <section id="about" class="py-5 about-section">
   <div class="about-overlay"></div>
 
   <div class="container position-relative">
     <div class="row align-items-center justify-content-center">
-      <!-- Left: Image -->
+      <!-- Left: Image Carousel (NEW) -->
       <div class="col-lg-5 mb-4 mb-lg-0">
-        <div class="about-image-wrapper">
-          <img src="assets/img/GLC_0537.JPG" alt="Serving at CCF BGC"
-               class="img-fluid rounded-4 shadow-lg">
+        <!-- The carousel container -->
+        <div id="aboutCarousel" class="carousel slide rounded-4 shadow-lg" data-bs-ride="carousel">
+          <!-- Carousel Indicators (dots at the bottom) -->
+          <div class="carousel-indicators" id="carouselIndicators">
+            <!-- Indicators will be dynamically injected here by JavaScript -->
+          </div>
+
+          <!-- The actual images -->
+          <div class="carousel-inner" id="carouselInner">
+            <!-- Carousel items (images) will be dynamically injected here by JavaScript -->
+          </div>
+
+          <!-- Carousel Controls (Previous/Next buttons) -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#aboutCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#aboutCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
       </div>
 
-      <!-- Right: Card -->
+      <!-- Right: Card (Existing) -->
       <div class="col-lg-6">
         <div class="about-card reveal-on-scroll">
           <h2 class="display-5 fw-bold mb-3">About CCF BGC</h2>
@@ -126,6 +145,7 @@
     </div>
   </div>
 </section>
+
 
 
 <!-- Mission & Vision Section -->
