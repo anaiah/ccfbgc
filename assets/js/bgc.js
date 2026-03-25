@@ -732,7 +732,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Define your array of image paths
   const carouselImages = [
     'assets/img/GLC_0537.JPG',
-    'assets/img/IMG_0975.JPG', // <--- Add your other image paths here
+    'assets/img/IMG_0975.jpg', // <--- Add your other image paths here
     'assets/img/W2W_0270.JPG',
     // ... add as many image paths as you need
   ];
