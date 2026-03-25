@@ -734,6 +734,8 @@ document.addEventListener("DOMContentLoaded", function() {
     'assets/img/GLC_0537.JPG',
     'assets/img/IMG_0975.jpg', // <--- Add your other image paths here
     'assets/img/W2W_0270.JPG',
+    'assets/img/ZMP_2002.jpg',
+    
     // ... add as many image paths as you need
   ];
 
