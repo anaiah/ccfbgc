@@ -1729,7 +1729,7 @@ const util = {
 
                 //save to localStorage
                 localStorage.setItem('bgc_user', JSON.stringify(user));
-                localStorage.setItem('token', data.data[0].token); // Save the token if needed for future authenticated requests
+                localStorage.setItem('token', data.token); // Save the token if needed for future authenticated requests
 
 
                 // optional: check it
