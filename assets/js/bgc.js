@@ -793,7 +793,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //====connect to socket after login
         bgc.connectSocket()
 
-        console.log('user logged in:', e.detail.data.grp_id, e.detail.data.full_name);
+        //console.log('user logged in:', e.detail.data.grp_id, e.detail.data.full_name);
 
         // Get references to the modals
         const loginModalElement = document.getElementById('loginModal');
