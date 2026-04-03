@@ -1729,6 +1729,9 @@ const util = {
 
                 //save to localStorage
                 localStorage.setItem('bgc_user', JSON.stringify(user));
+                localStorage.setItem('token', data.data[0].token); // Save the token if needed for future authenticated requests
+
+
                 // optional: check it
                 console.log('saved user:', JSON.parse(localStorage.getItem('bgc_user')));
                 util.toggleButtonLoading("loginBtn", null, false);
