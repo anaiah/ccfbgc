@@ -45,8 +45,7 @@ const bgc = {
 
                 //send message to socket for real-time update
                 //everytime save notify opmgr
-                //bgc.socket.emit('sendToOwner', 'update')
-                bgc.sendUpdate(1,2,3)
+                bgc.socket.emit('sendToOwner', 'update')
 
             }else{
                 util.speak(data.message)
@@ -608,10 +607,11 @@ fetch('https://your-server/xls-export', {
                 case '6':
                 case '7':
                 case '8':
-                   
+                    newLi = bgc.createNavItem('dataentryBtn', 'Data Entry', { 'data-bs-toggle': 'modal', 'data-bs-target': '#dataInputModal', href: '#' });
+                    document.getElementById('roomresLi').classList.remove('d-none')
+
                     bgc.getSegments()
                     bgc.getCredentials()
-                
 
                 break;
 
@@ -720,21 +720,7 @@ fetch('https://your-server/xls-export', {
                 user: bgc.volunteerName || 'Unknown Volunteer',
                 ministry: bgc.belongMinistry || 'Unknown Ministry'
             })
-        }) 
-    },
-    sendUpdate:(p1,p2,p3)=>{
-        //send message to pusher for real-time update
-        fetch(`${myIp}/bgc/send-update`, {
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                // Add your data here
-                id: bgc.userId || 'unknown',
-                user: bgc.volunteerName || 'Unknown Volunteer',
-                ministry: bgc.belongMinistry || 'Unknown Ministry'
-            })
+
         }) 
     }
 }//end bgc
@@ -819,9 +805,8 @@ document.addEventListener("DOMContentLoaded", function() {
         encrypted: true
     });
 
-    /// broadcase  to all users in channel
     const channel = pusher.subscribe('bgc-channel');
-
+   
     channel.bind('entry-updated', function(data) {
         //console.log('Received Pusher event:', data);
         util.Toasted(`${data.message}`, 3000, true);
@@ -829,15 +814,6 @@ document.addEventListener("DOMContentLoaded", function() {
         
         //bgc.loadHeadcountChart(); // Refresh chart with new data
     })
-
-    //to bossings/owners only
-    const privychannel = pusher.subscribe(`user-${bgc.userId}`); //subscribe to private channel for this user
-
-    privychannel.bind('personal-alert', function(data) {
-        //console.log('Received Pusher event:', data);
-        util.Toasted(`From ${data.sender}, ${data.message}`, 3000, true);
-        util.speak(data.message)
-    });
 
     // ***************EVENT FIRED FOR LOGIN ************
     document.addEventListener('userLoggedIn', (e) => {
