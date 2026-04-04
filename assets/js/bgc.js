@@ -785,7 +785,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     //*********** SSE ************************ */
-    const eventSource = new EventSource('${myIp}');
+    const eventSource = new EventSource(`${myIp}`);
 
     eventSource.onmessage = (event) => {
         const data = JSON.parse(event.data);
