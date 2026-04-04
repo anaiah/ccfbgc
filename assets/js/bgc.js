@@ -899,7 +899,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                     document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
                     
-                    adminInputModal.show(); //on show chart loadheadcountchart()
+                    //adminInputModal.show(); //on show chart loadheadcountchart()
                     //bgc.checkNavLinks(); //update nav links immediately
 
 
