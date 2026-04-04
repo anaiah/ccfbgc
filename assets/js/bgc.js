@@ -833,14 +833,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //bgc.loadHeadcountChart(); // Refresh chart with new data
     })
 
-    //to bossings/owners only
-    const privychannel = pusher.subscribe(`user-${bgc.userId}`); //subscribe to private channel for this user
-
-    privychannel.bind('personal-alert', function(data) {
-        //console.log('Received Pusher event:', data);
-        util.Toasted(`From ${data.sender}, ${data.message}`, 3000, true);
-        util.speak(data.message)
-    });
+   
 
     // ***************EVENT FIRED FOR LOGIN / USER LOGGED************
     document.addEventListener('userLoggedIn', (e) => {
@@ -899,9 +892,17 @@ document.addEventListener("DOMContentLoaded", function() {
                     console.log('Login simulated for admin user.');
 
                     document.getElementById('loginli').classList.add('d-none')//show logout link already
-                    
                     document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
-                    
+                   
+                     //to bossings/owners only
+                    const privychannel = pusher.subscribe(`user-owners`); //subscribe to private channel for this user
+
+                    privychannel.bind('personal-alert', function(data) {
+                        console.log('Received Pusher event for Owners:', data);
+                        util.Toasted(`From ${data.sender}, ${data.message}`, 3000, true);
+                        util.speak(data.message)
+                    });
+
                     //adminInputModal.show(); //on show chart loadheadcountchart()
                     //bgc.checkNavLinks(); //update nav links immediately
 
