@@ -784,17 +784,7 @@ document.addEventListener("DOMContentLoaded", function() {
     /** END CAROUSEL */
 
 
-    //*********** SSE ************************ */
-    const eventSource = new EventSource(`${myIp}`);
-
-    eventSource.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        if (data.type === 'UPDATE_DETECTED') {
-            alert("A new entry was updated!");
-            // Refresh your data here
-        }
-    };
-
+   
 
     // ***************EVENT FOR LOGIN ************
     document.addEventListener('userLoggedIn', (e) => {
@@ -850,6 +840,18 @@ document.addEventListener("DOMContentLoaded", function() {
                     break;
             }//ENDSWITCH
         }, 300);
+
+         //*********** SSE ************************ */
+        const eventSource = new EventSource(`${myIp}/notifications`);
+
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'UPDATE_DETECTED') {
+                alert("A new entry was updated!");
+                // Refresh your data here
+            }
+        };
+
 
 
         //create polling events
