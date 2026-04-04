@@ -582,103 +582,103 @@ fetch('https://your-server/xls-export', {
     
     },
 
-    //=====get links for user
-    checkNavLinks: () => {
-        const ul = document.querySelector('.navbar-nav.ms-auto.me-2');
-        if (!ul) return;
+    // //=====get links for user
+    // checkNavLinks: () => {
+    //     const ul = document.querySelector('.navbar-nav.ms-auto.me-2');
+    //     if (!ul) return;
         
-            // read profile safely
-            let profile = null;
+    //         // read profile safely
+    //         let profile = null;
             
-            try { profile = JSON.parse(localStorage.getItem('bgc_user')); } catch (e) { profile = null; }
-            const grp = profile && profile.grp_id ? String(profile.grp_id) : null;
+    //         try { profile = JSON.parse(localStorage.getItem('bgc_user')); } catch (e) { profile = null; }
+    //         const grp = profile && profile.grp_id ? String(profile.grp_id) : null;
 
-            // find existing login li (by data-bs-target or link text)
-            const loginLi = ul.querySelector('li.nav-item > a[data-bs-target="#loginModal"]')?.closest('li.nav-item')
-                        || Array.from(ul.querySelectorAll('li.nav-item')).find(li => li.textContent.trim().toLowerCase() === 'login');
+    //         // find existing login li (by data-bs-target or link text)
+    //         const loginLi = ul.querySelector('li.nav-item > a[data-bs-target="#loginModal"]')?.closest('li.nav-item')
+    //                     || Array.from(ul.querySelectorAll('li.nav-item')).find(li => li.textContent.trim().toLowerCase() === 'login');
 
             
-            let newLi, newLIcal;
+    //         let newLi, newLIcal;
 
-            //2,5,6,7,8 are standard users; 4 is admin; else show login
-            switch(grp) {
-                case '1':
-                case '2':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
+    //         //2,5,6,7,8 are standard users; 4 is admin; else show login
+    //         switch(grp) {
+    //             case '1':
+    //             case '2':
+    //             case '5':
+    //             case '6':
+    //             case '7':
+    //             case '8':
                    
-                    bgc.getSegments()
-                    bgc.getCredentials()
+    //                 bgc.getSegments()
+    //                 bgc.getCredentials()
                 
 
-                break;
+    //             break;
 
-                case '4': //owner
-                    //newLi = bgc.createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
-                    //bgc.connectSocket()
-                break;
+    //             case '4': //owner
+    //                 //newLi = bgc.createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
+    //                 //bgc.connectSocket()
+    //             break;
 
-                default:
-                    newLi = bgc.createNavItem('', 'Login', { 'data-bs-toggle': 'modal', 'data-bs-target': '#loginModal', href: '#' });
-                break;
+    //             default:
+    //                 newLi = bgc.createNavItem('', 'Login', { 'data-bs-toggle': 'modal', 'data-bs-target': '#loginModal', href: '#' });
+    //             break;
 
-            }//endsw
+    //         }//endsw
 
-            if (loginLi) {
-                ul.replaceChild(newLi, loginLi);
-                document.getElementById('logoutLi').classList.remove('d-none')
+    //         if (loginLi) {
+    //             ul.replaceChild(newLi, loginLi);
+    //             document.getElementById('logoutLi').classList.remove('d-none')
 
-                console.log('1')
-            } else {
-                ul.insertBefore(newLi, ul.firstElementChild);
-                document.getElementById('logoutLi').classList.remove('d-none')
+    //             console.log('1')
+    //         } else {
+    //             ul.insertBefore(newLi, ul.firstElementChild);
+    //             document.getElementById('logoutLi').classList.remove('d-none')
 
-                console.log('2')
-            }
+    //             console.log('2')
+    //         }
 
-    },
+    // },
 
-    connectSocket:async()=>{
-        //====connect to socket after login
-        const user = JSON.parse(localStorage.getItem('bgc_user')) || {};
-        let authz = [];
-        authz.push(user.grp_id);
-        authz.push(user.full_name);
-        authz.push(user.id);
+    // connectSocket:async()=>{
+    //     //====connect to socket after login
+    //     const user = JSON.parse(localStorage.getItem('bgc_user')) || {};
+    //     let authz = [];
+    //     authz.push(user.grp_id);
+    //     authz.push(user.full_name);
+    //     authz.push(user.id);
 
-        console.log('=== authz ', authz);
+    //     console.log('=== authz ', authz);
 
-        //==HANDSHAKE FIRST WITH SOCKET.IO
-        const userName = { token: authz[1], emp_id: authz[2], mode: user.grp_id };
+    //     //==HANDSHAKE FIRST WITH SOCKET.IO
+    //     const userName = { token: authz[1], emp_id: authz[2], mode: user.grp_id };
 
-        bgc.socket = io.connect(`${myIp}`, {
-            transports: ['websocket', 'polling'],
-            upgrade: true,
-            rememberTransport: false,
-            query: `userName=${JSON.stringify(userName)}`
-        });
+    //     bgc.socket = io.connect(`${myIp}`, {
+    //         transports: ['websocket', 'polling'],
+    //         upgrade: true,
+    //         rememberTransport: false,
+    //         query: `userName=${JSON.stringify(userName)}`
+    //     });
 
-        bgc.socket.on('connect', () => {
-            console.log('Connected to Socket.IO server using:', bgc.socket.io.engine.transport.name);
-        });
+    //     bgc.socket.on('connect', () => {
+    //         console.log('Connected to Socket.IO server using:', bgc.socket.io.engine.transport.name);
+    //     });
 
-        bgc.socket.on('disconnect', () => {
-            console.log('Disconnected from Socket.IO server');
-        });
+    //     bgc.socket.on('disconnect', () => {
+    //         console.log('Disconnected from Socket.IO server');
+    //     });
     
-        //===receive messages from volunteers
-        bgc.socket.on('xinit', (msg) => {
-            util.Toasted(msg, 3000, true);
-            util.speak(`${user.full_name}, there's an Incoming update!`);
-            console.log('socket.io()', msg);
-            bgc.loadHeadcountChart();
-        });
+    //     //===receive messages from volunteers
+    //     bgc.socket.on('xinit', (msg) => {
+    //         util.Toasted(msg, 3000, true);
+    //         util.speak(`${user.full_name}, there's an Incoming update!`);
+    //         console.log('socket.io()', msg);
+    //         bgc.loadHeadcountChart();
+    //     });
 
-        console.log('user logged in:', user.grp_id, user.full_name);
+    //     console.log('user logged in:', user.grp_id, user.full_name);
 
-    },
+    // },
 
     getCredentials:()=>{
         const user = JSON.parse(localStorage.getItem('bgc_user')); // has ministry_segment, etc.
@@ -882,15 +882,23 @@ document.addEventListener("DOMContentLoaded", function() {
                     bgc.getCredentials()
                     
                     //bgc.checkNavLinks(); //update nav links immediately
+                    document.getElementById('loginli').classList.add('d-none')//show logout link already
+                    
                     document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
                     
                     console.log('Login simulated for standard user.');
                     
                     document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
+                    document.getElementById('dataentryli').classList.remove('d-none')//show data entry link already
+                    
                     break;
                 case 4:
                     console.log('Login simulated for admin user.');
 
+                    document.getElementById('loginli').classList.add('d-none')//show logout link already
+                    
+                    document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
+                    
                     adminInputModal.show(); //on show chart loadheadcountchart()
                     //bgc.checkNavLinks(); //update nav links immediately
 
