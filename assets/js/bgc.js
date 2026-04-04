@@ -880,7 +880,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     bgc.getSegments() //minnistry segments
                     bgc.getCredentials()
-                    bgc.checkNavLinks(); //update nav links immediately
+                    
+                    //bgc.checkNavLinks(); //update nav links immediately
+                    document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
+                    document.getElementById('roomresLi').classList.remove('d-none')//show logout link already
+                    
 
                     console.log('Login simulated for standard user.');
                     
