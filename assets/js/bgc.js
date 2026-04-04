@@ -729,69 +729,78 @@ document.addEventListener("DOMContentLoaded", function() {
 
     /* CAROUSEL */
 
-  // Define your array of image paths
-  const carouselImages = [
-    'assets/img/GLC_0537.JPG',
-    'assets/img/IMG_0975.jpg', // <--- Add your other image paths here
-    'assets/img/W2W_0270.JPG',
-    'assets/img/ZMP_2002.jpg',
-    
-    // ... add as many image paths as you need
-  ];
+    // Define your array of image paths
+    const carouselImages = [
+        'assets/img/GLC_0537.JPG',
+        'assets/img/IMG_0975.jpg', // <--- Add your other image paths here
+        'assets/img/W2W_0270.JPG',
+        'assets/img/ZMP_2002.jpg',
+        
+        // ... add as many image paths as you need
+    ];
 
-  const carouselIndicatorsContainer = document.getElementById('carouselIndicators');
-  const carouselInnerContainer = document.getElementById('carouselInner');
+    const carouselIndicatorsContainer = document.getElementById('carouselIndicators');
+    const carouselInnerContainer = document.getElementById('carouselInner');
 
-  if (carouselIndicatorsContainer && carouselInnerContainer && carouselImages.length > 0) {
-    carouselImages.forEach((imagePath, index) => {
-      // 1. Create Carousel Indicator (the dots at the bottom)
-      const indicator = document.createElement('button');
-      indicator.setAttribute('type', 'button');
-      indicator.setAttribute('data-bs-target', '#aboutCarousel');
-      indicator.setAttribute('data-bs-slide-to', index.toString());
-      indicator.setAttribute('aria-label', `Slide ${index + 1}`);
-      if (index === 0) {
-        indicator.classList.add('active');
-        indicator.setAttribute('aria-current', 'true');
-      }
-      carouselIndicatorsContainer.appendChild(indicator);
+    if (carouselIndicatorsContainer && carouselInnerContainer && carouselImages.length > 0) {
+        carouselImages.forEach((imagePath, index) => {
+        // 1. Create Carousel Indicator (the dots at the bottom)
+        const indicator = document.createElement('button');
+        indicator.setAttribute('type', 'button');
+        indicator.setAttribute('data-bs-target', '#aboutCarousel');
+        indicator.setAttribute('data-bs-slide-to', index.toString());
+        indicator.setAttribute('aria-label', `Slide ${index + 1}`);
+        if (index === 0) {
+            indicator.classList.add('active');
+            indicator.setAttribute('aria-current', 'true');
+        }
+        carouselIndicatorsContainer.appendChild(indicator);
 
-      // 2. Create Carousel Item (the image slide itself)
-      const carouselItem = document.createElement('div');
-      carouselItem.classList.add('carousel-item');
-      if (index === 0) {
-        carouselItem.classList.add('active');
-      }
+        // 2. Create Carousel Item (the image slide itself)
+        const carouselItem = document.createElement('div');
+        carouselItem.classList.add('carousel-item');
+        if (index === 0) {
+            carouselItem.classList.add('active');
+        }
 
-      const img = document.createElement('img');
-      img.setAttribute('src', imagePath);
-      img.setAttribute('alt', `About CCF BGC Slide ${index + 1}`);
-      img.classList.add('d-block', 'w-100', 'carousel-img-fit'); // Add custom class for height control
+        const img = document.createElement('img');
+        img.setAttribute('src', imagePath);
+        img.setAttribute('alt', `About CCF BGC Slide ${index + 1}`);
+        img.classList.add('d-block', 'w-100', 'carousel-img-fit'); // Add custom class for height control
 
-      carouselItem.appendChild(img);
-      carouselInnerContainer.appendChild(carouselItem);
-    });
+        carouselItem.appendChild(img);
+        carouselInnerContainer.appendChild(carouselItem);
+        });
 
-    // Optional: Manually initialize carousel if data-bs-ride="carousel" isn't enough,
-    // or to set specific options like interval.
-    // var myCarousel = new bootstrap.Carousel(document.getElementById('aboutCarousel'), {
-    //   interval: 4000, // Advance slide every 4 seconds
-    //   pause: 'hover' // Pause on mouse hover
-    // });
-  } else {
-    console.warn("Carousel containers or image array not found. Dynamic carousel population skipped.");
-  }
-
-
-
+        // Optional: Manually initialize carousel if data-bs-ride="carousel" isn't enough,
+        // or to set specific options like interval.
+        // var myCarousel = new bootstrap.Carousel(document.getElementById('aboutCarousel'), {
+        //   interval: 4000, // Advance slide every 4 seconds
+        //   pause: 'hover' // Pause on mouse hover
+        // });
+    } else {
+        console.warn("Carousel containers or image array not found. Dynamic carousel population skipped.");
+    }
     /** END CAROUSEL */
+
+
+    //*********** SSE ************************ */
+    const eventSource = new EventSource('${myIp}');
+
+    eventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === 'UPDATE_DETECTED') {
+            alert("A new entry was updated!");
+            // Refresh your data here
+        }
+    };
 
 
     // ***************EVENT FOR LOGIN ************
     document.addEventListener('userLoggedIn', (e) => {
         
         //====connect to socket after login
-        bgc.connectSocket()
+        //bgc.connectSocket()
 
         //console.log('user logged in:', e.detail.data.grp_id, e.detail.data.full_name);
 
@@ -810,6 +819,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const adminInputModal = new bootstrap.Modal(adminInputModalElement);
 
         console.log('what is', e.detail.data.grp_id);
+
+        //fire test sse's
+        
 
         // Simulate server-side check after a brief delay for transition
         setTimeout(() => {
@@ -836,8 +848,26 @@ document.addEventListener("DOMContentLoaded", function() {
                     bgc.checkNavLinks(); //update nav links immediately
 
                     break;
-            }
+            }//ENDSWITCH
         }, 300);
+
+
+        //create polling events
+        // **** THIS  IS THE TOKEN PART ****
+        /*
+        let lastEventId = Number(localStorage.getItem('lastEventId') || 0);
+        const token = localStorage.getItem('token');
+
+        setInterval(async () => {
+        const r = await fetch(`${myIp}/events?after=${lastEventId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+        });
+        const j = await r.json();
+        (j.events || []).forEach(ev => { lastEventId = ev.id; console.log('EVENT', ev); });
+        localStorage.setItem('lastEventId', lastEventId);
+        }, 5000);
+        */
+
     });
 
     /************ EVENT FOR LOGOUT  */
