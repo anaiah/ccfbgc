@@ -839,7 +839,7 @@ document.addEventListener("DOMContentLoaded", function() {
         util.speak(data.message)
     });
 
-    // ***************EVENT FIRED FOR LOGIN ************
+    // ***************EVENT FIRED FOR LOGIN / USER LOGGED************
     document.addEventListener('userLoggedIn', (e) => {
         
         //====connect to socket after login
@@ -869,12 +869,12 @@ document.addEventListener("DOMContentLoaded", function() {
         // Simulate server-side check after a brief delay for transition
         setTimeout(() => {
             switch (e.detail.data.grp_id) {
-                case '1':
-                case '2':
-                case '5':
-                case '6':
-                case '7':    
-                case '8':
+                case 1:
+                case 2:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
 
                    
 
@@ -883,14 +883,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                     //bgc.checkNavLinks(); //update nav links immediately
                     document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
-                    document.getElementById('roomresLi').classList.remove('d-none')//show logout link already
                     
-
                     console.log('Login simulated for standard user.');
                     
                     document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
                     break;
-                case '4':
+                case 4:
                     console.log('Login simulated for admin user.');
 
                     adminInputModal.show(); //on show chart loadheadcountchart()
