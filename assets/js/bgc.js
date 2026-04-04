@@ -859,9 +859,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         console.log('what is', e.detail.data.grp_id);
 
-        //fire test sse's
-
-
         // Simulate server-side check after a brief delay for transition
         setTimeout(() => {
             switch (e.detail.data.grp_id) {
@@ -871,8 +868,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 case 6:
                 case 7:
                 case 8:
-
-                   
 
                     bgc.getSegments() //minnistry segments
                     bgc.getCredentials()
@@ -905,7 +900,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     //adminInputModal.show(); //on show chart loadheadcountchart()
                     //bgc.checkNavLinks(); //update nav links immediately
-
 
                     break;
             }//ENDSWITCH
