@@ -842,7 +842,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 300);
 
          //*********** SSE ************************ */
-        const eventSource = new EventSource(`${myIp}/notifications`);
+        const eventSource = new EventSource(`${myIp}/bgc/notifications`);
 
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
