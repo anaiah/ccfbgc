@@ -36,6 +36,9 @@ const bgc = {
             if(data.ok){
                 util.speak(`Good job on the ${data.action},.. ${bgc.volunteerName}!!!!`);
                
+                console.log( data.action);
+
+                
                 //hide modalbox
                 util.hideModal('dataInputModal',0) //hide dataentry
                 //document.getElementById('footer-msg').innerHTML=''//reset
