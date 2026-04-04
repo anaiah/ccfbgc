@@ -616,7 +616,7 @@ fetch('https://your-server/xls-export', {
                 break;
 
                 case '4': //owner
-                    newLi = bgc.createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
+                    //newLi = bgc.createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
                     //bgc.connectSocket()
                 break;
 
@@ -744,7 +744,7 @@ fetch('https://your-server/xls-export', {
 document.addEventListener("DOMContentLoaded", function() {
     bgc.init();
     
-    bgc.checkNavLinks()
+    //bgc.checkNavLinks()
     
     window.bgc = bgc; //set global
 
@@ -894,7 +894,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     console.log('Login simulated for admin user.');
 
                     adminInputModal.show(); //on show chart loadheadcountchart()
-                    bgc.checkNavLinks(); //update nav links immediately
+                    //bgc.checkNavLinks(); //update nav links immediately
+
 
                     break;
             }//ENDSWITCH
