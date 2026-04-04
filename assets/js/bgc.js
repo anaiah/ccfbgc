@@ -867,8 +867,8 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 console.log('SSE connection error. ReadyState:', eventSource.readyState);
             }//eif
-            
-            eventSource.close();
+
+            //eventSource.close();
         };
 
 
