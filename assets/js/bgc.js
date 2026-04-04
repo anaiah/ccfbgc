@@ -610,7 +610,7 @@ fetch('https://your-server/xls-export', {
                     newLi = bgc.createNavItem('dataentryBtn', 'Data Entry', { 'data-bs-toggle': 'modal', 'data-bs-target': '#dataInputModal', href: '#' });
                     document.getElementById('roomresLi').classList.remove('d-none')
 
-                    bgc.connectSocket()
+                    //bgc.connectSocket()
                     bgc.getSegments()
                     bgc.getCredentials()
 
@@ -618,7 +618,7 @@ fetch('https://your-server/xls-export', {
 
                 case '4': //owner
                     newLi = bgc.createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
-                    bgc.connectSocket()
+                    //bgc.connectSocket()
                 break;
 
                 default:
@@ -821,7 +821,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('what is', e.detail.data.grp_id);
 
         //fire test sse's
-        
+
 
         // Simulate server-side check after a brief delay for transition
         setTimeout(() => {
