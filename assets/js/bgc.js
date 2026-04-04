@@ -844,6 +844,10 @@ document.addEventListener("DOMContentLoaded", function() {
          //*********** SSE ************************ */
         const eventSource = new EventSource(`${myIp}/bgc/notifications`);
 
+        eventSource.onopen = () => {
+            console.log('SSE connection established');
+        };
+
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
             console.log('Received SSE:', data);
@@ -856,6 +860,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
         eventSource.onerror = (err) => {
             console.error('SSE error:', err);
+            if(eventSource.readyState === EventSource.CLOSED) {
+                console.log('SSE connection closed by server');
+            }else if (eventSource.readyState === EventSource.CONNECTING) {
+                console.log('SSE connection lost. Attempting to reconnect...');
+            } else {
+                console.log('SSE connection error. ReadyState:', eventSource.readyState);
+            }//eif
+            
             eventSource.close();
         };
 
