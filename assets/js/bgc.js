@@ -846,10 +846,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            if (data.type === 'UPDATE_DETECTED') {
-                alert("A new entry was updated!");
-                // Refresh your data here
-            }
+            console.log('Received SSE:', data);
+            
+            // if (data.type === 'UPDATE_DETECTED') {
+            //     alert("A new entry was updated!");
+            //     // Refresh your data here
+            // }
+        };
+
+        eventSource.onerror = (err) => {
+            console.error('SSE error:', err);
+            eventSource.close();
         };
 
 
