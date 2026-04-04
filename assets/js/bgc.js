@@ -703,9 +703,26 @@ fetch('https://your-server/xls-export', {
             const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapseEl);
             if (bsCollapse) {
                 bsCollapse.hide();
-            }
+            }   
             });
         });
+    },
+
+    broadCast: () => {
+        fetch(`${myIp}/bgc/update-entry`, {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                // Add your data here
+                item: "New entry added",
+                id: bgc.userId || 'unknown',
+                user: bgc.volunteerName || 'Unknown Volunteer',
+                ministry: bgc.belongMinistry || 'Unknown Ministry'
+            })
+
+        }) 
     }
 }//end bgc
 
@@ -783,8 +800,21 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     /** END CAROUSEL */
 
+    //api key for PUSHER
+    const pusher = new Pusher('e7e1396c6d903263f9a9', {
+        cluster: 'ap1',
+        encrypted: true
+    });
 
+    const channel = pusher.subscribe('bgc-channel');
    
+    channel.bind('entry-updated', function(data) {
+        console.log('Received Pusher event:', data);
+        util.Toasted('An update was made to the headcount data!', 3000, true);
+        util.speak(data.message)
+        
+        //bgc.loadHeadcountChart(); // Refresh chart with new data
+    })
 
     // ***************EVENT FOR LOGIN ************
     document.addEventListener('userLoggedIn', (e) => {
@@ -823,6 +853,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 case '7':    
                 case '8':
 
+                   
+
                     bgc.getSegments() //minnistry segments
                     bgc.getCredentials()
                     bgc.checkNavLinks(); //update nav links immediately
@@ -841,35 +873,39 @@ document.addEventListener("DOMContentLoaded", function() {
             }//ENDSWITCH
         }, 300);
 
-         //*********** SSE ************************ */
-        const eventSource = new EventSource(`${myIp}/bgc/notifications`);
+        //=========PUSHER NOTIFICATION
+        bgc.broadCast(); //send test broadcast to trigger update for all clients (including self)
+        
 
-        eventSource.onopen = () => {
-            console.log('SSE connection established');
-        };
+        //  //*********** SSE ************************ */
+        // const eventSource = new EventSource(`${myIp}/bgc/notifications`);
 
-        eventSource.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            console.log('Received SSE:', data);
+        // eventSource.onopen = () => {
+        //     console.log('SSE connection established');
+        // };
+
+        // eventSource.onmessage = (event) => {
+        //     const data = JSON.parse(event.data);
+        //     console.log('Received SSE:', data);
             
-            // if (data.type === 'UPDATE_DETECTED') {
-            //     alert("A new entry was updated!");
-            //     // Refresh your data here
-            // }
-        };
+        //     // if (data.type === 'UPDATE_DETECTED') {
+        //     //     alert("A new entry was updated!");
+        //     //     // Refresh your data here
+        //     // }
+        // };
 
-        eventSource.onerror = (err) => {
-            console.error('SSE error:', err);
-            if(eventSource.readyState === EventSource.CLOSED) {
-                console.log('SSE connection closed by server');
-            }else if (eventSource.readyState === EventSource.CONNECTING) {
-                console.log('SSE connection lost. Attempting to reconnect...');
-            } else {
-                console.log('SSE connection error. ReadyState:', eventSource.readyState);
-            }//eif
+        // eventSource.onerror = (err) => {
+        //     console.error('SSE error:', err);
+        //     if(eventSource.readyState === EventSource.CLOSED) {
+        //         console.log('SSE connection closed by server');
+        //     }else if (eventSource.readyState === EventSource.CONNECTING) {
+        //         console.log('SSE connection lost. Attempting to reconnect...');
+        //     } else {
+        //         console.log('SSE connection error. ReadyState:', eventSource.readyState);
+        //     }//eif
 
-            //eventSource.close();
-        };
+        //     //eventSource.close();
+        // };
 
 
 
