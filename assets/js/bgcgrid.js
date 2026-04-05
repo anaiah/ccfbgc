@@ -7,15 +7,36 @@ export function initGrid() {
         console.error('#attendance-grid not found');
         return null;
     }
-
+ 
    const xgrid = new gridjs.Grid({
-    columns: ["FY Target", "Ministry", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    data: [], // Make sure this is an empty array, not null
-    className: {
-        table: 'table table-bordered' // This makes it look like a Bootstrap table
-    }
-}).render(document.getElementById("attendance-grid"));
+        columns: ["FY Target", "Ministry", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        data: [], // Make sure this is an empty array, not null
+        sort: true,
+        resizable: true,
+        search: true,
+        className: {
+            table: 'table table-bordered' // This makes it look like a Bootstrap table
+        }
+    }).render(document.getElementById("attendance-grid"));
+    
+    return xgrid;
 
+}
+
+export async function loadGridData() {
+    try {
+        const response = await fetch(`${myIp}/bgc/get-target-grid`);
+        const result = await response.json();
+
+        if (result.ok) {
+            // result.data is already an array of arrays from our previous Node.js step
+            ccfgrid.xgrid.updateConfig({
+                data: result.data 
+            }).forceRender();
+        }
+    } catch (err) {
+        console.error("Grid Load Error:", err);
+    }
 
 }
 
@@ -23,4 +44,5 @@ export function initGrid() {
 //======== Exported API ========
 export const ccfgrid = {
      get xgrid() { return xgrid; },
+     loadGridData
 }

@@ -743,17 +743,20 @@ document.addEventListener("DOMContentLoaded", function() {
     
     window.bgc = bgc; //set global
 
-    initGrid() ; //import
+    initGrid() ; //import grid.js and initialize grid
 
     const logoutLi = document.getElementById('logoutLi');
-    
+    const loginli = document.getElementById('loginLi');
+
     //===check if previously logg
     const user = localStorage.getItem('bgc_user');
 
     if (!user) {
         logoutLi.classList.add('d-none');   // force hide
+        loginli.classList.remove('d-none'); // show login link
     } else {
         logoutLi.classList.remove('d-none'); // show only when logged in
+        loginli.classList.add('d-none');    // hide login link when logged in
     }   
 
     /* CAROUSEL */
@@ -880,7 +883,19 @@ document.addEventListener("DOMContentLoaded", function() {
                     
                     break;
 
-                case 4:
+                case 4: //load for admin
+
+                    //after login get modal listener for displaying grid
+                    const adminModalEl = document.getElementById('adminInputModal');
+                    const adminModal = bootstrap.Modal.getInstance(adminModalEl) || new bootstrap.Modal(adminModalEl);
+
+
+                    if (adminModalEl) {
+                        adminModalEl.addEventListener('shown.bs.modal', function () {   
+                            ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
+                        });
+                    }
+
                     console.log('Login simulated for admin user.');
 
                     document.getElementById('loginli').classList.add('d-none')//show logout link already
@@ -894,6 +909,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         console.log('Received Pusher event for Owners:', data);
                         util.Toasted(`From ${data.sender}, ${data.message}`, 3000, true);
                         util.speak(data.message)
+
+                        ccfgrid.loadGridData(); // Refresh grid with new data
+
                     });
 
                     //adminInputModal.show(); //on show chart loadheadcountchart()
