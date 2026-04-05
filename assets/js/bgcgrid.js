@@ -8,7 +8,7 @@ export function initGrid() {
         return null;
     }
  
-   const xgrid = new gridjs.Grid({
+    xgrid = new gridjs.Grid({
         columns: ["FY Target", "Ministry", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         data: [], // Make sure this is an empty array, not null
         sort: true,
@@ -24,6 +24,11 @@ export function initGrid() {
 }
 
 export async function loadGridData() {
+    if((!xgrid)) {
+        console.error("Grid not initialized. Call initGrid() first.");
+        return;
+    }
+    
     try {
         const response = await fetch(`${myIp}/bgc/get-target-grid`);
         const result = await response.json();
