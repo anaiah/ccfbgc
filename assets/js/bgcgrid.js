@@ -8,11 +8,14 @@ export function initGrid() {
         return null;
     }
 
-    xgrid = new gridjs.Grid({
-        columns: [
-            { name: 'Ministry', width: '150px' }, 
-        ]
-    }).render(el);
+   const xgrid = new gridjs.Grid({
+    columns: ["FY Target", "Ministry", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    data: [], // Make sure this is an empty array, not null
+    className: {
+        table: 'table table-bordered' // This makes it look like a Bootstrap table
+    }
+}).render(document.getElementById("attendance-grid"));
+
 
 }
 
