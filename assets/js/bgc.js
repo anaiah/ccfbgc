@@ -746,7 +746,7 @@ document.addEventListener("DOMContentLoaded", function() {
     initGrid() ; //import grid.js and initialize grid
 
     const logoutLi = document.getElementById('logoutLi');
-    const loginli = document.getElementById('loginLi');
+    const loginli = document.getElementById('loginli');
 
     //===check if previously logg
     const user = localStorage.getItem('bgc_user');
