@@ -1,12 +1,4 @@
-// const navbar = document.querySelector('.navbar');
-
-// window.addEventListener('scroll', () => {
-//     if (window.scrollY > 50) {
-//         navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-//     } else {
-//         navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.85)';
-//     }
-// });
+import { ccfgrid, initGrid  } from './bgcgrid.js';
 
 const bgc = {
     userId:null,
@@ -743,7 +735,7 @@ fetch('https://your-server/xls-export', {
 }//end bgc
 
 //swindow.bgc = bgc; // expose to global
-
+// ======================= DOMCONTENTLOADED
 document.addEventListener("DOMContentLoaded", function() {
     bgc.init();
     
@@ -751,7 +743,11 @@ document.addEventListener("DOMContentLoaded", function() {
     
     window.bgc = bgc; //set global
 
+    initGrid() ; //import
+
     const logoutLi = document.getElementById('logoutLi');
+    
+    //===check if previously logg
     const user = localStorage.getItem('bgc_user');
 
     if (!user) {
@@ -870,7 +866,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 case 8:
 
                     bgc.getSegments() //minnistry segments
-                    bgc.getCredentials()
+                    bgc.getCredentials();
                     
                     //bgc.checkNavLinks(); //update nav links immediately
                     document.getElementById('loginli').classList.add('d-none')//show logout link already
@@ -883,13 +879,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     document.getElementById('dataentryli').classList.remove('d-none')//show data entry link already
                     
                     break;
+
                 case 4:
                     console.log('Login simulated for admin user.');
 
                     document.getElementById('loginli').classList.add('d-none')//show logout link already
+                    document.getElementById('gridli').classList.remove('d-none')//show logout link already
                     document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
                    
-                     //to bossings/owners only
+                     //to bossings/owners only....
                     const privychannel = pusher.subscribe(`user-owners`); //subscribe to private channel for this user
 
                     privychannel.bind('personal-alert', function(data) {
