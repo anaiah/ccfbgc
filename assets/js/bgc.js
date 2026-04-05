@@ -892,7 +892,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     if (adminModalEl) {
                         adminModalEl.addEventListener('shown.bs.modal', function () {   
-                            ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
+                            //ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
                         });
                     }
 
@@ -910,6 +910,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         util.Toasted(`From ${data.sender}, ${data.message}`, 3000, true);
                         util.speak(data.message)
 
+                        ccfgrid.loadGridData(); // Refresh grid with new data when a personal alert is received
+                        
                         if(adminModal){
                             adminModal.show(); // Show the admin modal when a personal alert is received
                         } // Refresh grid with new data

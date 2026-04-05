@@ -11,9 +11,16 @@ export function initGrid() {
     xgrid = new gridjs.Grid({
         columns: ["FY Target", "Ministry", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         data: [], // Make sure this is an empty array, not null
-        sort: true,
+        //sort: true,
         resizable: true,
-        search: true,
+        //search: true,
+        width: '100%',
+        autoWidth: true,
+        style:{
+            table: {
+                'white-space': 'nowrap' // Prevent text from wrapping in cells
+            }
+        },
         className: {
             table: 'table table-bordered' // This makes it look like a Bootstrap table
         }
@@ -28,7 +35,7 @@ export async function loadGridData() {
         console.error("Grid not initialized. Call initGrid() first.");
         return;
     }
-    
+
     try {
         const response = await fetch(`${myIp}/bgc/get-target-grid`);
         const result = await response.json();
