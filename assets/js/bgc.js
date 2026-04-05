@@ -910,7 +910,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         util.Toasted(`From ${data.sender}, ${data.message}`, 3000, true);
                         util.speak(data.message)
 
-                        ccfgrid.loadGridData(); // Refresh grid with new data
+                        if(adminModal){
+                            adminModal.show(); // Show the admin modal when a personal alert is received
+                        } // Refresh grid with new data
 
                     });
 
