@@ -529,6 +529,11 @@ fetch('https://your-server/xls-export', {
             })
         }) 
     },
+
+    savetarget:(xform)=>{
+        ccfgrid.saveTarget(xform)
+    }//end savetarget
+       
 }//end bgc
 
 //swindow.bgc = bgc; // expose to global

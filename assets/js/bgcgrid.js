@@ -389,10 +389,40 @@ export const getlinks = (grp) => {
                 
 }
 
+//==================== SAVE TARGET=====================//
+export async function saveTarget(formData) {
+    try {
+        const response = await fetch(`${myIp}/bgc/save-target`, {   
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Server error' }));
+            throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if(data.ok){
+
+            util.Toasted('Data Saved Successfully',2000,false)
+            util.speak('data saved successfully!')
+            
+        }
+        //return result;
+    } catch (error) {
+        console.error('Error saving target:', error);
+        throw error;
+    }
+}
+
 //======== Exported API ========
 export const ccfgrid = {
      get xgrid() { return xgrid; },
      loadGridData,
      renderPerformanceChart,
-     getlinks
+     getlinks,
+     saveTarget
 }

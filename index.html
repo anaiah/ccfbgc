@@ -494,28 +494,27 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Encode Fiscal Year Target</h5>
+            <h5 class="modal-title">Fiscal Year Target</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <form id="targetForm">
+            <form id="targetForm" novalidate>
               <div class="mb-3">
                 <label class="form-label">Ministry Segment</label>
                 <select class="form-select" name="ministry_segment" required>
                   <option value="FIRST TIMERS">FIRST TIMERS</option>
                   <option value="CONGREGATION">CONGREGATION</option>
-                  <option value="COS">COS</option>
-                  <option value="LIVE PROD">LIVE PROD</option>
-                  <option value="DGM">DGM</option>
-                  <option value="EXALT">EXALT</option>
-                  <option value="DGRP">DGRP</option>
+                  <option value="DGRPS">DGRPS</option>
+                  <option value="DMEMBERS">DMEMBERS</option>
+                  <option value="DLEADERS">DLEADERS</option>
+                  
                 </select>
               </div>
               <div class="mb-3">
                 <label class="form-label">Target Value</label>
                 <input type="number" class="form-control" name="target_value" required>
               </div>
-              <button type="submit" class="btn btn-success w-100">Save Target</button>
+              <button type="button" onclick="bgc.savetarget(this.form)" class="btn btn-success w-100">Save Target</button>
             </form>
           </div>
         </div>
