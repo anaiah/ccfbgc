@@ -202,24 +202,25 @@ const bgc = {
             selectedIdx.some(i => Array.isArray(s.data) && s.data[i] != null)
         );
 
+        //let's talke off custom legends for now
         // Show/hide series in ApexCharts and update custom legend classes
-        bgc.payload.series.forEach((s, idx) => {
-            const name = s.name;
-            if (seriesHasValue[idx]) {
-            if (bgc.chart1) bgc.chart1.showSeries(name);
-            // update legend UI: remove muted class
-            const item = document.querySelector(`
-                #customLegend .legend-item[data-series-name="${CSS.escape(name)}"]
-                `);
-            if (item) item.classList.remove('d-none');
-            } else {
-            if (bgc.chart1) bgc.chart1.hideSeries(name);
-            const item = document.querySelector(`
-                #customLegend .legend-item[data-series-name="${CSS.escape(name)}"]
-                `);
-            if (item) item.classList.add('d-none');
-            }
-        });
+        // bgc.payload.series.forEach((s, idx) => {
+        //     const name = s.name;
+        //     if (seriesHasValue[idx]) {
+        //     if (bgc.chart1) bgc.chart1.showSeries(name);
+        //     // update legend UI: remove muted class
+        //     const item = document.querySelector(`
+        //         #customLegend .legend-item[data-series-name="${CSS.escape(name)}"]
+        //         `);
+        //     if (item) item.classList.remove('d-none');
+        //     } else {
+        //     if (bgc.chart1) bgc.chart1.hideSeries(name);
+        //     const item = document.querySelector(`
+        //         #customLegend .legend-item[data-series-name="${CSS.escape(name)}"]
+        //         `);
+        //     if (item) item.classList.add('d-none');
+        //     }
+        // });
 
         if(bgc.chart1){
             bgc.chart1.updateOptions({ xaxis: { categories: newCats } }, false);
@@ -1004,14 +1005,14 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // listener for admin chart when admin modal show
-    const adminModalEl = document.getElementById('adminInputModal');
-    if (adminModalEl) {
-        adminModalEl.addEventListener('shown.bs.modal', function () {
-            if (typeof bgc !== 'undefined' && typeof bgc.loadHeadcountChart === 'function') {
-                bgc.loadHeadcountChart();
-            }
-        });
-    }
+    // const adminModalEl = document.getElementById('adminInputModal');
+    // if (adminModalEl) {
+    //     adminModalEl.addEventListener('shown.bs.modal', function () {
+    //         if (typeof bgc !== 'undefined' && typeof bgc.loadHeadcountChart === 'function') {
+    //             //bgc.loadHeadcountChart();
+    //         }
+    //     });
+    // }
     // Smooth scroll for anchor links
     const links = document.querySelectorAll('a[href^="#"]');
     links.forEach(link => {
