@@ -444,7 +444,7 @@ export async function saveTarget(formData) {
             const adminModal = bootstrap.Modal.getInstance(adminModalEl) || new bootstrap.Modal(adminModalEl);
             adminModal.show();  
             
-            //ccfgrid.loadGridData() //refresh grid data after saving new target
+            ccfgrid.loadGridData() //refresh grid data after saving new target
 
 
             
