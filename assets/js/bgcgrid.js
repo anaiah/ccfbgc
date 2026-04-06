@@ -304,63 +304,67 @@ export function renderPerformanceChart(apiData) {
     });
 
     const options = {
-    series: chartSeries,
-    colors: chartColors, // Use the defined colors for both bars and lines
-    chart: {
-        height: 250,
-        type: 'line',
-        toolbar: { show: false },
-        parentHeightOffset: 0
-    },
-    // 1. ADD THE MONTH NAMES HERE
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    
-    // stroke: {
-    //     width: [0, 3, 0, 3], // 0 for bars, 3 for lines
-    //     curve: 'smooth',
-    //     dashArray: [0, 5, 0, 5] // 0 for solid bars, 5 for dashed target lines
-    // },
-    
-    // 2. Align colors so Bar and Line for the same ministry match
-    
-    stroke: {
-        // This creates: [0, 3, 0, 3, 0, 3...] 
-        // 0 for every Bar, 3 for every Line
-        width: chartSeries.map((s, i) => (i % 2 === 0 ? 0 : 3)),
-        curve: 'smooth',
-        // This creates: [0, 5, 0, 5...] 
-        // Solid for every Bar, Dashed (5) for every Target Line
-        dashArray: chartSeries.map((s, i) => (i % 2 === 0 ? 0 : 5))
-    },
-    
-    xaxis: {
-        type: 'category',
-        labels: {
-            style: { fontSize: '12px' }
+        series: chartSeries,
+        colors: chartColors, // Use the defined colors for both bars and lines
+        chart: {
+            height: 250,
+            type: 'line',
+            toolbar: { show: false },
+            parentHeightOffset: 0
+        },
+        // 1. ADD THE MONTH NAMES HERE
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        
+        // stroke: {
+        //     width: [0, 3, 0, 3], // 0 for bars, 3 for lines
+        //     curve: 'smooth',
+        //     dashArray: [0, 5, 0, 5] // 0 for solid bars, 5 for dashed target lines
+        // },
+        
+        // 2. Align colors so Bar and Line for the same ministry match
+        
+        stroke: {
+            // This creates: [0, 3, 0, 3, 0, 3...] 
+            // 0 for every Bar, 3 for every Line
+            width: chartSeries.map((s, i) => (i % 2 === 0 ? 0 : 3)),
+            curve: 'smooth',
+            // This creates: [0, 5, 0, 5...] 
+            // Solid for every Bar, Dashed (5) for every Target Line
+            dashArray: chartSeries.map((s, i) => (i % 2 === 0 ? 0 : 5))
+        },
+        
+        xaxis: {
+            type: 'category',
+            labels: {
+                style: { fontSize: '12px' }
+            }
+        },
+        yaxis: {
+            title: { text: 'Headcount' },
+            labels: {
+                formatter: (val) => Math.floor(val) // Removes decimals from Y axis
+            }
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'center'
+        },
+        grid: {
+            padding: { left: 10, right: 10 }
         }
-    },
-    yaxis: {
-        title: { text: 'Headcount' },
-        labels: {
-            formatter: (val) => Math.floor(val) // Removes decimals from Y axis
-        }
-    },
-    legend: {
-        position: 'top',
-        horizontalAlign: 'center'
-    },
-    grid: {
-        padding: { left: 10, right: 10 }
-    }
     };
 
     if(window.myChart) {
-        window.myChart.updateOptions(options);
-        window.myChart.updateSeries(chartSeries);
-    } else {
-        window.myChart = new ApexCharts(chartElement, options);
-        window.myChart.render();
-    }//endif
+        try{
+            window.myChart.destroy();
+            window.myChart = null; // Clear the reference to the old chart
+        }catch(err){
+            console.error("Error updating chart:", err);
+        }
+    }
+
+    window.myChart = new ApexCharts(chartElement, options);
+    window.myChart.render();
 }
 
 //======================get links for the user to show
