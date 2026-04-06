@@ -267,10 +267,8 @@ export function renderPerformanceChart(apiData) {
         '#FEB019', // Orange
         '#775DD0', // Purple
         '#FF4560', // Red
-        '#03A9F4', // Sky Blue
         '#546E7A', // Slate Gray
         '#D4526E', // Pink
-        '#13d8aa', // Teal
         '#A5978B'  // Brown/Tan
     ];
 
@@ -285,6 +283,7 @@ export function renderPerformanceChart(apiData) {
             const n = Number(v);
             return isNaN(n) ? 0 : n      // 1. Add the BAR (Actuals)
         });
+
         chartSeries.push({
             name: `${ministryName} Actual`,
             type: 'column',
@@ -357,8 +356,13 @@ export function renderPerformanceChart(apiData) {
     }
     };
 
-    window.myChart = new ApexCharts(chartElement, options);
-    window.myChart.render();
+    if(window.myChart) {
+        window.myChart.updateOptions(options);
+        window.myChart.updateSeries(chartSeries);
+    } else {
+        window.myChart = new ApexCharts(chartElement, options);
+        window.myChart.render();
+    }//endif
 }
 
 //======================get links for the user to show
