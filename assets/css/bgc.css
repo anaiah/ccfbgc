@@ -557,3 +557,8 @@
 .gridjs-th:nth-child(2) {
     z-index: 3; 
 }
+
+.chart-scroll-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}

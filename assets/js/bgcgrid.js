@@ -312,6 +312,26 @@ export function renderPerformanceChart(apiData) {
             toolbar: { show: false },
             parentHeightOffset: 0
         },
+         // --- ADD THIS BLOCK ---
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    height: 300
+                },
+                xaxis: {
+                    labels: {
+                        rotate: -45, // Rotates Jan-Dec so they don't overlap
+                        style: { fontSize: '10px' }
+                    }
+                },
+                legend: {
+                    position: 'bottom', // Moves legend to bottom to save side-room
+                    fontSize: '11px'
+                }
+            }
+        }],
+
         // 1. ADD THE MONTH NAMES HERE
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         
