@@ -412,6 +412,13 @@ export async function saveTarget(formData) {
 
             util.hideModal('targetModal',100)
 
+            const adminModalEl = document.getElementById('adminInputModal');
+            const adminModal = bootstrap.Modal.getInstance(adminModalEl) || new bootstrap.Modal(adminModalEl);
+            adminModal.show();  
+            
+            ccfgrid.loadGridData() //refresh grid data after saving new target
+
+
             
         }
         //return result;
