@@ -30,7 +30,7 @@ export function initGrid() {
             return gridjs.html(`
                 <div style="color: ${color};font-size:0.95em; font-weight: ${weight}; text-align: center;">
                     ${val}
-                    ${val >= target ? gridjs.html('<small>✓</small>') : gridjs.html('<small>✗</small>')}
+                    ${val >= target ?'<small>✓</small>' : '<small>✗</small>'}
                 
                 </div>
             `);
