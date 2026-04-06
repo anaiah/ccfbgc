@@ -60,116 +60,7 @@ const bgc = {
         })
     },
 
-    //load chart
-    loadChart: ()=>{
-        console.log('loading from  controller  chart.....')
-        
-        //let colors = ['#0277bd', '#00838f', '#00695c', '#2e7d32','#558b2f','#9e9d24','#ff8f00','#d84315'];
-        let colors = [ '#0277bd','#d84315',  '#2e7d32','#ff8f00']
-                
-        // Fisher-Yates shuffle
-        // for (let i = colors.length - 1; i > 0; i--) {
-        //     const j = Math.floor(Math.random() * (i + 1));
-        //     [colors[i], colors[j]] = [colors[j], colors[i]]; // swap elements
-        // }//endfor   
-
-        // Map data
-        
-
-        // console.log('categories',categories)
-
-
-        var options = {
-            series:[], 
-            colors:colors,
-            chart: {
-                type: 'bar',
-                height: 350,
-                width: 400,
-                redrawOnParentResize: false,
-                redrawOnWindowResize: false,
-                        
-            },
-            
-            plotOptions: {
-                bar: {
-                    dataLabels: {
-                        position: 'top',
-                        //orientation:'vertical'
-                    }
-                }
-            },
-            
-            dataLabels: {
-                enabled: true,
-                dropShadow: {
-                    enabled: true,
-                    left: 1,
-                    top: 1,
-                    opacity: 0.5
-                },
-                formatter: function (val) {
-                    if (val >= 1000000) {
-                        return (val / 1000000).toFixed(1) + 'M';
-                    } else if (val >= 1000) {
-                        return (val / 1000).toFixed(1) + 'K';
-                    }
-                    
-                    return val;
-                },
-                offsetY:-20,
-                style: {
-                    fontSize: "12px",
-                    colors: ["#d84315","#00695c"]
-                },
-            
-            },
-            
-            stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-            },
-            xaxis: {
-                categories: [],
-
-                title: {
-                    text: 'Store Status',
-                    style: {
-                        fontSize: '10px',
-                        fontWeight: 'bold',
-                        fontFamily: 'Helvetica, Arial, sans-serif',
-                        color: '#6699ff' // set your desired color
-                    }
-                }
-            },
-            yaxis: {
-                title: {
-                    text: '',
-                    style: {
-                        fontSize: '10px',
-                        fontWeight: 'bold',
-                        fontFamily: 'Helvetica, Arial, sans-serif',
-                        color: '#6699ff' // set your desired color
-                    }
-                }    
-            },
-            fill: {
-                opacity: 1
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return val 
-                    }
-            }
-            }
-
-        } //end options
     
-
-    }, 
-
     //===== chart filter xaxis categories ===
     // Populate select
     updateChart:(sel)=>{
@@ -289,6 +180,8 @@ const bgc = {
                     style: { fontSize: '10px', colors: ['#200505'] }
                 }
             };
+
+            /// take out prevous chart if exists to avoid memory leak
 
             const el = document.querySelector('#ccfbgcchart');
             if (!el) throw new Error('#ccfbgcchart element not found');
@@ -578,103 +471,6 @@ fetch('https://your-server/xls-export', {
     
     },
 
-    // //=====get links for user
-    // checkNavLinks: () => {
-    //     const ul = document.querySelector('.navbar-nav.ms-auto.me-2');
-    //     if (!ul) return;
-        
-    //         // read profile safely
-    //         let profile = null;
-            
-    //         try { profile = JSON.parse(localStorage.getItem('bgc_user')); } catch (e) { profile = null; }
-    //         const grp = profile && profile.grp_id ? String(profile.grp_id) : null;
-
-    //         // find existing login li (by data-bs-target or link text)
-    //         const loginLi = ul.querySelector('li.nav-item > a[data-bs-target="#loginModal"]')?.closest('li.nav-item')
-    //                     || Array.from(ul.querySelectorAll('li.nav-item')).find(li => li.textContent.trim().toLowerCase() === 'login');
-
-            
-    //         let newLi, newLIcal;
-
-    //         //2,5,6,7,8 are standard users; 4 is admin; else show login
-    //         switch(grp) {
-    //             case '1':
-    //             case '2':
-    //             case '5':
-    //             case '6':
-    //             case '7':
-    //             case '8':
-                   
-    //                 bgc.getSegments()
-    //                 bgc.getCredentials()
-                
-
-    //             break;
-
-    //             case '4': //owner
-    //                 //newLi = bgc.createNavItem('adminBtn', 'Admin', { 'data-bs-toggle': 'modal', 'data-bs-target': '#adminInputModal', href: '#' });
-    //                 //bgc.connectSocket()
-    //             break;
-
-    //             default:
-    //                 newLi = bgc.createNavItem('', 'Login', { 'data-bs-toggle': 'modal', 'data-bs-target': '#loginModal', href: '#' });
-    //             break;
-
-    //         }//endsw
-
-    //         if (loginLi) {
-    //             ul.replaceChild(newLi, loginLi);
-    //             document.getElementById('logoutLi').classList.remove('d-none')
-
-    //             console.log('1')
-    //         } else {
-    //             ul.insertBefore(newLi, ul.firstElementChild);
-    //             document.getElementById('logoutLi').classList.remove('d-none')
-
-    //             console.log('2')
-    //         }
-
-    // },
-
-    // connectSocket:async()=>{
-    //     //====connect to socket after login
-    //     const user = JSON.parse(localStorage.getItem('bgc_user')) || {};
-    //     let authz = [];
-    //     authz.push(user.grp_id);
-    //     authz.push(user.full_name);
-    //     authz.push(user.id);
-
-    //     console.log('=== authz ', authz);
-
-    //     //==HANDSHAKE FIRST WITH SOCKET.IO
-    //     const userName = { token: authz[1], emp_id: authz[2], mode: user.grp_id };
-
-    //     bgc.socket = io.connect(`${myIp}`, {
-    //         transports: ['websocket', 'polling'],
-    //         upgrade: true,
-    //         rememberTransport: false,
-    //         query: `userName=${JSON.stringify(userName)}`
-    //     });
-
-    //     bgc.socket.on('connect', () => {
-    //         console.log('Connected to Socket.IO server using:', bgc.socket.io.engine.transport.name);
-    //     });
-
-    //     bgc.socket.on('disconnect', () => {
-    //         console.log('Disconnected from Socket.IO server');
-    //     });
-    
-    //     //===receive messages from volunteers
-    //     bgc.socket.on('xinit', (msg) => {
-    //         util.Toasted(msg, 3000, true);
-    //         util.speak(`${user.full_name}, there's an Incoming update!`);
-    //         console.log('socket.io()', msg);
-    //         bgc.loadHeadcountChart();
-    //     });
-
-    //     console.log('user logged in:', user.grp_id, user.full_name);
-
-    // },
 
     getCredentials:()=>{
         const user = JSON.parse(localStorage.getItem('bgc_user')); // has ministry_segment, etc.
