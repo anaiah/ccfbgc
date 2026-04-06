@@ -278,8 +278,9 @@ export function renderPerformanceChart(apiData) {
 
         const color =palette[index % palette.length]; // Cycle through the palette for each ministry
 
-        const targetValue = Number(row[0]); // The 200 or 300
-        const ministryName = row[1];       // The Ministry Name
+        const targetValue = Number(row[1]); // The 200 or 300
+        const ministryName = row[0];       // The Ministry Name
+
         const monthlyData = row.slice(2).map(v => {
             const n = Number(v);
             return isNaN(n) ? 0 : n      // 1. Add the BAR (Actuals)
