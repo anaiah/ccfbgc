@@ -201,9 +201,26 @@ export function renderPerformanceChart(apiData) {
         window.myChart.destroy();
     }
     const chartSeries = [];
-    const colors = [];
+    const chartColors = [];
+
+    // 1. Define your "Church Brand" palette (Professional & Clear)
+    const palette = [
+        '#008FFB', // Blue
+        '#00E396', // Green
+        '#FEB019', // Orange
+        '#775DD0', // Purple
+        '#FF4560', // Red
+        '#03A9F4', // Sky Blue
+        '#546E7A', // Slate Gray
+        '#D4526E', // Pink
+        '#13d8aa', // Teal
+        '#A5978B'  // Brown/Tan
+    ];
 
     apiData.data.forEach((row, index) => {
+
+        const color =palette[index % palette.length]; // Cycle through the palette for each ministry
+
         const targetValue = Number(row[0]); // The 200 or 300
         const ministryName = row[1];       // The Ministry Name
         const monthlyData = row.slice(2).map(v => Number(v));
@@ -215,16 +232,22 @@ export function renderPerformanceChart(apiData) {
             data: monthlyData
         });
 
+        chartColors.push(color); // Bar color
+
         // 2. Add the FLAT LINE (The Target Benchmark)
         chartSeries.push({
             name: `${ministryName} Target`,
             type: 'line',
             data: Array(12).fill(targetValue) // Creates the flat line [200, 200, 200...]
         });
+        
+        chartColors.push(color); // Line color matches the Bar
+
     });
 
     const options = {
     series: chartSeries,
+    colors: chartColors, // Use the defined colors for both bars and lines
     chart: {
         height: 250,
         type: 'line',
@@ -234,13 +257,24 @@ export function renderPerformanceChart(apiData) {
     // 1. ADD THE MONTH NAMES HERE
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     
-    stroke: {
-        width: [0, 3, 0, 3], // 0 for bars, 3 for lines
-        curve: 'smooth',
-        dashArray: [0, 5, 0, 5] // 0 for solid bars, 5 for dashed target lines
-    },
+    // stroke: {
+    //     width: [0, 3, 0, 3], // 0 for bars, 3 for lines
+    //     curve: 'smooth',
+    //     dashArray: [0, 5, 0, 5] // 0 for solid bars, 5 for dashed target lines
+    // },
     
     // 2. Align colors so Bar and Line for the same ministry match
+    
+    stroke: {
+        // This creates: [0, 3, 0, 3, 0, 3...] 
+        // 0 for every Bar, 3 for every Line
+        width: chartSeries.map((s, i) => (i % 2 === 0 ? 0 : 3)),
+        curve: 'smooth',
+        // This creates: [0, 5, 0, 5...] 
+        // Solid for every Bar, Dashed (5) for every Target Line
+        dashArray: chartSeries.map((s, i) => (i % 2 === 0 ? 0 : 5))
+    },
+
     colors: ['#008FFB', '#008FFB', '#00E396', '#00E396'], 
     
     xaxis: {
