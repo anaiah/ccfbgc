@@ -332,8 +332,6 @@ export function renderPerformanceChart(apiData) {
         // Solid for every Bar, Dashed (5) for every Target Line
         dashArray: chartSeries.map((s, i) => (i % 2 === 0 ? 0 : 5))
     },
-
-    colors: ['#008FFB', '#008FFB', '#00E396', '#00E396'], 
     
     xaxis: {
         type: 'category',
