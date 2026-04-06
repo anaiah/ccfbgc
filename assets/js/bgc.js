@@ -749,7 +749,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const loginli = document.getElementById('loginli');
 
     //===check if previously logg
-    const user = localStorage.getItem('bgc_user');
+    const user = JSON.parse(localStorage.getItem('bgc_user')) // if exists, should have id, grp_id, full_name, ministry_id, ministry_segment, etc.;
 
     if (!user) {
         logoutLi.classList.add('d-none');   // force hide
