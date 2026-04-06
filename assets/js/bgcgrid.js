@@ -409,6 +409,9 @@ export async function saveTarget(formData) {
 
             util.Toasted('Data Saved Successfully',2000,false)
             util.speak('data saved successfully!')
+
+            util.hideModal('targetModal',100)
+
             
         }
         //return result;
