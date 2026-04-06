@@ -56,6 +56,8 @@ export async function loadGridData() {
 
 //get links for the user to show
 export const getlinks = (grp) => {
+    console.log('Getting links for group:', grp);
+    
     switch(grp) {
         case 4: //bossing   
             document.getElementById('loginli').classList.add('d-none')//hide login already

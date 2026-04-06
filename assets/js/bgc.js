@@ -761,6 +761,7 @@ document.addEventListener("DOMContentLoaded", function() {
         //if prviously logged in, load segments and credentials immediately
         bgc.getSegments();
         bgc.getCredentials();
+        
         ccfgrid.getlinks(user.grp_id) //get links for grid display
 
 
