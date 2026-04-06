@@ -129,6 +129,7 @@ export async function loadGridData() {
 //     chart.render();
 // }
 
+//this is the new but with spike fy target instead of the average line
 export function renderPerformanceChart(apiData) {
     const chartElement = document.querySelector("#ccfbgcchart");
     if (!chartElement) return;
@@ -187,6 +188,51 @@ export function renderPerformanceChart(apiData) {
         legend: { position: 'top' }
     };
 
+    window.myChart = new ApexCharts(chartElement, options);
+    window.myChart.render();
+}
+
+//tis is also new but a horizontal flat line for target instead of the spike
+export function renderPerformanceChart(apiData) {
+    const chartElement = document.querySelector("#ccfbgcchart");
+    if (!chartElement) return;
+
+    if (window.myChart) {
+        window.myChart.destroy();
+    }
+    const chartSeries = [];
+    const colors = [];
+
+    apiData.data.forEach((row, index) => {
+        const targetValue = Number(row[0]); // The 200 or 300
+        const ministryName = row[1];       // The Ministry Name
+        const monthlyData = row.slice(2).map(v => Number(v));
+
+        // 1. Add the BAR (Actuals)
+        chartSeries.push({
+            name: `${ministryName} Actual`,
+            type: 'column',
+            data: monthlyData
+        });
+
+        // 2. Add the FLAT LINE (The Target Benchmark)
+        chartSeries.push({
+            name: `${ministryName} Target`,
+            type: 'line',
+            data: Array(12).fill(targetValue) // Creates the flat line [200, 200, 200...]
+        });
+    });
+
+    const options = {
+        series: chartSeries,
+        chart: { height: 250, type: 'line', toolbar: { show: false } },
+        stroke: {
+            width: [0, 3, 0, 3], // 0 for bars, 3 for lines
+            dashArray: [0, 5, 0, 5] // Optional: Makes the target lines "dashed" for a pro look
+        },
+        colors: ['#008FFB', '#008FFB', '#00E396', '#00E396'], // Match Bar/Line colors by ministry
+        // ... rest of your labels and legends ...
+    };
     window.myChart = new ApexCharts(chartElement, options);
     window.myChart.render();
 }
