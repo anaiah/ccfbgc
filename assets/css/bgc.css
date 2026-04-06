@@ -495,6 +495,31 @@
 
 /* 3. Give the Ministry column a bit more breathing room */
 .gridjs-td:nth-child(2) {
-    min-width: 200px;
+    min-width: 230px;
+}
+/* 1. Force the container to allow horizontal scrolling */
+#attendance-grid .gridjs-wrapper {
+    overflow-x: auto !important;
+    display: block !important;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iPhone */
 }
 
+/* 2. Set a MINIMUM width for the entire table so it doesn't squish */
+#attendance-grid .gridjs-table {
+    min-width: 1200px !important; /* Forces the table to be 1200px wide even on mobile */
+    table-layout: auto !important;
+}
+
+/* 3. Prevent text from wrapping or overlapping */
+#attendance-grid .gridjs-th, 
+#attendance-grid .gridjs-td {
+    white-space: nowrap !important;
+    text-overflow: unset !important;
+    overflow: visible !important;
+}
+
+/* 4. Ensure the Ministry column has enough space for long names */
+#attendance-grid .gridjs-th:nth-child(2),
+#attendance-grid .gridjs-td:nth-child(2) {
+    min-width: 200px !important;
+}
