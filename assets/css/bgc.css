@@ -546,7 +546,7 @@
 .gridjs-th:nth-child(2), 
 .gridjs-td:nth-child(2) {
     position: sticky !important;
-    left: 200px; 
+    left: 100px; 
     z-index: 2;
     background-color: #f1f5f9; /* Match your "Pill" background color */
     border-right: 2px solid #e2e8f0; /* Adds a visual "border" to show the split */
