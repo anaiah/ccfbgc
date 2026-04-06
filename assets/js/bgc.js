@@ -528,6 +528,16 @@ fetch('https://your-server/xls-export', {
                 ministry: bgc.belongMinistry || 'Unknown Ministry'
             })
         }) 
+        .then((response) => {  //promise... then 
+            return response.json();
+        })
+        .then((data) => {
+            //alert(data.ok)
+            if(data.success){
+                console.log('SEND UPDTE FIRED')
+            }
+        })
+
     },
 
     savetarget:( formElement)=>{
@@ -541,7 +551,7 @@ fetch('https://your-server/xls-export', {
         }
 
         ccfgrid.saveTarget(objForm)
-        
+
     }//end savetarget
 
 }//end bgc
