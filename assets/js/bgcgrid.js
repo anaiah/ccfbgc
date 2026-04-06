@@ -224,15 +224,47 @@ export function renderPerformanceChart(apiData) {
     });
 
     const options = {
-        series: chartSeries,
-        chart: { height: 250, type: 'line', toolbar: { show: false } },
-        stroke: {
-            width: [0, 3, 0, 3], // 0 for bars, 3 for lines
-            dashArray: [0, 5, 0, 5] // Optional: Makes the target lines "dashed" for a pro look
-        },
-        colors: ['#008FFB', '#008FFB', '#00E396', '#00E396'], // Match Bar/Line colors by ministry
-        // ... rest of your labels and legends ...
+    series: chartSeries,
+    chart: {
+        height: 250,
+        type: 'line',
+        toolbar: { show: false },
+        parentHeightOffset: 0
+    },
+    // 1. ADD THE MONTH NAMES HERE
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    
+    stroke: {
+        width: [0, 3, 0, 3], // 0 for bars, 3 for lines
+        curve: 'smooth',
+        dashArray: [0, 5, 0, 5] // 0 for solid bars, 5 for dashed target lines
+    },
+    
+    // 2. Align colors so Bar and Line for the same ministry match
+    colors: ['#008FFB', '#008FFB', '#00E396', '#00E396'], 
+    
+    xaxis: {
+        type: 'category',
+        labels: {
+            style: { fontSize: '12px' }
+        }
+    },
+    yaxis: {
+        title: { text: 'Headcount' },
+        labels: {
+            formatter: (val) => Math.floor(val) // Removes decimals from Y axis
+        }
+    },
+    legend: {
+        position: 'top',
+        horizontalAlign: 'center'
+    },
+    grid: {
+        padding: { left: 10, right: 10 }
+    }
     };
+
+
     window.myChart = new ApexCharts(chartElement, options);
     window.myChart.render();
 }
