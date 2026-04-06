@@ -636,8 +636,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         //bgc.loadHeadcountChart(); // Refresh chart with new data
     })
-
-   
+ 
 
     // ***************EVENT FIRED FOR LOGIN / USER LOGGED************
     document.addEventListener('userLoggedIn', (e) => {

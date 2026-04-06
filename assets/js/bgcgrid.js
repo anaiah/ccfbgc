@@ -11,7 +11,7 @@ export function initGrid() {
     const monthColumns = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     .map(month => ({
         name: month,
-        width: '90px',
+        width: '50px',
         formatter: (cell, row) => {
             const val = Number(cell);
             const target = Number(row.cells[0].data); // row.cells[0] is "FY Target"
@@ -36,7 +36,6 @@ export function initGrid() {
 
     
     xgrid = new gridjs.Grid({
-        //columns: ["FY Target", "Ministry", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         
         columns:[
             { 
