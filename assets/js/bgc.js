@@ -711,7 +711,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     const adminModalEl = document.getElementById('adminInputModal');
                     const adminModal = bootstrap.Modal.getInstance(adminModalEl) || new bootstrap.Modal(adminModalEl);
 
-
                     if (adminModalEl) {
                         adminModalEl.addEventListener('shown.bs.modal', function () {   
                             ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
@@ -734,7 +733,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         ccfgrid.loadGridData(); // Refresh grid with new data when a personal alert is received
                         
-                        if(adminModal){
+                        if(adminModalEl.classList.contains('show')){ //only pop up if not already open
+                            //adminModal.show(); // Show the admin modal when a personal alert is received
+                            ccfgrid.loadGridData(); // Refresh grid with new data when a personal alert is received
+
+                        }else{
                             adminModal.show(); // Show the admin modal when a personal alert is received
                         } // Refresh grid with new data
 
