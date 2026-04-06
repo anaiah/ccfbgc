@@ -1092,8 +1092,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const loginForm = document.getElementById('loginForm');
     const inputEmail = document.getElementById('inputEmail');
 
+    //================LISTENER FOR CHART MODAL SHOW
     if (adminInputModalElement) {
         adminInputModalElement.addEventListener('shown.bs.modal', function () {
+            ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
             console.log('Admin Modal is fully open. Time to load chart data!');
         });
     }
