@@ -114,7 +114,7 @@ export function renderPerformanceChart(apiData) {
         legend: { position: 'top' }
     };
 
-    const chart = new ApexCharts(document.querySelector("ccfbgcchart"), options);
+    const chart = new ApexCharts(document.querySelector("#ccfbgcchart"), options);
     chart.render();
 }
 
