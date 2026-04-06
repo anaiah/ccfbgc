@@ -41,15 +41,6 @@ export function initGrid() {
     xgrid = new gridjs.Grid({
         
         columns:[
-            { 
-                name: "FY Target", 
-                formatter: (cell) => { 
-                    return gridjs.html(`
-                    <span style="background: #f1f5f9; color: #64748b; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: bold; border: 1px solid #e2e8f0;">
-                        ${cell}
-                    </span>
-                `)}
-            },
 
             { 
                 name: "Ministry", 
@@ -61,6 +52,16 @@ export function initGrid() {
                     </span>
                 `)}
             },
+            { 
+                name: "FY Target", 
+                formatter: (cell) => { 
+                    return gridjs.html(`
+                    <span style="background: #f1f5f9; color: #64748b; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: bold; border: 1px solid #e2e8f0;">
+                        ${cell}
+                    </span>
+                `)}
+            },
+
             ...monthColumns //spreads the 12 month objects into the columns array
         ],
 
