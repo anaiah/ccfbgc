@@ -531,3 +531,29 @@
 #attendance-grid .gridjs-td:nth-child(2) {
     min-width: 200px !important;
 }
+
+/* 1. Make the first column (FY Target) sticky */
+.gridjs-th:nth-child(1), 
+.gridjs-td:nth-child(1) {
+    position: sticky !important;
+    left: 0;
+    z-index: 2; /* Keeps it on top of scrolling months */
+    background-color: #f8fafc; /* Match your "Pill" background color */
+}
+
+/* 2. Make the second column (Ministry) sticky */
+/* You must set 'left' to the exact width of the first column (e.g., 120px) */
+.gridjs-th:nth-child(2), 
+.gridjs-td:nth-child(2) {
+    position: sticky !important;
+    left: 120px; 
+    z-index: 2;
+    background-color: #f1f5f9; /* Match your "Pill" background color */
+    border-right: 2px solid #e2e8f0; /* Adds a visual "border" to show the split */
+}
+
+/* 3. Ensure the headers stay above the scrolling data */
+.gridjs-th:nth-child(1), 
+.gridjs-th:nth-child(2) {
+    z-index: 3; 
+}
