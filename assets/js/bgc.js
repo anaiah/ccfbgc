@@ -530,9 +530,18 @@ fetch('https://your-server/xls-export', {
         }) 
     },
 
-    savetarget:(xform)=>{
-        console.log(xform)
-        //ccfgrid.saveTarget(xform)
+    savetarget:( formElement)=>{
+        console.log(formElement)
+
+        let dataformData = new FormData(formElement);
+        let objForm = {};
+        
+        for (var key of dataformData.keys()) {
+            objForm[key] = dataformData.get(key);
+        }
+
+        ccfgrid.saveTarget(objForm)
+        
     }//end savetarget
 
 }//end bgc
