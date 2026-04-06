@@ -87,7 +87,7 @@ export function renderPerformanceChart(apiData) {
     const options = {
         series: series,
         chart: {
-            height: 450,
+            height: 300,
             type: 'line', // Base type must be 'line' for mixed charts
             stacked: false,
         },
