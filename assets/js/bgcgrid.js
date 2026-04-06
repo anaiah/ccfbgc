@@ -282,10 +282,8 @@ export function renderPerformanceChart(apiData) {
         const ministryName = row[1];       // The Ministry Name
         const monthlyData = row.slice(2).map(v => {
             const n = Number(v);
-            return isNan(n) ? 0 : n;
+            return isNaN(n) ? 0 : n      // 1. Add the BAR (Actuals)
         });
-
-        // 1. Add the BAR (Actuals)
         chartSeries.push({
             name: `${ministryName} Actual`,
             type: 'column',
