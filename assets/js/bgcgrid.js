@@ -15,10 +15,11 @@ export function initGrid() {
         resizable: true,
         //search: true,
         width: '100%',
-        autoWidth: true,
+        autoWidth: false
         style:{
             table: {
-                'white-space': 'nowrap' // Prevent text from wrapping in cells
+                'min-width':'1200px',
+                //'white-space': 'nowrap' // Prevent text from wrapping in cells
             }
         },
         className: {

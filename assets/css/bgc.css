@@ -480,3 +480,21 @@
   width: 10%;
 } */
 
+/* 1. Force the grid to allow horizontal scrolling */
+.gridjs-wrapper {
+    overflow-x: auto !important;
+    display: block;
+}
+
+/* 2. Prevent the text from overlapping and force columns to expand */
+.gridjs-td, .gridjs-th {
+    white-space: nowrap !important;
+    padding: 12px 15px !important;
+    min-width: 100px; /* Ensures Jan/Feb aren't too tiny */
+}
+
+/* 3. Give the Ministry column a bit more breathing room */
+.gridjs-td:nth-child(2) {
+    min-width: 200px;
+}
+
