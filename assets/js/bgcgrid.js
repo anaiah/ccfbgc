@@ -44,7 +44,7 @@ export function initGrid() {
 
             { 
                 name: "Ministry", 
-                width: '200px',
+                width: '150px',
                 formatter: (cell) => { 
                     return gridjs.html(`
                     <span style="background: #f1f5f9; color: #1e293b; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: bold; border: 1px solid #e2e8f0;">
@@ -119,75 +119,6 @@ export async function loadGridData() {
 }
 
 //==== for loading charts
-// export function renderPerformanceChart(apiData) {
-//     // 1. Get the "FY Target" (The Red Line) 
-//     // We'll take the average target or the first one as the benchmark
-//     const targetData = apiData.data.map(row => row[0]); // All targets
-//     const avgTarget = targetData.reduce((a, b) => a + b, 0) / targetData.length;
-
-//     // 2. Prepare the Series (Ministries as Bars)
-//     const series = apiData.data.map(row => {
-//         return {
-//             name: row[1], // Ministry Name
-//             type: 'column', // Bar
-//             data: row.slice(2) // Jan - Dec values
-//         };
-//     });
-
-//     // 3. Add the Target Line (The Red Line)
-//     series.push({
-//         name: 'FY Target Benchmark',
-//         type: 'line', // Line
-//         data: Array(12).fill(Math.round(avgTarget)) // Horizontal line across 12 months
-//     });
-
-//     const options = {
-//         series: series,
-//         chart: {
-//             height: 250,
-//             type: 'line', // Base type must be 'line' for mixed charts
-//             stacked: false,
-//             toolbar: { show: false },
-//             parentHeightOffset: 0
-//         },
-//         grid:{
-//             padding: {
-//                 left: 0,
-//                 right: 0,
-//                 top: 0,
-//                 bottom: 0
-//             }   
-//         },
-
-//         stroke: {
-//             width: [1, 1, 1, 1, 1, 1, 1, 3], // Thicker stroke for the last series (the Line)
-//             curve: 'smooth'
-//         },
-//         colors: ['#008FFB', '#00E396', '#FEB019', '#775DD0', '#3F51B5', '#03A9F4', '#FF4560'], // Red is the last one
-//         plotOptions: {
-//             bar: { columnWidth: '50%' }
-//         },
-//         fill: {
-//             opacity: [0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 1],
-//         },
-//         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-//         markers: { size: 0 },
-//         yaxis: {
-//             title: { text: 'Headcount' },
-//         },
-//         tooltip: {
-//             shared: true,
-//             intersect: false,
-//         },
-//         legend: { position: 'top',fontSize: '12px', offsetY:0 },
-//     };
-
-//     const chart = new ApexCharts(document.querySelector("#ccfbgcchart"), options);
-//     chart.render();
-// }
-
-
-
 //tis is also new but a horizontal flat line for target instead of the spike
 export function renderPerformanceChart(apiData) {
     const chartElement = document.querySelector("#ccfbgcchart");

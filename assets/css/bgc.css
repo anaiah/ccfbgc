@@ -503,7 +503,7 @@
 
 /* 3. Give the Ministry column a bit more breathing room */
 .gridjs-td:nth-child(1) {
-    min-width: 200px;
+    min-width: 150px;
 }
 /* 1. Force the container to allow horizontal scrolling */
 #attendance-grid .gridjs-wrapper {
@@ -529,7 +529,7 @@
 /* 4. Ensure the Ministry column has enough space for long names */
 #attendance-grid .gridjs-th:nth-child(1),
 #attendance-grid .gridjs-td:nth-child(1) {
-    min-width: 200px !important;
+    min-width: 150px !important;
 }
 
 /* 1. Make the first column (FY Target) sticky */
