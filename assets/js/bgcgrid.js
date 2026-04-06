@@ -54,7 +54,7 @@ export function initGrid() {
 
         data: [], // Make sure this is an empty array, not null
         //sort: true,
-        resizable: true,
+        resizable: false,
         //search: true,
         width: '100%',
         autoWidth: false,
