@@ -2153,3 +2153,5 @@ const util = {
 
     
 }//****** end obj */
+
+window.util = util; // Make util globally accessible

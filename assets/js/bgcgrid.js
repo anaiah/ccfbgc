@@ -33,6 +33,8 @@ export function initGrid() {
 }
 
 export async function loadGridData() {
+    util.toggleButtonLoading("adminInputModalLabel", "Loading pls wait...", true);
+
     if((!xgrid)) {
         console.error("Grid not initialized. Call initGrid() first.");
         return;
@@ -51,13 +53,15 @@ export async function loadGridData() {
     } catch (err) {
         console.error("Grid Load Error:", err);
     }
+    util.toggleButtonLoading("adminInputModalLabel", null, false);
+
 
 }
 
 //get links for the user to show
 export const getlinks = (grp) => {
     console.log('Getting links for group:', grp);
-    
+
     switch(grp) {
         case 4: //bossing   
             document.getElementById('loginli').classList.add('d-none')//hide login already
