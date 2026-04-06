@@ -527,8 +527,8 @@
 }
 
 /* 4. Ensure the Ministry column has enough space for long names */
-#attendance-grid .gridjs-th:nth-child(2),
-#attendance-grid .gridjs-td:nth-child(2) {
+#attendance-grid .gridjs-th:nth-child(1),
+#attendance-grid .gridjs-td:nth-child(1) {
     min-width: 200px !important;
 }
 
