@@ -731,7 +731,7 @@ fetch('https://your-server/xls-export', {
                 ministry: bgc.belongMinistry || 'Unknown Ministry'
             })
         }) 
-    }
+    },
 }//end bgc
 
 //swindow.bgc = bgc; // expose to global
@@ -757,7 +757,14 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         logoutLi.classList.remove('d-none'); // show only when logged in
         loginli.classList.add('d-none');    // hide login link when logged in
-    }   
+
+        //if prviously logged in, load segments and credentials immediately
+        bgc.getSegments();
+        bgc.getCredentials();
+        ccfgrid.getlinks(user.grp_id) //get links for grid display
+
+
+    }  
 
     /* CAROUSEL */
 
@@ -872,18 +879,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     bgc.getCredentials();
                     
                     //bgc.checkNavLinks(); //update nav links immediately
-                    document.getElementById('loginli').classList.add('d-none')//show logout link already
-                    
-                    document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
-                    
-                    console.log('Login simulated for standard user.');
-                    
-                    document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
-                    document.getElementById('dataentryli').classList.remove('d-none')//show data entry link already
+                   
                     
                     break;
 
-                case 4: //load for admin
+                case 4: //load for admin/ovrseer
 
                     //after login get modal listener for displaying grid
                     const adminModalEl = document.getElementById('adminInputModal');
@@ -896,11 +896,11 @@ document.addEventListener("DOMContentLoaded", function() {
                         });
                     }
 
-                    console.log('Login simulated for admin user.');
+                    //console.log('Login simulated for admin user.');
 
-                    document.getElementById('loginli').classList.add('d-none')//show logout link already
-                    document.getElementById('gridli').classList.remove('d-none')//show logout link already
-                    document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
+                    // document.getElementById('loginli').classList.add('d-none')//show logout link already
+                    // document.getElementById('gridli').classList.remove('d-none')//show logout link already
+                    // document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
                    
                      //to bossings/owners only....
                     const privychannel = pusher.subscribe(`user-owners`); //subscribe to private channel for this user
@@ -923,6 +923,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     break;
             }//ENDSWITCH
+
+            //getlinks
+            ccfgrid.getlinks(e.detail.data.grp_id) //get links for grid display
+                    
         }, 300);
 
         //=========PUSHER NOTIFICATION

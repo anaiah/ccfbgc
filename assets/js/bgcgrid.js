@@ -54,9 +54,36 @@ export async function loadGridData() {
 
 }
 
+//get links for the user to show
+export const getlinks = (grp) => {
+    switch(grp) {
+        case 4: //bossing   
+            document.getElementById('loginli').classList.add('d-none')//hide login already
+            document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
+            
+            document.getElementById('gridchartli').classList.remove('d-none')//show grid chart
+            document.getElementById('kpili').classList.remove('d-none')//show kpi data entry
+            
+            break;
+        case 1:
+        case 2:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            document.getElementById('loginli').classList.add('d-none')//hide login already
+            document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
+            
+            document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
+            document.getElementById('dataentryli').classList.remove('d-none')//show data entry link already     //owner
+    }//endswitch
+
+                
+}
 
 //======== Exported API ========
 export const ccfgrid = {
      get xgrid() { return xgrid; },
-     loadGridData
+     loadGridData,
+     getlinks
 }
