@@ -228,7 +228,9 @@ export function xrenderPerformanceChart(apiData) {
         chart: {
             height: 250,
             type: 'line', // Base type for mixed charts
-            toolbar: { show: false }
+            toolbar: { show: false },
+            redrawOnParentResize: false,
+            redrawOnWindowResize: false,
         },
         stroke: {
             width: [0, 3, 0, 3, 0, 3], // 0 for Bars (no border), 3 for Lines (the spike)
