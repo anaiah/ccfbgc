@@ -12,6 +12,7 @@ export function initGrid() {
     .map(month => ({
         name: month,
         width: '50px',
+        attributes:{ style: 'text-align: center;' },
         formatter: (cell, row) => {
             const val = Number(cell);
             const target = Number(row.cells[0].data); // row.cells[0] is "FY Target"
@@ -40,14 +41,23 @@ export function initGrid() {
         columns:[
             { 
                 name: "FY Target", 
-                width: '100px',
-                formatter: (cell) => { return gridjs.html(`<b>${cell}</b>`) }
-
+                formatter: (cell) => { 
+                    return gridjs.html(`
+                    <span style="background: #f1f5f9; color: #64748b; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: bold; border: 1px solid #e2e8f0;">
+                        ${cell}
+                    </span>
+                `)}
             },
+
             { 
                 name: "Ministry", 
                 width: '200px',
-                formatter: (cell) => { return gridjs.html(`<b>${cell}</b>`) }
+                formatter: (cell) => { 
+                    return gridjs.html(`
+                    <span style="background: #f1f5f9; color: #1e293b; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: bold; border: 1px solid #e2e8f0;">
+                        ${cell}
+                    </span>
+                `)}
             },
             ...monthColumns //spreads the 12 month objects into the columns array
         ],
