@@ -19,6 +19,7 @@ export function initGrid() {
         style:{
             table: {
                 'min-width':'1200px',
+                'font-size': '12px',
                 //'white-space': 'nowrap' // Prevent text from wrapping in cells
             }
         },
