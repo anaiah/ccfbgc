@@ -8,8 +8,25 @@ export function initGrid() {
         return null;
     }
  
+    const monthColumns = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        .map(month=>({
+            name: month,
+            width: '80px',//set ur column width here
+            formatter: (cell) => {
+                const value = cell.getData()[cell.getColumn().getIndex()];
+                return value > 0 ? `<span style="color:green;font-weight:bold;">${value}</span>` : `<span style="color:red;">${value}</span>`;
+            }
+        }))
+    
     xgrid = new gridjs.Grid({
-        columns: ["FY Target", "Ministry", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        //columns: ["FY Target", "Ministry", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        
+        columns:[
+            { name: "FY Target", width: '100px' },
+            { name: "Ministry", width: '200px' },
+            ...monthColumns //spreads the 12 month objects into the columns array
+        ],
+
         data: [], // Make sure this is an empty array, not null
         //sort: true,
         resizable: true,
@@ -297,7 +314,6 @@ export function renderPerformanceChart(apiData) {
         padding: { left: 10, right: 10 }
     }
     };
-
 
     window.myChart = new ApexCharts(chartElement, options);
     window.myChart.render();
