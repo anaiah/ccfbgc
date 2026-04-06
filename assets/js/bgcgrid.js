@@ -317,7 +317,7 @@ export function renderPerformanceChart(apiData) {
             breakpoint: 480,
             options: {
                 chart: {
-                    height: 300
+                    height: 250
                 },
                 xaxis: {
                     labels: {
