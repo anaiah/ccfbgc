@@ -19,17 +19,19 @@ export function initGrid() {
 
             // 1. If no data, show a light gray dash (makes the table easier to read)
             if (val === 0 || !val) {
-                return gridjs.html('<span style="color: #ccc;">—</span>');
+                return gridjs.html('<div style="text-align: center; color:#cbd5e1; font-weight:300"></div>');
             }
 
             // 2. Add color logic (Green if it hit the target, Orange if not)
-            const color = val >= target ? '#28a745' : '#fd7e14';
-            const weight = val >= target ? 'bold' : 'bold'; //supposd to be 'normal' but bold looks better for both cases
+            const color = val >= target ? '#059669' : '#4f46e5';
+            const weight = val >= target ? '700' : '500'; //supposd to be 'normal' but bold looks better for both cases
 
             // 3. Return the formatted HTML
             return gridjs.html(`
-                <div style="color: ${color}; font-weight: ${weight}; text-align: center;">
+                <div style="color: ${color};font-size:0.95em; font-weight: ${weight}; text-align: center;">
                     ${val}
+                    ${val >= target ? gridjs.html('<small>✓</small>') : gridjs.html('<small>✗</small>')}
+                
                 </div>
             `);
         }
