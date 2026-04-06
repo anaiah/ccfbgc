@@ -559,6 +559,15 @@
 }
 
 .chart-scroll-wrapper {
-    overflow-x: auto;
+    height:380px;
+    overflow-x: hidden; /* Hide default scrollbar */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+#ccfbgcchart {
+    min-height:350px; /* Ensure the chart is wide enough to show all months */
+overflow:hidden;
+touch-action: pan-y !important;
+}
+apexcharts-canvas {
+    max-width:100% !important; /* Allow vertical scrolling on mobile */
 }
