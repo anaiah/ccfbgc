@@ -714,7 +714,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     if (adminModalEl) {
                         adminModalEl.addEventListener('shown.bs.modal', function () {   
-                            //ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
+                            ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
                         });
                     }
 
