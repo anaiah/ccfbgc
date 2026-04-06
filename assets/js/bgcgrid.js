@@ -23,7 +23,7 @@ export function initGrid() {
 
             // 2. Add color logic (Green if it hit the target, Orange if not)
             const color = val >= target ? '#28a745' : '#fd7e14';
-            const weight = val >= target ? 'bold' : 'normal';
+            const weight = val >= target ? 'bold' : 'bold'; //supposd to be 'normal' but bold looks better for both cases
 
             // 3. Return the formatted HTML
             return gridjs.html(`
