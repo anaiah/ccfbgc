@@ -42,13 +42,13 @@ export function initGrid() {
             { 
                 name: "FY Target", 
                 width: '100px',
-                formatter: (cell) => { gridjs.html(`<b>${cell}</b>`) }
+                formatter: (cell) => { return gridjs.html(`<b>${cell}</b>`) }
 
             },
             { 
                 name: "Ministry", 
                 width: '200px',
-                formatter: (cell) => { gridjs.html(`<b>${cell}</b>`) }
+                formatter: (cell) => { return gridjs.html(`<b>${cell}</b>`) }
             },
             ...monthColumns //spreads the 12 month objects into the columns array
         ],
