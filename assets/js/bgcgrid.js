@@ -9,21 +9,47 @@ export function initGrid() {
     }
  
     const monthColumns = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        .map(month=>({
-            name: month,
-            width: '80px',//set ur column width here
-            formatter: (cell) => {
-                const value = cell.getData()[cell.getColumn().getIndex()];
-                return value > 0 ? `<span style="color:green;font-weight:bold;">${value}</span>` : `<span style="color:red;">${value}</span>`;
+    .map(month => ({
+        name: month,
+        width: '90px',
+        formatter: (cell, row) => {
+            const val = Number(cell);
+            const target = Number(row.cells[0].data); // row.cells[0] is "FY Target"
+
+            // 1. If no data, show a light gray dash (makes the table easier to read)
+            if (val === 0 || !val) {
+                return gridjs.html('<span style="color: #ccc;">—</span>');
             }
-        }))
+
+            // 2. Add color logic (Green if it hit the target, Orange if not)
+            const color = val >= target ? '#28a745' : '#fd7e14';
+            const weight = val >= target ? 'bold' : 'normal';
+
+            // 3. Return the formatted HTML
+            return gridjs.html(`
+                <div style="color: ${color}; font-weight: ${weight}; text-align: center;">
+                    ${val}
+                </div>
+            `);
+        }
+    }));
+
     
     xgrid = new gridjs.Grid({
         //columns: ["FY Target", "Ministry", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         
         columns:[
-            { name: "FY Target", width: '100px' },
-            { name: "Ministry", width: '200px' },
+            { 
+                name: "FY Target", 
+                width: '100px',
+                formatter: (cell) => { gridjs.html(`<b>${cell}</b>`) }
+
+            },
+            { 
+                name: "Ministry", 
+                width: '200px',
+                formatter: (cell) => { gridjs.html(`<b>${cell}</b>`) }
+            },
             ...monthColumns //spreads the 12 month objects into the columns array
         ],
 
@@ -41,14 +67,15 @@ export function initGrid() {
             }
         },
         className: {
-            table: 'table table-bordered' // This makes it look like a Bootstrap table
+            //table: 'table table-bordered' // This makes it look like a Bootstrap table
         }
     }).render(document.getElementById("attendance-grid"));
     
     return xgrid;
 
-}
+}//end init grid
 
+//load data to grid from the backend API
 export async function loadGridData() {
     util.toggleButtonLoading("adminInputModalLabel", "Loading pls wait...", true);
 
