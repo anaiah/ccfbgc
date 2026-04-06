@@ -398,14 +398,14 @@ export async function saveTarget(formData) {
             body: JSON.stringify(formData)
         });
 
-        if (!response.ok) {
+        const result = await response.json();
+
+        if (!result.ok) {
             const errorData = await response.json().catch(() => ({ message: 'Server error' }));
             throw new Error(`HTTP error! Status: ${response.status} - ${errorData.message || response.statusText}`);
         }
 
-        const data = await response.json();
-
-        if(data.ok){
+        if(result.ok){
 
             util.Toasted('Data Saved Successfully',2000,false)
             util.speak('data saved successfully!')
