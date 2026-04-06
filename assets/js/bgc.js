@@ -725,7 +725,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     // document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
                    
                      //to bossings/owners only....
-                    const privychannel = pusher.subscribe(`user-owners`); //subscribe to private channel for this user
+                    const privychannel = pusher.subscribe(`users-owners`); //subscribe to private channel for this user
 
                     privychannel.bind('personal-alert', function(data) {
                         console.log('Received Pusher event for Owners:', data);
