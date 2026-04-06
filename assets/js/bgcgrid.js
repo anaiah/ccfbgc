@@ -186,70 +186,7 @@ export async function loadGridData() {
 //     chart.render();
 // }
 
-//this is the new but with spike fy target instead of the average line
-export function xrenderPerformanceChart(apiData) {
-    const chartElement = document.querySelector("#ccfbgcchart");
-    if (!chartElement) return;
 
-    if (window.myChart) {
-        window.myChart.destroy();
-    }
-
-    // Prepare the final series array
-    const chartSeries = [];
-
-    apiData.data.forEach(row => {
-        const targetValue = Number(row[0]); // The 200 or 300
-        const ministryName = row[1];       // The Name
-        const monthlyData = row.slice(2).map(v => Number(v)); // Jan-Dec as Numbers
-
-        // 1. ADD THE BAR (Actual Headcount)
-        chartSeries.push({
-            name: `${ministryName} (Actual)`,
-            type: 'column',
-            data: monthlyData
-        });
-
-        // 2. ADD THE LINE (The Spike)
-        // If headcount > 0, show the Target value. Otherwise, show 0.
-        const spikeData = monthlyData.map(val => {
-            return val > 0 ? targetValue : 0;
-        });
-
-        chartSeries.push({
-            name: `${ministryName} Target`,
-            type: 'line',
-            data: spikeData
-        });
-    });
-
-    const options = {
-        series: chartSeries,
-        chart: {
-            height: 250,
-            type: 'line', // Base type for mixed charts
-            toolbar: { show: false },
-            redrawOnParentResize: false,
-            redrawOnWindowResize: false,
-        },
-        stroke: {
-            width: [0, 3, 0, 3, 0, 3], // 0 for Bars (no border), 3 for Lines (the spike)
-            curve: 'smooth'
-        },
-        colors: ['#008FFB', '#FF4560', '#00E396', '#775DD0', '#FEB019', '#3F51B5'], // Alternate Bar/Line colors
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        markers: {
-            size: 4 // Adds dots to the line "spikes"
-        },
-        yaxis: {
-            title: { text: 'Headcount' }
-        },
-        legend: { position: 'top' }
-    };
-
-    window.myChart = new ApexCharts(chartElement, options);
-    window.myChart.render();
-}
 
 //tis is also new but a horizontal flat line for target instead of the spike
 export function renderPerformanceChart(apiData) {
@@ -312,7 +249,9 @@ export function renderPerformanceChart(apiData) {
             height: 250,
             type: 'line',
             toolbar: { show: false },
-            parentHeightOffset: 0
+            zoom:{ enabled: false },
+            redrawOnParentResize: false,
+            redrawOnWindowResize: false,
         },
         tooltip:{ enabled: false }, // Disable tooltips for a cleaner look
 
