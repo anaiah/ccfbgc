@@ -130,7 +130,7 @@ export async function loadGridData() {
 // }
 
 //this is the new but with spike fy target instead of the average line
-export function renderPerformanceChart(apiData) {
+export function xrenderPerformanceChart(apiData) {
     const chartElement = document.querySelector("#ccfbgcchart");
     if (!chartElement) return;
 
