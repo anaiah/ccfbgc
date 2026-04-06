@@ -280,7 +280,10 @@ export function renderPerformanceChart(apiData) {
 
         const targetValue = Number(row[0]); // The 200 or 300
         const ministryName = row[1];       // The Ministry Name
-        const monthlyData = row.slice(2).map(v => Number(v));
+        const monthlyData = row.slice(2).map(v => {
+            const n = Number(v);
+            return isNan(n) ? 0 : n;
+        });
 
         // 1. Add the BAR (Actuals)
         chartSeries.push({
