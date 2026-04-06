@@ -64,16 +64,24 @@
 .chart-placeholder {
     background-color: #f8f9fa;
     border: 1px dashed #ccc;
-    padding: 50px 20px;
+    padding: 20px;
     text-align: center;
     color: #6c757d;
     font-style: italic;
-    height: 300px; /* Adjust height as needed */
+    margin-bottom: 20px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+.chart-row{
+  width:100%;
+  max-width:1200px;
+}
 
+#ccbgcchart {
+  width: 100%;
+}
 /*  about section */
 /* ===== About Section ===== */
 
