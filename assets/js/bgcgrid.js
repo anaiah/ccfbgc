@@ -15,7 +15,7 @@ export function initGrid() {
         resizable: true,
         //search: true,
         width: '100%',
-        autoWidth: false
+        autoWidth: false,
         style:{
             table: {
                 'min-width':'1200px',
