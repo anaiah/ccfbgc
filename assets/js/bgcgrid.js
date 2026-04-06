@@ -312,6 +312,8 @@ export function renderPerformanceChart(apiData) {
             toolbar: { show: false },
             parentHeightOffset: 0
         },
+        tooltip:{ enabled: false }, // Disable tooltips for a cleaner look
+        
          // --- ADD THIS BLOCK ---
         responsive: [{
             breakpoint: 480,
