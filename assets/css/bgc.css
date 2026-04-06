@@ -488,75 +488,40 @@
   width: 10%;
 } */
 
-/* 1. Force the grid to allow horizontal scrolling */
-.gridjs-wrapper {
-    overflow-x: auto !important;
-    display: block;
-}
-
-/* 2. Prevent the text from overlapping and force columns to expand */
-.gridjs-td, .gridjs-th {
-    white-space: nowrap !important;
-    padding: 12px 15px !important;
-    min-width: 50px; /* Ensures Jan/Feb aren't too tiny */
-}
-
-/* 3. Give the Ministry column a bit more breathing room */
+/* 1. Freeze Column 1 (Ministry) */
+.gridjs-th:nth-child(1), 
 .gridjs-td:nth-child(1) {
-    min-width: 150px;
-}
-/* 1. Force the container to allow horizontal scrolling */
-#attendance-grid .gridjs-wrapper {
-    overflow-x: auto !important;
-    display: block !important;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iPhone */
-}
-
-/* 2. Set a MINIMUM width for the entire table so it doesn't squish */
-#attendance-grid .gridjs-table {
-    min-width: 1200px !important; /* Forces the table to be 1200px wide even on mobile */
-    table-layout: auto !important;
-}
-
-/* 3. Prevent text from wrapping or overlapping */
-#attendance-grid .gridjs-th, 
-#attendance-grid .gridjs-td {
-    white-space: nowrap !important;
-    text-overflow: unset !important;
-    overflow: visible !important;
-}
-
-/* 4. Ensure the Ministry column has enough space for long names */
-#attendance-grid .gridjs-th:nth-child(1),
-#attendance-grid .gridjs-td:nth-child(1) {
+    position: sticky !important;
+    left: 0; /* Starts at the very left edge */
+    z-index: 3 !important;
+    background-color: #f8fafc !important; 
+    width: 150px !important;
     min-width: 150px !important;
 }
 
-/* 1. Make the first column (FY Target) sticky */
-.gridjs-th:nth-child(1), 
-.gridjs-td:nth-child(1) {
-    position: sticky !important;
-    left: 0;
-    z-index: 2; /* Keeps it on top of scrolling months */
-    background-color: #f8fafc; /* Match your "Pill" background color */
-}
-
-/* 2. Make the second column (Ministry) sticky */
-/* You must set 'left' to the exact width of the first column (e.g., 120px) */
+/* 2. Freeze Column 2 (FY Target) */
+/* This MUST be 150px because that is where Column 1 ends */
 .gridjs-th:nth-child(2), 
 .gridjs-td:nth-child(2) {
     position: sticky !important;
-    left: 100px; 
-    z-index: 2;
-    background-color: #f1f5f9; /* Match your "Pill" background color */
-    border-right: 2px solid #e2e8f0; /* Adds a visual "border" to show the split */
+    left: 150px; /* Starts exactly where the first column finishes */
+    z-index: 3 !important;
+    background-color: #ffffff !important;
+    width: 100px !important;
+    min-width: 100px !important;
+    border-right: 2px solid #64748b; /* The 'divider' line */
 }
 
-/* 3. Ensure the headers stay above the scrolling data */
-.gridjs-th:nth-child(1), 
-.gridjs-th:nth-child(2) {
-    z-index: 3; 
+/* 3. Global fixes to prevent 'Ghosting' */
+.gridjs-wrapper {
+    overflow-x: auto !important;
 }
+
+.gridjs-table {
+    min-width: 1200px !important; /* Forces the scroll to happen */
+    table-layout: fixed !important;
+}
+
 
 .chart-scroll-wrapper {
     overflow-x: auto;
