@@ -54,6 +54,7 @@ export function initGrid() {
             },
             { 
                 name: "FY Target", 
+                width: '100px',
                 formatter: (cell) => { 
                     return gridjs.html(`
                     <span style="background: #f1f5f9; color: #64748b; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: bold; border: 1px solid #e2e8f0;">
