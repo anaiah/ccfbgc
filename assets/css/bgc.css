@@ -22,8 +22,8 @@
     to bottom,
        rgba(0, 0, 0, 0.9) 100%,
       rgba(0, 0, 0, 0.7) 70%,
- 
-  );/*
+      rgba(0, 0, 0, 0.5) 50%,
+    );/*
      Explanation of gradient:
      - `to bottom right`: Makes the gradient go from top-left to bottom-right.
      - `#0a1a2a`: A very dark, almost black, subtle blue-grey.
