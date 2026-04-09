@@ -14,12 +14,14 @@
 /* Hero */
 .hero-section {
   position: relative;
-  min-height: 100vh;
+  min-height: 100vh; /* ADJUSTED: This makes the hero section take up 80% of the viewport height */
   padding-top: 70px; /* adjust to your navbar height */
-  background: url('../img/church1.jpg') center bottom / cover no-repeat;
-
+  background-color: #000; /* Fallback background color for slight depth if images don't load */
+  padding-left: 0;
+  padding-right: 0;
 }
 
+/* MODIFY this existing rule in bgc.css */
 .hero-overlay {
   position: absolute;
   inset: 0;
@@ -28,7 +30,74 @@
     rgba(0, 0, 0, 0.1) 0%,
     rgba(0, 0, 0, 0.7) 70%,
     rgba(0, 0, 0, 0.9) 100%
-  ); /* blackish at bottom to match navbar */
+  );
+  transition: opacity 0.5s ease-in-out; /* ONLY opacity in transition for the overlay */
+}
+
+/* MODIFY this rule in bgc.css */
+.hero-overlay.hidden-overlay {
+  opacity: 0 !important;           /* Force opacity to 0 */
+  background: none !important;     /* Force background to nothing */
+  pointer-events: none !important; /* Allow clicks to pass through */
+  visibility: hidden !important;   /* Also hide from accessibility tree */
+}
+/* MODIFY this rule in bgc.css */
+.hero-content-hide {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  /* Use 'display: none !important;' if the above doesn't work, but it will kill transition */
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Smooth transition for content */
+}
+
+
+
+/* Hero Carousel Background Images & Zoom Effect */
+.hero-carousel-slide {
+  background-size: 150%; /* Zooms OUT the image by 20%, making subjects appear smaller */
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-size 0.8s ease-in-out; /* Smooth transition on slide change */
+}
+
+/* Optional: Slightly zoom in the active slide for a subtle effect */
+.carousel-item.active .hero-carousel-slide {
+  background-size: 100%; /* Active slide shows the base size */
+}
+
+/* Adjust initial zoom out percentage as needed */
+/* For example, if you want subjects to appear even smaller, use 130% or 140% */
+/* If you want them slightly larger but still "zoomed out" from default cover, use 110% */
+
+/* Define images for each slide (Landscape for desktop) */
+.hero-slide-1 {
+  background-image: url('../img/church1.jpg');
+}
+.hero-slide-2 {
+  background-image: url('../img/ido-big.jpg');
+}
+.hero-slide-3 {
+  background-image: url('../img/unravel-big.jpg');
+}
+
+/* Responsive Images for Mobile (Portrait) */
+@media (max-width: 768px) {
+  .hero-slide-1 {
+    background-image: url('../img/church1.jpg');
+    background-size: 150%; /* Portrait images might need more zoom out to look good */
+  }
+  .hero-slide-2 {
+    background-image: url('../img/ido-small.jpg');
+    background-size: 150%;
+  }
+  .hero-slide-3 {
+    background-image: url('../img/unravel-small.jpg');
+    background-size: 150%;
+  }
+  /* Ensure active slide transition also considers mobile zoom */
+  .carousel-item.active .hero-carousel-slide {
+    background-size: 100%; /* Reset to base size for active slide on mobile too */
+  }
 }
 
 .text-shadow {
@@ -117,7 +186,7 @@
 
   /* <<< ADJUST CARD TRANSPARENCY HERE >>> */
   /* Last number (0.85) is opacity: 1 = solid white, 0 = fully transparent */
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.75);
 
   border-radius: 1rem;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
@@ -242,23 +311,28 @@
 }
 
 /* White semi‑transparent cards */
+/* White semi‑transparent cards */
+/* White semi‑transparent cards */
 .mv-card {
   position: relative;
   z-index: 1;
-  background: rgba(255, 255, 255, 0.55);
+  /* <<< ADJUSTED CARD TRANSPARENCY & BORDER TO MATCH IMAGE >>> */
+  background: rgba(255, 255, 255, 0.80); /* Less transparent: 88% opaque white */
   border-radius: 1rem;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3); /* Slightly softer shadow */
   padding: 2rem 2.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.95); /* More visible, less transparent white border */
 }
 
-/* Card text colors */
+/* ADJUSTED Card text colors to match image */
 .mv-card h3 {
-  color: #111;
+  color: #212529; /* Very dark grey, almost black (Bootstrap's $dark) */
 }
 .mv-card p {
-  color: #333;
+  color: #6c757d; /* Lighter grey for paragraphs (Bootstrap's $muted) */
 }
+
+
 
 /* Reveal-on-scroll base */
 .reveal-on-scroll {

@@ -589,6 +589,59 @@ document.addEventListener("DOMContentLoaded", function() {
 
     }  
 
+    /* FOR HERO CAROUSEL */
+    // REPLACE your existing JS for carousel overlay control in assets/js/bgc.js
+    console.log("DOM fully loaded and parsed. Initializing hero carousel logic.");
+    const heroCarousel = document.getElementById('heroCarousel');
+    const heroOverlay = document.querySelector('.hero-overlay');
+    // Correctly select the content container, which is directly inside hero-section and has class 'container'
+    const heroContentContainer = document.querySelector('.hero-section > .container'); 
+
+    if (!heroCarousel) {
+        console.error("Hero Carousel element not found. ID: #heroCarousel");
+        return;
+    }
+    if (!heroOverlay) {
+        console.error("Hero Overlay element not found. Class: .hero-overlay");
+        return;
+    }
+    if (!heroContentContainer) {
+        console.error("Hero Content Container element not found. Selector: .hero-section > .container");
+        return;
+    }
+
+    console.log("Hero Carousel, Overlay, and Content Container elements found.");
+
+    // Function to update visibility of both overlay and content
+    function updateHeroForeground(activeIndex) {
+        console.log(`Active slide index: ${activeIndex}`);
+        if (activeIndex === 1 || activeIndex === 2) { // For slides 2 and 3
+            heroOverlay.classList.add('hidden-overlay');
+            heroContentContainer.classList.add('hero-content-hide');
+            console.log("Added 'hidden-overlay' to overlay, 'hero-content-hide' to content container.");
+        } else { // For slide 1 (index 0)
+            heroOverlay.classList.remove('hidden-overlay');
+            heroContentContainer.classList.remove('hero-content-hide');
+            console.log("Removed classes from overlay and content container.");
+        }
+    }
+
+    // Initial check when the page loads
+    const initialActiveSlide = document.querySelector('#heroCarousel .carousel-item.active');
+    let initialActiveIndex = 0; 
+    if (initialActiveSlide) {
+        initialActiveIndex = Array.from(heroCarousel.querySelector('.carousel-inner').children).indexOf(initialActiveSlide);
+    }
+    updateHeroForeground(initialActiveIndex);
+
+    // Listen for slide changes
+    heroCarousel.addEventListener('slid.bs.carousel', (event) => {
+        const activeIndex = event.to; // Get the index of the newly active slide (0-based)
+        updateHeroForeground(activeIndex);
+    });
+
+    console.log("Hero carousel event listener attached.");
+
     /* CAROUSEL */
 
     // Define your array of image paths

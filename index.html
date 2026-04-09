@@ -1,139 +1,135 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCF BGC App - Empowering Church & Communities</title>
+    <title>CCF BGC - Empowering Church & Communities</title>
+    
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!-- Font Awesome for Icons (optional, but good for login form) -->
+    
+    <!-- Font Awesome & Tabler Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://googleapis.com">
-<link rel="preconnect" href="https://gstatic.com" crossorigin>
-<link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
-    <!---//toastify cdn-->
+    <!-- Toastify & Grid.js CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-   
-    <link rel="stylesheet" href="assets/css/bgc.css">   
-
-    <!-- apex charts -->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-    <!-- chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-
-    
-    <!-- The CSS Theme -->
     <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
 
-    <!-- The Grid.js Library -->
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/bgc.css">   
+
+    <!-- Scripts (Apex, Chart.js, Grid.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
-
-
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark navbar-overlay fixed-top p-0">
-  <div class="container-fluid px-2"> <!-- was: container -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-overlay fixed-top shadow-sm p-0">
+  <div class="container-fluid px-3">
     <a class="navbar-brand d-flex align-items-center mb-0 ps-1" href="#">
       <img src="assets/img/bgclogo.png" height="45" alt="CCF BGC logo">
     </a>
 
-    <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse"
+    <button class="navbar-toggler border-0 shadow-none me-2" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarNav" aria-controls="navbarNav"
             aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto me-2">
-        
-        <li class="nav-item" id="loginli">
-          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
-        </li>
-
-        <li class="nav-item d-none" id="kpili">
-          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#targetModal">KPI Entry</a>
-        </li>
-
-        <li class="nav-item d-none" id="gridchartli">
-          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#adminInputModal">Chart</a>
-        </li>
-
-
-        <li class="nav-item d-none" id="dataentryli">
-          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#dataInputModal">Data Entry</a>
-        </li>
-
-        <li class="nav-item d-none" id="roomresLi">
-          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#calendarModal">Room Reservation</a>
-        </li>
-        
-        <li class="nav-item">
-          <a class="nav-link" href="#about">About Us</a>
-        </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="#">Ministries</a>
-        </li>
-         -->
-        <li class="nav-item">
-          <a class="nav-link" href="#contact">Contact Us</a>
-        </li>
-
-        <li class="nav-item d-none" id="logoutLi">
-          <a id='logoutBtn' class="nav-link" href="javascript:void(0)">LogOut</a>
-        </li>
-        
+      <ul class="navbar-nav ms-auto me-2 gap-2 fw-semibold">
+        <li class="nav-item" id="loginli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
+        <li class="nav-item d-none" id="kpili"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#targetModal">KPI Entry</a></li>
+        <li class="nav-item d-none" id="gridchartli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#adminInputModal">Chart</a></li>
+        <li class="nav-item d-none" id="dataentryli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#dataInputModal">Data Entry</a></li>
+        <li class="nav-item d-none" id="roomresLi"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#calendarModal">Room Reservation</a></li>
+        <li class="nav-item"><a class="nav-link px-3" href="#about">About Us</a></li>
+        <li class="nav-item"><a class="nav-link px-3" href="#contact">Contact Us</a></li>
+        <li class="nav-item d-none" id="logoutLi"><a id='logoutBtn' class="nav-link px-3 text-danger" href="javascript:void(0)">LogOut</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
+
 <!-- Hero Section -->
-<section class="hero-section text-center d-flex align-items-center justify-content-center">
-  <div class="hero-overlay"></div>
-  <div class="container position-relative">
-    <h1 class="display-3 fw-bold mb-4 text-white text-shadow">
+<section class="hero-section text-center d-flex align-items-center justify-content-center overflow-hidden">
+  
+  <!-- Hero Carousel - This will serve as the dynamic background -->
+  <div id="heroCarousel" class="carousel slide position-absolute h-100 w-100" data-bs-ride="carousel" style="top: 0; left: 0; z-index: 0;">
+    <!-- Carousel Indicators (dots at the bottom) -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+
+    <!-- Carousel Inner (the slides themselves with background images) -->
+    <div class="carousel-inner h-100 w-100">
+      <!-- Slide 1 -->
+      <div class="carousel-item active h-100">
+        <div class="hero-carousel-slide hero-slide-1 h-100 w-100"></div>
+      </div>
+      <!-- Slide 2 -->
+      <div class="carousel-item h-100">
+        <div class="hero-carousel-slide hero-slide-2 h-100 w-100"></div>
+      </div>
+      <!-- Slide 3 -->
+      <div class="carousel-item h-100">
+        <div class="hero-carousel-slide hero-slide-3 h-100 w-100"></div>
+      </div>
+    </div>
+
+    <!-- Carousel Controls (Previous/Next buttons) -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <!-- Hero Overlay - This sits between the carousel and the text content -->
+  <div class="hero-overlay" style="z-index: 1;"></div> 
+
+  <!-- Hero Content - This remains static on top of the carousel and overlay -->
+  <div class="container position-relative py-5" style="z-index: 2;">
+    <h1 class="display-3 fw-bolder mb-4 text-white text-shadow tracking-tight">
       Connect. Grow. Multiply
     </h1>
-    <p class="lead mb-5 text-white-50 text-shadow-soft">
+    <p class="lead mb-5 text-white-50 text-shadow-soft mx-auto col-md-8">
       Your digital companion for spiritual growth, community engagement, and church management.
     </p>
-    <a href="#about" class="btn btn-light btn-lg px-4 me-md-2">Learn More</a>
-    <button class="btn btn-outline-light btn-lg px-4"
-            data-bs-toggle="modal" data-bs-target="#loginModal">
-      Join Us Now
-    </button>
+    <div class="d-flex justify-content-center gap-3 flex-column flex-sm-row">
+        <a href="#about" class="btn btn-light btn-lg px-5 rounded-pill shadow-sm">Learn More</a>
+        <button class="btn btn-outline-light btn-lg px-5 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#loginModal">Join Us Now</button>
+    </div>
   </div>
 </section>
 
 <!-- About Section -->
-<!-- About Section -->
 <section id="about" class="py-5 about-section">
   <div class="about-overlay"></div>
-
-  <div class="container position-relative">
-    <div class="row align-items-center justify-content-center">
-      <!-- Left: Image Carousel (NEW) -->
-      <div class="col-lg-5 mb-4 mb-lg-0">
-        <!-- The carousel container -->
-        <div id="aboutCarousel" class="carousel slide rounded-4 shadow-lg" data-bs-ride="carousel">
-          <!-- Carousel Indicators (dots at the bottom) -->
-          <div class="carousel-indicators" id="carouselIndicators">
-            <!-- Indicators will be dynamically injected here by JavaScript -->
-          </div>
-
-          <!-- The actual images -->
-          <div class="carousel-inner" id="carouselInner">
-            <!-- Carousel items (images) will be dynamically injected here by JavaScript -->
-          </div>
-
-          <!-- Carousel Controls (Previous/Next buttons) -->
+  <div class="container position-relative z-1 my-5">
+    <div class="row align-items-center justify-content-center g-5">
+      
+      <!-- Left: Image Carousel -->
+      <div class="col-lg-5">
+        <div id="aboutCarousel" class="carousel slide rounded-4 shadow-lg overflow-hidden" data-bs-ride="carousel">
+          <div class="carousel-indicators" id="carouselIndicators"></div>
+          <div class="carousel-inner" id="carouselInner"></div>
           <button class="carousel-control-prev" type="button" data-bs-target="#aboutCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
@@ -145,30 +141,66 @@
         </div>
       </div>
 
-      <!-- Right: Card (Existing) -->
+      <!-- Right: Card -->
       <div class="col-lg-6">
         <div class="about-card reveal-on-scroll">
-          <h2 class="display-5 fw-bold mb-3">About CCF BGC</h2>
-          <p class="mb-4 about-lead">
+          <h2 class="display-6 fw-bold mb-3">About CCF BGC</h2>
+          <p class="mb-4 about-lead fs-5">
             We exist to connect people to Christ, build authentic community, and equip believers to make disciples.
           </p>
-          <ul class="list-unstyled text-muted mb-4">
-            <li class="mb-2">
-              <i class="fas fa-check text-primary me-2"></i>
-              Christ-centered gatherings
-            </li>
-            <li class="mb-2">
-              <i class="fas fa-check text-primary me-2"></i>
-              Vibrant small groups
-            </li>
-            <li class="mb-2">
-              <i class="fas fa-check text-primary me-2"></i>
-              Leadeship training and Development
-            </li>
+          <ul class="list-unstyled d-flex flex-column gap-3 mb-5">
+            <li><i class="fas fa-check-circle text-primary fs-5 me-2 align-middle"></i> Christ-centered gatherings</li>
+            <li><i class="fas fa-check-circle text-primary fs-5 me-2 align-middle"></i> Vibrant small groups</li>
+            <li><i class="fas fa-check-circle text-primary fs-5 me-2 align-middle"></i> Leadership training and Development</li>
           </ul>
-          <a href="#contact" class="btn btn-primary btn-lg px-4">
-            Get Connected
-          </a>
+          <a href="#contact" class="btn btn-primary btn-lg px-5 rounded-pill shadow-sm">Get Connected</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission & Vision Section -->
+<!-- Mission & Vision Section -->
+<section id="mission-vision" class="py-5 mv-section">
+  <div class="mv-bg-overlay"></div>
+  <div class="container position-relative z-1 my-5">
+    <div class="row justify-content-center mb-5 text-center">
+      <div class="col-lg-8">
+        <h2 class="display-6 fw-bold text-white mb-3">Our Heart as CCF BGC</h2>
+        <p class="lead text-white-50">
+          We are a Christ-centered community in the heart of BGC, calling people to know Jesus,
+          grow in His Word, and go make disciples in every sphere of life.
+        </p>
+      </div>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <!-- Mission Card -->
+      <div class="col-md-6 col-lg-5">
+        <div class="mv-card mv-reveal reveal-on-scroll h-100" data-delay="0">
+          <div class="d-flex align-items-center mb-3 text-primary">
+            <i class="fas fa-bullseye fa-2x me-3"></i>
+            <h3 class="h3 fw-bold mb-0">Our Mission</h3>
+          </div>
+          <p class="mb-0 lh-lg">
+            To honor God and make Christ-committed followers who will make Christ-committed
+            followers in Bonifacio Global City and beyond — people who love God fully,
+            live out His Word, and intentionally share the gospel wherever He has placed them.
+          </p>
+        </div>
+      </div>
+      <!-- Vision Card -->
+      <div class="col-md-6 col-lg-5">
+        <div class="mv-card mv-reveal reveal-on-scroll h-100" data-delay="150">
+          <div class="d-flex align-items-center mb-3 text-primary">
+            <i class="fas fa-eye fa-2x me-3"></i>
+            <h3 class="h3 fw-bold mb-0">Our Vision</h3>
+          </div>
+          <p class="mb-0 lh-lg">
+            To see a movement of disciples and small groups across BGC — families, professionals,
+            students, and workplaces — transformed by the gospel, serving together so that
+            every person in our city has a clear opportunity to know and follow Jesus.
+          </p>
         </div>
       </div>
     </div>
@@ -176,76 +208,31 @@
 </section>
 
 
-
-<!-- Mission & Vision Section -->
-<!-- Mission & Vision Section -->
-<section id="mission-vision" class="py-5 mv-section">
-  <div class="mv-bg-overlay"></div>
-
-  <div class="container position-relative">
-    <div class="row justify-content-center mb-5 text-center">
-      <div class="col-lg-8">
-        <h2 class="display-5 fw-bold text-white mb-3">Our Heart as CCF BGC</h2>
-        <p class="lead text-white-50">
-          We are a Christ-centered community in the heart of BGC, calling people to know Jesus,
-          grow in His Word, and go make disciples in every sphere of life.
-        </p>
-      </div>
-    </div>
-
-    <div class="row g-4 justify-content-center">
-  <!-- Mission Card -->
-  <div class="col-md-6 col-lg-5">
-    <div class="mv-card mv-reveal reveal-on-scroll" data-delay="0">
-      <h3 class="h3 fw-bold mb-3">Our Mission</h3>
-      <p class="mb-0">
-        To honor God and make Christ-committed followers who will make Christ-committed
-        followers in Bonifacio Global City and beyond — people who love God fully,
-        live out His Word, and intentionally share the gospel wherever He has placed them.
-      </p>
-    </div>
-  </div>
-
-  <!-- Vision Card -->
-  <div class="col-md-6 col-lg-5">
-    <div class="mv-card mv-reveal reveal-on-scroll" data-delay="150">
-      <h3 class="h3 fw-bold mb-3">Our Vision</h3>
-      <p class="mb-0">
-        To see a movement of disciples and small groups across BGC — families, professionals,
-        students, and workplaces — transformed by the gospel, serving together so that
-        every person in our city has a clear opportunity to know and follow Jesus.
-      </p>
-    </div>
-  </div>
-</div>
-
-  </div>
-</section>
-
- <!-- Contact Section -->
+<!-- Contact Section -->
 <section id="contact" class="section-padding contact-section">
   <div class="contact-overlay"></div>
-
-  <div class="container position-relative text-white">
+  <div class="container position-relative z-1 text-white my-5">
     <div class="row justify-content-center">
       <div class="col-lg-8 text-center mb-5">
-        <h2 class="display-5 fw-bold mb-4">Get in Touch</h2>
-        <p class="lead text-white-50">
+        <h2 class="display-6 fw-bold mb-4">Get in Touch</h2>
+        <p class="lead text-white-50 mb-4">
           We'd love to hear from you! Reach out to us for support, inquiries, or partnership opportunities.
         </p>
-        <p class="fs-5">
-          CCF BGC is located at: <br>
-          <strong>
-            4th Floor, One Bonifacio High Street Mall <br>
-            5th Avenue, Bonifacio Global City, Taguig, <br>
-            1634 Metro Manila, Philippines
-          </strong>
-        </p>
+        <div class="bg-dark bg-opacity-50 p-4 rounded-4 border border-secondary d-inline-block">
+            <p class="fs-5 mb-0">
+              <i class="fas fa-map-marker-alt text-danger me-2"></i><strong>CCF BGC is located at:</strong><br>
+              <span class="text-white-50 fs-6">
+                4th Floor, One Bonifacio High Street Mall <br>
+                5th Avenue, Bonifacio Global City, Taguig, <br>
+                1634 Metro Manila, Philippines
+              </span>
+            </p>
+        </div>
       </div>
     </div>
     <div class="row justify-content-center">
       <div class="col-lg-10">
-        <div class="google-map-container shadow-lg rounded-4 overflow-hidden">
+        <div class="google-map-container shadow-lg rounded-4 overflow-hidden border border-secondary">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.733560742183!2d121.05604167508688!3d14.555239985920364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c8801d0a51c7%3A0x627d31018e22137e!2sPhilippine%20Stock%20Exchange%20Tower!5e0!3m2!1sen!2sph!4v1717500000000!5m2!1sen!2sph"
             allowfullscreen
@@ -258,289 +245,242 @@
   </div>
 </section>
 
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4">
-        <div class="container">
-            <p class="mb-0">&copy; <span id="currentYear"></span> CCF BGC. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="loginModalLabel"><i class="fas fa-user-circle me-2"></i>Member Login</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="loginForm" novalidate>
-                        <div class="mb-3">
-                            <label for="uid" class="form-label">Email address</label>
-                            <input type="email" class="form-control bgc" id="uid" name="uid" placeholder="name@example.com" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="pwd" class="form-label">Password</label>
-                            <input type="password" class="form-control bgc" id="pwd" name="pwd" placeholder="Password" required>
-                        </div>
-<!-- 
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input bgc" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe">Remember me</label>
-                        </div> -->
-                        <div class="d-grid gap-2">
-                            <button type="button" id='loginBtn' onclick="util.validateMe('loginModal','#loginForm','bgc')" class="btn btn-primary btn-lg">Login</button>
-                        </div>
-                    </form>
-                </div>
-                <!-- <div class="modal-footer justify-content-center">
-                    <small>Forgot password? <a href="#" class="text-primary">Reset here</a></small>
-                </div> -->
-            </div>
-        </div>
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4">
+    <div class="container">
+        <p class="mb-0">&copy; <span id="currentYear"></span> CCF BGC. All rights reserved.</p>
     </div>
+</footer>
 
-    <!-- Data Input Modal (For 'user@gmail.com') -->
-    <div class="modal fade" id="dataInputModal" tabindex="-1" aria-labelledby="dataInputModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="dataInputModalLabel"><i class="fas fa-chart-bar me-2"></i>Input Attendance Data</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="dataInputForm" novalidate>
-                        <div class="mb-3">
-                            <label for="serviceSelect" class="form-label">Service</label>
-                            <select class="form-select bgc" id="serviceSelect" name="serviceSelect" required>    
-                                <option value="" disabled selected>Select a service</option>
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>    
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="segmentSelect" class="form-label">Segment</label>
-                            <select class="form-select bgc" id="segmentSelect" name="segmentSelect" required>
-                                <option value="" disabled selected>Select a segment</option>
-                                
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="countInput" class="form-label">Count</label>
-                            <input type="number" class="form-control bgc" id="countInput" name="countInput" placeholder="Enter number" min="1" required>
-                        </div>
-                        <div class="d-grid gap-2">
-                            <button type="button" id='datainputBtn' onclick="util.validateMe('dataInputModal','#dataInputForm','bgc')" class="btn btn-success btn-lg">Submit Data</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <small>Data will be recorded for today's service.</small>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Input Modal (For displaying grid) -->
-    <div class="modal fade" id="adminInputModal" tabindex="-1" aria-labelledby="adminInputModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen modal-dialog-centered"> <!-- Larger modal for chart -->
-            <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title" id="adminInputModalLabel"><i class="fas fa-cogs me-2"></i>Admin Dashboard</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- <p class="lead text-center">Welcome, Admin! Here's a quick overview of the data.</p> -->
-
-                    <div class="chart-placeholder">
-                      <div class="chart-scroll-wrapper style='overflow-x:auto;width:100%;'">
-                        <div id="ccfbgcchart" style="height:280px;min-width:  800px;"></div>
-                      </div>
-                    </div>
-
-                    <!-- //tabular grid here -->
-                    <div class="mt-3 mb-3 ">
-                      <div class="container-fluid table-responsive">
-                        <div id="attendance-grid"></div>
-                      </div>
-                    </div>
-
-                    <hr>
-                    <div class="text-left mt-4">
-                      
-                      <!-- <label for="ministrySelect" class="form-label">Filter Chart:</label> -->
-                      <!-- <select id="ministrySelect" class="form-select" onchange="bgc.updateChart(this)"> -->
-                      <!-- </select> -->
-                      
-                      <!-- <div class='mt-3' id="customLegend"></div>//for legends -->
-
-                      <!-- <div class='mt-5' id="chartDetailed"></div> -->
-
-                    </div>
-                    <div class="text-center mt-4">
-                        <button class="btn btn-primary me-2"><i class="fas fa-file-export me-1"></i> Export Data</button>
-                        <button class="btn btn-secondary"><i class="fas fa-cog me-1"></i> Settings</button>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <small>&nbsp;</small>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- calendar modal -->
-    <!-- Modal -->
-    <div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered  modal-fullscreen">
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="calendarModalLabel">Calendar</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <!-- Calendar will be injected here -->
-              <div class="table-responsive">
-                <div id="calendarContainer"></div>
+            <div class="modal-header bg-primary text-white" data-bs-theme="dark">
+                <h5 class="modal-title" id="loginModalLabel"><i class="fas fa-user-circle me-2"></i>Member Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm" novalidate>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control bgc" id="uid" name="uid" placeholder="name@example.com" required>
+                        <label for="uid">Email address</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control bgc" id="pwd" name="pwd" placeholder="Password" required>
+                        <label for="pwd">Password</label>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="button" id='loginBtn' onclick="util.validateMe('loginModal','#loginForm','bgc')" class="btn btn-primary btn-lg rounded-pill shadow-sm">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <!-- Under your calendar container -->
-                
-                <div id="dateTimeSection" class="mt-3 d-none">
-                  <div class="card shadow-lg  mb-5">
-                    <div class="card-body">
+<!-- Data Input Modal -->
+<div class="modal fade" id="dataInputModal" tabindex="-1" aria-labelledby="dataInputModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white" data-bs-theme="dark">
+                <h5 class="modal-title" id="dataInputModalLabel"><i class="fas fa-chart-bar me-2"></i>Input Attendance Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="dataInputForm" novalidate>
+                    <div class="form-floating mb-3">
+                        <select class="form-select bgc" id="serviceSelect" name="serviceSelect" required>    
+                            <option value="" disabled selected>Select a service</option>
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>    
+                        </select>
+                        <label for="serviceSelect">Service</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select bgc" id="segmentSelect" name="segmentSelect" required>
+                            <option value="" disabled selected>Select a segment</option>
+                        </select>
+                        <label for="segmentSelect">Segment</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="number" class="form-control bgc" id="countInput" name="countInput" placeholder="Enter number" min="1" required>
+                        <label for="countInput">Count</label>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="button" id='datainputBtn' onclick="util.validateMe('dataInputModal','#dataInputForm','bgc')" class="btn btn-success btn-lg rounded-pill shadow-sm">Submit Data</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-center text-muted border-0 pt-0">
+                <small>Data will be recorded for today's service.</small>
+            </div>
+        </div>
+    </div>
+</div>
 
-                      <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div>
-                          <div class="text-muted small">Selected date</div>
-                          <div class="h5 mb-0" id="selectedDateTextPretty"></div>
-                        </div>
-                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
-                          <span class="me-1">📅</span>
-                          <span id="selectedDateRaw"></span>
-                        </span>
-                      </div>
-
-                      <hr class="my-2">
-
-                      <div class="row g-2 align-items-center mb-3" id="timeRow">
-                        <div class="col-auto">
-                          <label class="mb-0 fw-semibold" for="roomSelect">Room</label>
-                        </div>
-                        <div class="col-auto">
-                          <select id="roomSelect" class="form-select form-select-sm"></select>
-                        </div>
-                        <div class="col-auto">
-                          <span id="roomStatusBadge" class="badge bg-success-subtle text-success d-none">
-                            Available
-                          </span>
-                        </div>
-                      </div>
-
-                      <div class="row g-2 align-items-center mb-3">
-                        <div class="col-auto">
-                          <label class="mb-0 fw-semibold">From</label>
-                        </div>
-                        <div class="col-auto">
-                          <select id="timeFrom" class="form-select form-select-sm"></select>
-                        </div>
-                        <div class="col-auto">
-                          <label class="mb-0 fw-semibold">To</label>
-                        </div>
-                        <div class="col-auto">
-                          <select id="timeTo" class="form-select form-select-sm"></select>
-                        </div>
-                        <div class="col-auto">
-                          <button type="button" onclick='calendar.saveRoom()' class="btn btn-sm btn-primary" id="btnReserve">
-                            Reserve
-                          </button>
-                        </div>
-                      </div>
-
-                      <hr class="my-2">
-
-                      <h6 id="dayReservationsTitle" class="mt-3 mb-2">
-                        Reservations for this day
-                      </h6>
-                      <div class="table-responsive">
-                        <table class="table table-sm align-middle mb-0" id="dayReservationsTable">
-                          <thead class="table-light">
-                            <tr>
-                              
-                              <th>Booking ID</th>
-                              <th>Room</th>
-                              <th>From</th>
-                              <th>To</th>
-                              <th>Added By</th>
-                              <th>Ministry</th>
-                            </tr>
-                          </thead>
-                          <tbody></tbody>
-                        </table>
-                      </div>
-
+<!-- Admin Input Modal -->
+<div class="modal fade" id="adminInputModal" tabindex="-1" aria-labelledby="adminInputModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered"> 
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white" data-bs-theme="dark">
+                <h5 class="modal-title" id="adminInputModalLabel"><i class="fas fa-cogs me-2"></i>Admin Dashboard</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light">
+                <div class="card border-0 shadow-sm mb-4">
+                  <div class="card-body p-0">
+                    <div class="chart-scroll-wrapper" style="overflow-x:auto; width:100%;">
+                      <div id="ccfbgcchart" style="height:280px; min-width:800px;"></div>
                     </div>
                   </div>
                 </div>
 
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body p-3 p-md-4 table-responsive">
+                    <div id="attendance-grid"></div>
+                  </div>
+                </div>
 
-              </div>
-             <!-- end table-responsive -->
-            
-          </div>
-          <!-- end modal body -->
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button class="btn btn-primary px-4 rounded-pill shadow-sm"><i class="fas fa-file-export me-2"></i> Export Data</button>
+                    <button class="btn btn-outline-secondary px-4 rounded-pill shadow-sm"><i class="fas fa-cog me-2"></i> Settings</button>
+                </div>
+            </div>
         </div>
+    </div>
+</div>
+
+<!-- Calendar Modal -->
+<div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold" id="calendarModalLabel"><i class="fas fa-calendar-alt text-primary me-2"></i>Calendar Reservation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body bg-light">
+          <div class="container-fluid max-w-lg mx-auto">
+            <div class="card border-0 shadow-sm mb-4">
+              <div class="card-body">
+                <div id="calendarContainer"></div>
+              </div>
+            </div>
+
+            <div id="dateTimeSection" class="mt-3 d-none">
+              <div class="card border-0 shadow-lg mb-5">
+                <div class="card-body p-4">
+                  <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div>
+                      <div class="text-muted small fw-semibold text-uppercase tracking-wider">Selected date</div>
+                      <div class="h4 mb-0 fw-bold text-dark" id="selectedDateTextPretty"></div>
+                    </div>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 fs-6 rounded-pill">
+                      <i class="far fa-calendar me-2"></i><span id="selectedDateRaw"></span>
+                    </span>
+                  </div>
+
+                  <hr class="text-secondary opacity-25 mb-4">
+
+                  <div class="row g-3 align-items-center mb-4" id="timeRow">
+                    <div class="col-sm-2 col-12">
+                      <label class="mb-0 fw-semibold text-secondary" for="roomSelect">Room</label>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                      <select id="roomSelect" class="form-select shadow-none"></select>
+                    </div>
+                    <div class="col-sm-4 col-12">
+                      <span id="roomStatusBadge" class="badge bg-success-subtle text-success border border-success-subtle d-none w-100 py-2">
+                        <i class="fas fa-check-circle me-1"></i> Available
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="row g-3 align-items-end mb-4">
+                    <div class="col-sm-4 col-6">
+                      <label class="mb-1 fw-semibold text-secondary small">From</label>
+                      <select id="timeFrom" class="form-select shadow-none"></select>
+                    </div>
+                    <div class="col-sm-4 col-6">
+                      <label class="mb-1 fw-semibold text-secondary small">To</label>
+                      <select id="timeTo" class="form-select shadow-none"></select>
+                    </div>
+                    <div class="col-sm-4 col-12">
+                      <button type="button" onclick='calendar.saveRoom()' class="btn btn-primary w-100 shadow-sm" id="btnReserve">
+                        Reserve Room
+                      </button>
+                    </div>
+                  </div>
+
+                  <hr class="text-secondary opacity-25 my-4">
+
+                  <h6 id="dayReservationsTitle" class="fw-bold text-dark mb-3">
+                    Reservations for this day
+                  </h6>
+                  <div class="table-responsive rounded border border-light">
+                    <table class="table table-hover align-middle mb-0" id="dayReservationsTable">
+                      <thead class="table-light text-secondary">
+                        <tr>
+                          <th>Booking ID</th>
+                          <th>Room</th>
+                          <th>From</th>
+                          <th>To</th>
+                          <th>Added By</th>
+                          <th>Ministry</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- fiscal year Modal data entry-->
-    <div class="modal fade" id="targetModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Fiscal Year Target</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<!-- Fiscal Year Target Modal -->
+<div class="modal fade" id="targetModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white" data-bs-theme="dark">
+        <h5 class="modal-title"><i class="fas fa-bullseye me-2"></i>Fiscal Year Target</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="targetForm" novalidate>
+          <div class="form-floating mb-3">
+            <select class="form-select" id="ministry_segment" name="ministry_segment" required>
+              <option value="FIRST TIMERS">FIRST TIMERS</option>
+              <option value="CONGREGATION">CONGREGATION</option>
+              <option value="DGRPS">DGRPS</option>
+              <option value="DMEMBERS">DMEMBERS</option>
+              <option value="DLEADERS">DLEADERS</option>
+            </select>
+            <label for="ministry_segment">Ministry Segment</label>
           </div>
-          <div class="modal-body">
-            <form id="targetForm" novalidate>
-              <div class="mb-3">
-                <label class="form-label">Ministry Segment</label>
-                <select class="form-select" name="ministry_segment" required>
-                  <option value="FIRST TIMERS">FIRST TIMERS</option>
-                  <option value="CONGREGATION">CONGREGATION</option>
-                  <option value="DGRPS">DGRPS</option>
-                  <option value="DMEMBERS">DMEMBERS</option>
-                  <option value="DLEADERS">DLEADERS</option>
-                  
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Target Value</label>
-                <input type="number" class="form-control" name="target_value" required>
-              </div>
-              <button type="button" onclick="bgc.savetarget(this.form)" class="btn btn-success w-100">Save Target</button>
-            </form>
+          <div class="form-floating mb-4">
+            <input type="number" class="form-control" id="target_value" name="target_value" placeholder="Target Value" required>
+            <label for="target_value">Target Value</label>
           </div>
-        </div>
+          <button type="button" onclick="bgc.savetarget(this.form)" class="btn btn-success w-100 btn-lg rounded-pill shadow-sm">Save Target</button>
+        </form>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Bootstrap 5.3 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js?ver=12"></script>
+<script src="assets/js/ipconfig.js?v=1"></script>
+<script src="assets/js/util.js?v=1"></script>
+<script src="https://js.pusher.com/8.3.0/pusher.min.js"></script>
+<script type="module" src="assets/js/bgc.js?v=1"></script>
+<script src="assets/js/calendar.js?v=1"></script>
 
-    <!-- toastify -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js?ver=12"></script>
-
-    <script src="assets/js/ipconfig.js?v=1"></script>
-
-    <script src="assets/js/util.js?v=1"></script>
-
-    <script src="https://js.pusher.com/8.3.0/pusher.min.js"></script>
-    
-    <script  type="module"  src="assets/js/bgc.js?v=1"></script>
-    <script src="assets/js/calendar.js?v=1"></script>
-    
 </body>
 </html>

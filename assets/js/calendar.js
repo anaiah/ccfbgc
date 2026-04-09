@@ -1,5 +1,4 @@
 const calendar = {
-
    
     buildTimeOptionsArray: () => {
         const startHour = 10;  // 9 AM
@@ -143,6 +142,7 @@ const calendar = {
 
         section.classList.remove('d-none');
         section.classList.add('show-card');
+        
         // calendar.selectedDate = dateObj;  // <-- store full Date here
 
         // const section = document.getElementById('dateTimeSection');
