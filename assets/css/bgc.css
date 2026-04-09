@@ -61,8 +61,10 @@
 }
 
 /* Optional: Slightly zoom in the active slide for a subtle effect */
+
+/* Active slide shows the base size */
 .carousel-item.active .hero-carousel-slide {
-  background-size: 100%; /* Active slide shows the base size */
+  background-size: 70%; 
 }
 
 /* Adjust initial zoom out percentage as needed */
@@ -84,15 +86,15 @@
 @media (max-width: 768px) {
   .hero-slide-1 {
     background-image: url('../img/church1.jpg');
-    background-size: 150%; /* Portrait images might need more zoom out to look good */
+    background-size: 180%; /* Portrait images might need more zoom out to look good */
   }
   .hero-slide-2 {
     background-image: url('../img/ido-small.jpg');
-    background-size: 150%;
+    background-size: 180%;
   }
   .hero-slide-3 {
     background-image: url('../img/unravel-small.jpg');
-    background-size: 150%;
+    background-size: 180%;
   }
   /* Ensure active slide transition also considers mobile zoom */
   .carousel-item.active .hero-carousel-slide {
