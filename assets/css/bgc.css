@@ -17,19 +17,8 @@
   position: relative;
   min-height: 100vh; /* (or whatever value you have) */
   padding-top: 70px;
-  /* Replaced background-color with a subtle linear gradient */
-  background-image: linear-gradient(to bottom right, #0a1a2a, #1a2a3a); 
-  /*
-     Explanation of gradient:
-     - `to bottom right`: Makes the gradient go from top-left to bottom-right.
-     - `#0a1a2a`: A very dark, almost black, subtle blue-grey.
-     - `#1a2a3a`: A slightly lighter, but still very dark, blue-grey.
-     
-     Feel free to experiment with these values:
-     - `to right` for a horizontal gradient: `linear-gradient(to right, #0a1a2a, #1a2a3a);`
-     - Different dark colors: e.g., `linear-gradient(to bottom, #111111, #333333);` (dark grey to slightly lighter grey)
-     - More blue: `linear-gradient(to bottom, #000714, #0a1b32);`
-  */
+  background: #000000;
+background: linear-gradient(151deg,rgba(0, 0, 0, 1) 32%, rgba(29, 41, 41, 1) 66%, rgba(77, 77, 70, 1) 100%);
   background-size: cover; /* Ensures the gradient covers the entire section */
   background-repeat: no-repeat;
   padding-left: 0;
