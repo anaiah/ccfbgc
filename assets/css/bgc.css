@@ -18,7 +18,7 @@
   min-height: 100vh; /* (or whatever value you have) */
   padding-top: 70px;
   /* Replaced background-color with a subtle linear gradient */
-  background-image: linear-gradient(to left right, #090d11, #132130); 
+  background-image: linear-gradient(to bottom right, #0a1a2a, #1a2a3a); 
   /*
      Explanation of gradient:
      - `to bottom right`: Makes the gradient go from top-left to bottom-right.
