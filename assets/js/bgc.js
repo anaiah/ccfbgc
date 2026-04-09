@@ -590,26 +590,34 @@ document.addEventListener("DOMContentLoaded", function() {
     }  
 
     /* FOR HERO CAROUSEL */
-    // REPLACE your existing JS for carousel overlay control in assets/js/bgc.js
-    console.log("DOM fully loaded and parsed. Initializing hero carousel logic.");
-    const heroCarousel = document.getElementById('heroCarousel');
-    const heroOverlay = document.querySelector('.hero-overlay');
-    // Correctly select the content container, which is directly inside hero-section and has class 'container'
-    const heroContentContainer = document.querySelector('.hero-section > .container'); 
+    // Add this manual carousel initialization at the START of your DOMContentLoaded listener in bgc.js
+// This should be the code in assets/js/bgc.js
 
-    if (!heroCarousel) {
-        console.error("Hero Carousel element not found. ID: #heroCarousel");
+    console.log("DOM fully loaded and parsed. Initializing hero carousel logic.");
+    const heroCarouselElement = document.getElementById('heroCarousel'); // Renamed for clarity with manual init
+    let heroCarouselInstance; // Declare variable to hold the carousel instance
+    const heroOverlay = document.querySelector('.hero-overlay');
+    const heroContentContainer = document.querySelector('.hero-section > .container'); // Selects the content container
+
+    if (!heroCarouselElement) {
+        //console.error("Hero Carousel element not found. ID: #heroCarousel");
         return;
     }
     if (!heroOverlay) {
-        console.error("Hero Overlay element not found. Class: .hero-overlay");
+        //console.error("Hero Overlay element not found. Class: .hero-overlay");
         return;
     }
     if (!heroContentContainer) {
-        console.error("Hero Content Container element not found. Selector: .hero-section > .container");
+        //console.error("Hero Content Container element not found. Selector: .hero-section > .container");
         return;
     }
 
+    // Manual initialization of the Bootstrap Carousel
+    heroCarouselInstance = new bootstrap.Carousel(heroCarouselElement, {
+        interval: 5000, // Set your desired auto-advance interval in milliseconds (e.g., 5000ms = 5 seconds)
+        pause: 'hover' // Pause auto-advancing when mouse hovers over carousel
+    });
+    console.log("Hero Carousel manually initialized.");
     console.log("Hero Carousel, Overlay, and Content Container elements found.");
 
     // Function to update visibility of both overlay and content
@@ -630,17 +638,73 @@ document.addEventListener("DOMContentLoaded", function() {
     const initialActiveSlide = document.querySelector('#heroCarousel .carousel-item.active');
     let initialActiveIndex = 0; 
     if (initialActiveSlide) {
-        initialActiveIndex = Array.from(heroCarousel.querySelector('.carousel-inner').children).indexOf(initialActiveSlide);
+        initialActiveIndex = Array.from(heroCarouselElement.querySelector('.carousel-inner').children).indexOf(initialActiveSlide);
     }
     updateHeroForeground(initialActiveIndex);
 
-    // Listen for slide changes
-    heroCarousel.addEventListener('slid.bs.carousel', (event) => {
+    // Listen for slide changes on the element
+    heroCarouselElement.addEventListener('slid.bs.carousel', (event) => {
         const activeIndex = event.to; // Get the index of the newly active slide (0-based)
         updateHeroForeground(activeIndex);
     });
 
     console.log("Hero carousel event listener attached.");
+
+    // ... your existing console.log and overlay logic below ...
+    // Note: The event listener was already attached to heroCarousel (the element),
+    // so it should still work fine with the manually initialized instance.
+
+    // // REPLACE your existing JS for carousel overlay control in assets/js/bgc.js
+    // console.log("DOM fully loaded and parsed. Initializing hero carousel logic.");
+    // const heroCarousel = document.getElementById('heroCarousel');
+    // const heroOverlay = document.querySelector('.hero-overlay');
+    // // Correctly select the content container, which is directly inside hero-section and has class 'container'
+    // const heroContentContainer = document.querySelector('.hero-section > .container'); 
+
+    // if (!heroCarousel) {
+    //     console.error("Hero Carousel element not found. ID: #heroCarousel");
+    //     return;
+    // }
+    // if (!heroOverlay) {
+    //     console.error("Hero Overlay element not found. Class: .hero-overlay");
+    //     return;
+    // }
+    // if (!heroContentContainer) {
+    //     console.error("Hero Content Container element not found. Selector: .hero-section > .container");
+    //     return;
+    // }
+
+    // console.log("Hero Carousel, Overlay, and Content Container elements found.");
+
+    // // Function to update visibility of both overlay and content
+    // function updateHeroForeground(activeIndex) {
+    //     console.log(`Active slide index: ${activeIndex}`);
+    //     if (activeIndex === 1 || activeIndex === 2) { // For slides 2 and 3
+    //         heroOverlay.classList.add('hidden-overlay');
+    //         heroContentContainer.classList.add('hero-content-hide');
+    //         console.log("Added 'hidden-overlay' to overlay, 'hero-content-hide' to content container.");
+    //     } else { // For slide 1 (index 0)
+    //         heroOverlay.classList.remove('hidden-overlay');
+    //         heroContentContainer.classList.remove('hero-content-hide');
+    //         console.log("Removed classes from overlay and content container.");
+    //     }
+    // }
+
+    // // Initial check when the page loads
+    // const initialActiveSlide = document.querySelector('#heroCarousel .carousel-item.active');
+    // let initialActiveIndex = 0; 
+    // if (initialActiveSlide) {
+    //     initialActiveIndex = Array.from(heroCarousel.querySelector('.carousel-inner').children).indexOf(initialActiveSlide);
+    // }
+    // updateHeroForeground(initialActiveIndex);
+
+    // // Listen for slide changes
+    // heroCarousel.addEventListener('slid.bs.carousel', (event) => {
+    //     const activeIndex = event.to; // Get the index of the newly active slide (0-based)
+    //     updateHeroForeground(activeIndex);
+    // });
+
+    // console.log("Hero carousel event listener attached.");
 
     /* CAROUSEL */
 

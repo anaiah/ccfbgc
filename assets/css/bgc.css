@@ -13,19 +13,41 @@
 
 /* Hero */
 /* Hero */
+/* Global height definitions for Safari compatibility and proper height calculation */
+html, body {
+    height: 100%; /* Ensures html and body always provide a height context */
+}
+
+/* Hero Section */
 .hero-section {
   position: relative;
-  min-height: 100vh; /* (or whatever value you have) */
-  padding-top: 70px;
-  background: #000000;
-  background: linear-gradient(151deg,rgba(0, 0, 0, 1) 32%, rgba(29, 41, 41, 1) 66%, rgba(77, 77, 70, 1) 100%);
+  min-height: 80vh; /* Keeps your responsive min-height */
+  height: 100%; /* ADDED: Explicit height for better Safari calculation and absolute children */
+  padding-top: 90px; /* Your desired padding-top, adjust as needed */
+
+  /* Your custom gradient fallback background for areas not covered by carousel images */
+  background: linear-gradient(151deg, rgba(0, 0, 0, 1) 32%, rgba(29, 41, 41, 1) 66%, rgba(77, 77, 70, 1) 100%);
   background-size: cover; /* Ensures the gradient covers the entire section */
   background-repeat: no-repeat;
+
   padding-left: 0;
   padding-right: 0;
 }
 
-/* MODIFY this existing rule in bgc.css */
+/* Carousel Specific Height Fixes for Safari */
+#heroCarousel {
+    height: 100%; /* Explicit height for the carousel wrapper */
+}
+.carousel-inner {
+    height: 100%; /* Explicit height for the carousel inner */
+}
+.carousel-item {
+    height: 100%; /* Explicit height for each slide item */
+    -webkit-backface-visibility: hidden; /* ADDED: Safari animation fix */
+    backface-visibility: hidden; /* Standard property for other browsers */
+}
+
+/* Hero Overlay */
 .hero-overlay {
   position: absolute;
   inset: 0;
@@ -35,46 +57,41 @@
     rgba(0, 0, 0, 0.7) 70%,
     rgba(0, 0, 0, 0.9) 100%
   );
-  transition: opacity 0.5s ease-in-out; /* ONLY opacity in transition for the overlay */
+  transition: opacity 0.5s ease-in-out; /* Smooth transition for opacity */
 }
 
-/* MODIFY this rule in bgc.css */
+/* Overlay Hidden State (for slides 2 & 3) */
 .hero-overlay.hidden-overlay {
   opacity: 0 !important;           /* Force opacity to 0 */
   background: none !important;     /* Force background to nothing */
   pointer-events: none !important; /* Allow clicks to pass through */
   visibility: hidden !important;   /* Also hide from accessibility tree */
 }
-/* MODIFY this rule in bgc.css */
+
+/* Content Hidden State (for slides 2 & 3) */
 .hero-content-hide {
   opacity: 0 !important;
   pointer-events: none !important;
   visibility: hidden !important;
-  /* Use 'display: none !important;' if the above doesn't work, but it will kill transition */
-  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Smooth transition for content */
+  transition: none !important;
+  /**transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; Smooth transition for content */
 }
-
 
 
 /* Hero Carousel Background Images & Zoom Effect */
 .hero-carousel-slide {
-  background-size: 180%; /* Zooms OUT the image by 20%, making subjects appear smaller */
+  background-size: 180%; /* DESKTOP: Default zoom out percentage */
   background-position: center;
   background-repeat: no-repeat;
   transition: background-size 0.8s ease-in-out; /* Smooth transition on slide change */
+  height: 100%; /* Explicit height for the background image container */
 }
 
-/* Optional: Slightly zoom in the active slide for a subtle effect */
-
-/* Active slide shows the base size */
+/* DESKTOP: Active slide effect (slightly less zoomed out than inactive) */
 .carousel-item.active .hero-carousel-slide {
-  margin-top: 10px;
-  background-size: 80%; 
+  margin-top: 10px; /* Your requested margin-top for active slide */
+  background-size: 80%; /* Your requested background-size for active slide */
 }
-
-/* Adjust initial zoom out percentage as needed */
-/* For example, if you want subjects to appear even smaller, use 130% or 140% */
-/* If you want them slightly larger but still "zoomed out" from default cover, use 110% */
 
 /* Define images for each slide (Landscape for desktop) */
 .hero-slide-1 {
@@ -90,22 +107,25 @@
 /* Responsive Images for Mobile (Portrait) */
 @media (max-width: 768px) {
   .hero-slide-1 {
-    background-image: url('../img/church1.jpg');
-    background-size: 180%; /* Portrait images might need more zoom out to look good */
+    background-image: url('../img/church1.jpg'); /* Consider using a distinct mobile image if available */
+    background-size: 180%; /* MOBILE: Default zoom out percentage for mobile */
   }
   .hero-slide-2 {
     background-image: url('../img/ido-small.jpg');
-    background-size: 180%;
+    background-size: 180%; /* MOBILE: Default zoom out percentage for mobile */
   }
   .hero-slide-3 {
     background-image: url('../img/unravel-small.jpg');
-    background-size: 180%;
+    background-size: 180%; /* MOBILE: Default zoom out percentage for mobile */
   }
-  /* Ensure active slide transition also considers mobile zoom */
+
+  /* MOBILE: Active slide effect (your requested 100% for mobile active slide) */
   .carousel-item.active .hero-carousel-slide {
-    background-size: 100%; /* Reset to base size for active slide on mobile too */
+    background-size: 100%; /* Reset to base size for active slide on mobile */
+    margin-top: 0; /* Reset margin-top for mobile active slide if not desired */
   }
 }
+
 
 .text-shadow {
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
