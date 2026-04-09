@@ -12,9 +12,10 @@
 
 
 /* Hero */
+/* Hero */
 .hero-section {
   position: relative;
-  min-height: 80vh; /* (or whatever value you have) */
+  min-height: 100vh; /* (or whatever value you have) */
   padding-top: 70px;
   /* Replaced background-color with a subtle linear gradient */
   background-image: linear-gradient(to bottom right, #0a1a2a, #1a2a3a); 
