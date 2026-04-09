@@ -18,7 +18,7 @@
   min-height: 100vh; /* (or whatever value you have) */
   padding-top: 70px;
   background: #000000;
-background: linear-gradient(151deg,rgba(0, 0, 0, 1) 32%, rgba(29, 41, 41, 1) 66%, rgba(77, 77, 70, 1) 100%);
+  background: linear-gradient(151deg,rgba(0, 0, 0, 1) 32%, rgba(29, 41, 41, 1) 66%, rgba(77, 77, 70, 1) 100%);
   background-size: cover; /* Ensures the gradient covers the entire section */
   background-repeat: no-repeat;
   padding-left: 0;
@@ -68,7 +68,8 @@ background: linear-gradient(151deg,rgba(0, 0, 0, 1) 32%, rgba(29, 41, 41, 1) 66%
 
 /* Active slide shows the base size */
 .carousel-item.active .hero-carousel-slide {
-  background-size: 70%; 
+  margin-top: 10px;
+  background-size: 80%; 
 }
 
 /* Adjust initial zoom out percentage as needed */
