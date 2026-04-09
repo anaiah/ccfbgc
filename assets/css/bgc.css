@@ -95,7 +95,7 @@ html, body {
 
 /* Define images for each slide (Landscape for desktop) */
 .hero-slide-1 {
-  background-image: url('../img/church-small.jpg');
+  background-image: url('../img/church1.jpg');
 }
 .hero-slide-2 {
   background-image: url('../img/ido-big.jpg');
@@ -107,7 +107,7 @@ html, body {
 /* Responsive Images for Mobile (Portrait) */
 @media (max-width: 768px) {
   .hero-slide-1 {
-    background-image: url('../img/church1.jpg'); /* Consider using a distinct mobile image if available */
+    background-image: url('../img/church-small.jpg'); /* Consider using a distinct mobile image if available */
     background-size: 180%; /* MOBILE: Default zoom out percentage for mobile */
   }
   .hero-slide-2 {
