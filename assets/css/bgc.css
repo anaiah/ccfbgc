@@ -54,7 +54,7 @@
 
 /* Hero Carousel Background Images & Zoom Effect */
 .hero-carousel-slide {
-  background-size: 150%; /* Zooms OUT the image by 20%, making subjects appear smaller */
+  background-size: 180%; /* Zooms OUT the image by 20%, making subjects appear smaller */
   background-position: center;
   background-repeat: no-repeat;
   transition: background-size 0.8s ease-in-out; /* Smooth transition on slide change */
