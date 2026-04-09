@@ -95,7 +95,7 @@ html, body {
 
 /* Define images for each slide (Landscape for desktop) */
 .hero-slide-1 {
-  background-image: url('../img/church1.jpg');
+  background-image: url('../img/church-small.jpg');
 }
 .hero-slide-2 {
   background-image: url('../img/ido-big.jpg');
