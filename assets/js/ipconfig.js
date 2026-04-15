@@ -1,4 +1,4 @@
-//const myIp = "http://192.168.1.46:10000"
+//const myIp = "http://192.168.1.78:3000"
 //mobile fone const myIp = "http://10.187.218.180:10000"
 
 //const myIp  = "https://esndp-gis-jku4q.ondigitalocean.app"

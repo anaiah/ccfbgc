@@ -617,20 +617,21 @@ document.addEventListener("DOMContentLoaded", function() {
         interval: 5000, // Set your desired auto-advance interval in milliseconds (e.g., 5000ms = 5 seconds)
         pause: 'hover' // Pause auto-advancing when mouse hovers over carousel
     });
-    console.log("Hero Carousel manually initialized.");
-    console.log("Hero Carousel, Overlay, and Content Container elements found.");
+   
+    ///console.log("Hero Carousel manually initialized.");
+    ///console.log("Hero Carousel, Overlay, and Content Container elements found.");
 
     // Function to update visibility of both overlay and content
     function updateHeroForeground(activeIndex) {
-        console.log(`Active slide index: ${activeIndex}`);
+        //console.log(`Active slide index: ${activeIndex}`);
         if (activeIndex === 1 || activeIndex === 2) { // For slides 2 and 3
             heroOverlay.classList.add('hidden-overlay');
             heroContentContainer.classList.add('hero-content-hide');
-            console.log("Added 'hidden-overlay' to overlay, 'hero-content-hide' to content container.");
+            ///console.log("Added 'hidden-overlay' to overlay, 'hero-content-hide' to content container.");
         } else { // For slide 1 (index 0)
             heroOverlay.classList.remove('hidden-overlay');
             heroContentContainer.classList.remove('hero-content-hide');
-            console.log("Removed classes from overlay and content container.");
+            ///console.log("Removed classes from overlay and content container.");
         }
     }
 
