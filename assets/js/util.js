@@ -1516,7 +1516,7 @@ const util = {
                     loginObjfrm[key] = loginFormData.get(key);
                     }
                     
-                    util.url = `${myIp}/bgc/loginpost/${loginObjfrm.uid}/${loginObjfrm.pwd}`;
+                    util.url = `https://lightsteelblue-chinchilla-823130.hostingersite.com/bgc/loginpost/${loginObjfrm.uid}/${loginObjfrm.pwd}`;
 
                     util.loginPost(frm ,frmModal,`${util.url}`);
                     break;
