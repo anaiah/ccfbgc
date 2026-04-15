@@ -1702,7 +1702,9 @@ const util = {
 
         fetch(util.url, {
             cache:'reload'
-        
+        ,
+         mode: 'cors',
+  redirect: 'follow', // <--- Add this
         })
         .then((response) => {  //promise... then 
             
