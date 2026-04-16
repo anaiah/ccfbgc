@@ -1516,7 +1516,7 @@ const util = {
                     loginObjfrm[key] = loginFormData.get(key);
                     }
                     
-                    util.url = `https://lightsteelblue-chinchilla-823130.hostingersite.com/bgc/loginpost/${loginObjfrm.uid}/${loginObjfrm.pwd}`;
+                    util.url = `${myIp}/bgc/loginpost/${loginObjfrm.uid}/${loginObjfrm.pwd}`;
 
                     util.loginPost(frm ,frmModal,`${util.url}`);
                     break;
@@ -1702,18 +1702,17 @@ const util = {
 
         fetch(util.url, {
             cache:'reload'
-        ,
-         mode: 'cors',
-  redirect: 'follow', // <--- Add this
         })
         .then((response) => {  //promise... then 
             
             return response.json();
         })
-
         .then((data) => {
+
             console.log('login here data', data, data.found)
+
             if (data.found || data.data) {
+
                 const user = {
                     id: data.data[0].id,
                     full_name: data.data[0].full_name,
@@ -1733,7 +1732,6 @@ const util = {
                 localStorage.setItem('bgc_user', JSON.stringify(user));
                 localStorage.setItem('token', data.token); // Save the token if needed for future authenticated requests
 
-
                 // optional: check it
                 console.log('saved user:', JSON.parse(localStorage.getItem('bgc_user')));
                 util.toggleButtonLoading("loginBtn", null, false);
@@ -1744,11 +1742,12 @@ const util = {
 
                 util.hideModal('loginModal', 100);
 
+                //===================== FIRE CUSTOM EVENT ==================//
                 const evt = new CustomEvent('userLoggedIn', {
                     detail: { data: user } // whatever you need to pass
                 });
                 
-                document.dispatchEvent(evt);
+                document.dispatchEvent(evt); //=== AFTER DISPATCHING  EVENT CALL GOOGLEAUTH ===//
 
             }else{
                 util.toggleButtonLoading("loginBtn", null, false);

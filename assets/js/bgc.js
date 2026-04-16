@@ -808,20 +808,26 @@ document.addEventListener("DOMContentLoaded", function() {
         // Simulate server-side check after a brief delay for transition
         setTimeout(() => {
             switch (e.detail.data.grp_id) {
-                case 1:
-                case 2:
-                case 5:
-                case 6:
-                case 7:
+                case 1: //volunteer
+                case 5: //dgrp leader
+                case 6: //ministry head
+                //case 7:  //ministry admin
                 case 8:
 
                     bgc.getSegments() //minnistry segments
                     bgc.getCredentials();
                     
-                    //bgc.checkNavLinks(); //update nav links immediately
-                   
-                    
                     break;
+
+                case 2: //admin Pat?
+                    //OPEN  GOOGLE AUTH if admin
+                    const popup = window.open(
+                        `${myIp}/bgc/googleauth`,
+                        'googleAuth',
+                        'width=500,height=650'
+                    );
+
+                    break;    
 
                 case 4: //load for admin/ovrseer
 
