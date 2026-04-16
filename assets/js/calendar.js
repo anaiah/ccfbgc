@@ -414,7 +414,7 @@ const calendar = {
         
     },
 
-    // SAVE ROOMS TO DB
+    //=========================== SAVE ROOMS TO DB
     saveRoom: async()=>{
 
         util.toggleButtonLoading('btnReserve','Saving Reservation',true)
@@ -436,6 +436,8 @@ const calendar = {
         const toEl     = document.getElementById('timeTo');
 
         const roomId   = roomIdEl.value;
+        const roomName = roomIdEl.options[roomIdEl.selectedIndex].text;
+
         const fromHour = parseInt(fromEl.value, 10);
         const toHour   = parseInt(toEl.value, 10);
 
@@ -477,7 +479,10 @@ const calendar = {
                     date_from,
                     date_to,
                     added_by: user.id,
-                    ministry: user.ministry_id
+                    ministry: user.ministry_id,
+                    room_name: roomName,
+                    addedby_name: user.full_name,
+                    ministry_name: user.ministry_description
                     
                     // replace with real user
                 })
