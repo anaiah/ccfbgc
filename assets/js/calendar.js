@@ -600,7 +600,7 @@ const calendar = {
         // flatten all reservations for that day
         //console.log( 'DITO',calendar.roomsData.length)
         //let countReservation = 0
-         console.log('renderdaygrid(()', calendar)
+         console.log('=====renderdaygrid(()', calendar.roomsData)
 
         calendar.roomsData.forEach(room => {
             (room.reservations || []).forEach(resv => {
