@@ -436,7 +436,13 @@ const calendar = {
         const toEl     = document.getElementById('timeTo');
 
         const roomId   = roomIdEl.value;
+        
         const roomName = roomIdEl.options[roomIdEl.selectedIndex].text;
+
+        // Replace "(has reservations)" with an empty string and update the option
+        //roomIdEl.options[roomIdEl.selectedIndex].text = roomName.replace("(has reservations)", "").trim();
+
+        const roomNames = roomName.replace("(has reservations)", "").trim();
 
         const fromHour = parseInt(fromEl.value, 10);
         const toHour   = parseInt(toEl.value, 10);
@@ -480,7 +486,7 @@ const calendar = {
                     date_to,
                     added_by: user.id,
                     ministry: user.ministry_id,
-                    room_name: roomName,
+                    room_name: roomNames,
                     addedby_name: user.full_name,
                     ministry_name: user.ministry_description
                     
