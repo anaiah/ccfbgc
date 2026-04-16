@@ -822,7 +822,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 case 2: //admin Pat?
                     //OPEN  GOOGLE AUTH if admin
                     const popup = window.open(
-                        `${myIp}/bgc/googleauth`,
+                        `${myIp}/bgc/google/auth`,
                         'googleAuth',
                         'width=500,height=500'
                     );
