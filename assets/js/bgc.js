@@ -824,7 +824,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     const popup = window.open(
                         `${myIp}/bgc/googleauth`,
                         'googleAuth',
-                        'width=500,height=650'
+                        'width=500,height=500'
                     );
 
                     break;    
