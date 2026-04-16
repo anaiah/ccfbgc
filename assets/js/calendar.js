@@ -615,7 +615,7 @@ const calendar = {
 
             //IMPORTANT!  ADD THE TH HEADERS in index.html
             tr.innerHTML = `
-                <td>${room.id}</td>
+                <td>${resv.id}</td>
                 <td>${room.room_description}</td>
                 <td>${fromStr}</td>
                 <td>${toStr}</td>
