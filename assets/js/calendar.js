@@ -437,7 +437,7 @@ const calendar = {
 
         const roomId   = roomIdEl.value;
         
-        const roomName = roomIdEl.options[roomIdEl.selectedIndex].text.toUpperCase();
+        const roomName = roomIdEl.options[roomIdEl.selectedIndex].text;
 
         // Replace "(has reservations)" with an empty string and update the option
         //roomIdEl.options[roomIdEl.selectedIndex].text = roomName.replace("(has reservations)", "").trim();
@@ -486,7 +486,7 @@ const calendar = {
                     date_to,
                     added_by: user.id,
                     ministry: user.ministry_id,
-                    room_name: roomNames,
+                    room_name: roomNames.toUpperCase(),
                     addedby_name: user.full_name,
                     ministry_name: user.ministry_description.toUpperCase()
                     
