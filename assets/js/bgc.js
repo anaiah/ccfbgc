@@ -780,6 +780,18 @@ document.addEventListener("DOMContentLoaded", function() {
         //bgc.loadHeadcountChart(); // Refresh chart with new data
     })
  
+    //===============WINDOW EVENT FOR GOOGLE OAUTH2==============//
+    let googlePopup = null;
+
+    window.addEventListener('message', (event) => {
+        if (event.data?.type === 'google-auth-success') {
+            if (googlePopup && !googlePopup.closed) {
+                googlePopup.close();
+            }
+            // refresh status / UI here
+            console.log('closing oAuth2')
+        }
+    });
 
     // ***************EVENT FIRED FOR LOGIN / USER LOGGED************
     document.addEventListener('userLoggedIn', (e) => {
