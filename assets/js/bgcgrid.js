@@ -159,7 +159,7 @@ export async function loadGridData(title, divgrid, segment) {
                                 <th class="month-header">Jul</th><th class="month-header">Aug</th>
                                 <th class="month-header">Sep</th><th class="month-header">Oct</th>
                                 <th class="month-header">Nov</th><th class="month-header">Dec</th>
-                                <th class="total-header">TOTAL</th>
+                                <th class="total-header">AVG</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -208,12 +208,11 @@ export async function loadGridData(title, divgrid, segment) {
                 html += `
                     <td class="total-cell" style="color: ${avgColor};">
                         ${average.toLocaleString()}
-                        <div style="font-size: 8px; color: #94a3b8; font-weight: 400; margin-top: 2px;">MTD AVG</div>
+                        <div style="font-size: 8px; color: #94a3b8; font-weight: 400; margin-top: 2px;">&nbsp;</div>
                     </td>`;
                     
                 html += `</tr>`;
             });
-
 
             html += `</tbody></table></div>`;
             container.innerHTML = html;
