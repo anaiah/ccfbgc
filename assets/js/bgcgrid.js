@@ -168,7 +168,9 @@ export async function loadGridData(title, divgrid, segment) {
             result.data.forEach(row => {
                 const label = row[1];
                 const target = Number(row[2]);
-                let rowTotal = 0; // Initialize total for this row
+
+                let rowSum = 0;
+                let monthsWithData = 0;
 
                 html += `<tr>`;
                 html += `<td class="sticky-col label-cell">${label}</td>`;
@@ -177,14 +179,14 @@ export async function loadGridData(title, divgrid, segment) {
                 // Month Loop (Index 3 to 14)
                 for (let i = 3; i <= 14; i++) {
                     const val = Number(row[i]) || 0;
-                    rowTotal += val; // Add to running total
 
                     if (val === 0) {
                         html += `<td class="empty-cell">-</td>`;
                     } else {
-                        // const isHit = val >= target;
-                        // const statusClass = isHit ? 'hit' : 'miss';
-                        // const icon = isHit ? '✓' : '✕';
+                        // Track sum and count for the Average
+                        rowSum += val;
+                        monthsWithData++;
+
                         html += `
                             <td class="month-cell">
                                 <div class="val-container">
@@ -194,10 +196,24 @@ export async function loadGridData(title, divgrid, segment) {
                     }
                 }
 
-                // Add the Total Column at the end
-                html += `<td class="total-cell">${rowTotal.toLocaleString()}</td>`;
+                // --- Calculate Average ---
+                // Only divide by months that actually have data
+                const average = monthsWithData > 0 ? Math.round(rowSum / monthsWithData) : 0;
+                
+                // Compare Average to the Target
+                const isHit = average >= target;
+                const avgColor = isHit ? '#059669' : '#e11d48'; // Green if hit, Red if miss
+
+                // Add the Average Column at the end
+                html += `
+                    <td class="total-cell" style="color: ${avgColor};">
+                        ${average.toLocaleString()}
+                        <div style="font-size: 8px; color: #94a3b8; font-weight: 400; margin-top: 2px;">MTD AVG</div>
+                    </td>`;
+                    
                 html += `</tr>`;
             });
+
 
             html += `</tbody></table></div>`;
             container.innerHTML = html;
