@@ -327,8 +327,12 @@
                 <h5 class="modal-title" id="adminInputModalLabel"><i class="fas fa-cogs me-2"></i>Admin Dashboard</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+            <!-- THIS IS FOR THE CHART DISPLAY -->
             <div class="modal-body bg-light">
-                <div class="card border-0 shadow-sm mb-4">
+
+                 <!-- TAKE OUT CHART FOR NOW -->
+                <div class="card border-0 shadow-sm d-none mb-4">
                   <div class="card-body p-0">
                     <div class="chart-scroll-wrapper" style="overflow-x:auto; width:100%;">
                       <div id="ccfbgcchart" style="height:280px; min-width:800px;"></div>
@@ -336,15 +340,28 @@
                   </div>
                 </div>
 
+                <!-- THIS IS FOR THE TABLE DISPLAY KPIS ETC -->
                 <div class="card border-0 shadow-sm">
-                  <div class="card-body p-3 p-md-4 table-responsive">
-                    <div id="attendance-grid"></div>
+                  <div class="card-body p-3 p-md-4 table-responsive" style="overflow-x: auto;">
+                    <div id="kpi-grid"></div>
+                  </div>
+                </div>
+
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body p-3 p-md-4 table-responsive" style="overflow-x: auto;">
+                    <div id="ministry-grid"></div>
+                  </div>
+                </div>
+                
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body p-3 p-md-4 table-responsive" style="overflow-x: auto;">
+                    <div id="missional-grid"></div>
                   </div>
                 </div>
 
                 <div class="d-flex justify-content-center gap-3 mt-4">
                     <button class="btn btn-primary px-4 rounded-pill shadow-sm"><i class="fas fa-file-export me-2"></i> Export Data</button>
-                    <button class="btn btn-outline-secondary px-4 rounded-pill shadow-sm"><i class="fas fa-cog me-2"></i> Settings</button>
+                    <!-- <button class="btn btn-outline-secondary px-4 rounded-pill shadow-sm"><i class="fas fa-cog me-2"></i> Settings</button> -->
                 </div>
             </div>
         </div>
@@ -453,11 +470,35 @@
         <form id="targetForm" novalidate>
           <div class="form-floating mb-3">
             <select class="form-select" id="ministry_segment" name="ministry_segment" required>
-              <option value="FIRST TIMERS">FIRST TIMERS</option>
-              <option value="CONGREGATION">CONGREGATION</option>
-              <option value="DGRPS">DGRPS</option>
+              <!-- <option value="EXALT">EXALT</option>
+              <option value="ADMIN">ADMIN</option> -->
+              
               <option value="DMEMBERS">DMEMBERS</option>
               <option value="DLEADERS">DLEADERS</option>
+              <option value="DGRPS">DGRPS</option>
+              <option value="DOCU">DOCU</option>
+              <option value="GOSPEL SHARING">GOSPEL SHARING</option>
+              <option value="NXTGEN VOLUNTEERS">NXTGEN VOLUNTEERS</option>
+              <option value="NXTGEN ATTENDANCE">NXTGEN ATTENDANCE</option>
+              <option value="USHERS">USHERS</option>
+              <option value="FIRST TIMERS">FIRST TIMERS</option>
+              <option value="CONGREGATION">CONGREGATION</option>
+              
+              <!-- <option value="COS">COS</option>
+              <option value="LIVE PROD">LIVE PROD</option> -->
+              
+              <option value="B1G">B1G</option>
+              <option value="ELEVATE">ELEVATE</option>
+              <option value="GLC">GLC</option>
+              <option value="W2W">W2W</option>
+              <option value="SPORTS">SPORTS</option>
+              <option value="ACROSS">ACROSS</option>
+              <option value="MOVEMENT">MOVEMENT</option>
+              <option value="BUSINESS LEADERS">BUSINESS LEADERS</option>
+              <option value="CO.BS">CO.BS</option>
+              <option value="OUTREACH PROGRAM">OUTREACH PROGRAM</option>
+              <option value="TRUE LIFE">TRUE LIFE</option>
+
             </select>
             <label for="ministry_segment">Ministry Segment</label>
           </div>

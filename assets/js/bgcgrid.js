@@ -1,64 +1,97 @@
-let xgrid = null
+// Change this to an object to hold multiple instances
+//let grids = {}; 
+window.bgcGrids = window.bgcGrids || {}; 
 
+export function initGrid(title, divgrid, segment) {
 
-export function initGrid() {
-    const el = document.getElementById('attendance-grid');
+    const el = document.getElementById(divgrid);
+
     if (!el) {
-        console.error('#attendance-grid not found');
+        console.error('#divgrid not found');
         return null;
     }
  
-    const monthColumns = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    .map(month => ({
-        name: month,
-        width: '50px',
-        attributes:{ style: 'text-align: center;' },
-        formatter: (cell, row) => {
-            const val = Number(cell);
-            const target = Number(row.cells[0].data); // row.cells[0] is "FY Target"
+    // const monthColumns = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    // .map(month => ({
+    //     name: month,
+    //     width: '50px',
+    //     attributes:{ style: 'text-align: center;' },
+    //     formatter: (cell, row) => {
+    //         const val = Number(cell);
+    //         const target = Number(row.cells[3].data); // row.cells[0] is "FY Target"
 
-            // 1. If no data, show a light gray dash (makes the table easier to read)
-            if (val === 0 || !val) {
-                return gridjs.html('<div style="text-align: center; color:#cbd5e1; font-weight:300">-</div>');
-            }
+    //         // 1. If no data, show a light gray dash (makes the table easier to read)
+    //         if (val === 0 || !val) {
+    //             return gridjs.html('<div style="text-align: center; color:#cbd5e1; font-weight:300">-</div>');
+    //         }
 
-            // 2. Add color logic (Green if it hit the target, Orange if not)
-            const color = val >= target ? '#059669' : '#e55e46';
-            const weight = val >= target ? '700' : '500'; //supposd to be 'normal' but bold looks better for both cases
+    //         // 2. Add color logic (Green if it hit the target, Orange if not)
+    //         const color = val >= target ? '#059669' : '#e55e46';
+    //         const weight = val >= target ? '700' : '500'; //supposd to be 'normal' but bold looks better for both cases
 
-            // 3. Return the formatted HTML
-            return gridjs.html(`
-                <div style="color: ${color};font-size:0.95em; font-weight: ${weight}; text-align: center;">
-                    ${val}
-                    ${val >= target ?'<small>✓</small>' : '<small>✗</small>'}
+    //         // 3. Return the formatted HTML
+    //         return gridjs.html(`
+    //             <div style="color: ${color};font-size:0.95em; font-weight: ${weight}; text-align: center;">
+    //                 ${val}
+    //                 '}
                 
-                </div>
-            `);
-        }
-    }));
+    //             </div>
+    //         `);
+    //     }
+    // }));
 
-    
-    xgrid = new gridjs.Grid({
+const monthColumns = [ 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+.map((month, index) => ({
+    name: month,
+    id: (index + 5).toString(), // Jan becomes id '3', Feb becomes id '4', etc.
+    width: '80px',
+    formatter: (cell, row) => {
+        const val = Number(cell); 
+        const target = row.cells && row.cells[2] ? Number(row.cells[2].data) : 2; // Target is now col index 1 in the GRID
+
+        if (val === 0 || isNaN(val)) return gridjs.html('<div style="color:#cbd5e1;">-</div>');
+        
+        const isHit = val >= target;
+        return gridjs.html(`
+            <div style="color: ${isHit ? '#059669' : '#e55e46'}; font-weight: bold; text-align: center;">
+                ${val} ${isHit ? '✓' : '✗'}
+            </div>
+        `);
+    }
+}));
+
+
+    const instance = new gridjs.Grid({
         
         columns:[
 
             { 
-                name: "Ministry", 
-                width: '150px',
-                formatter: (cell) => { 
+                id:'1',
+                name: `${title}`, 
+                width: '180px',
+                formatter: (cell,row) => {
+                    // cell = value of the first item in the array
+                    // row.cells[1].data = value of the second item (index 1) in the array
+                    const displayValue = row.cells[1].data;  
+                    
                     return gridjs.html(`
                     <span style="background: #f1f5f9; color: #1e293b; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: bold; border: 1px solid #e2e8f0;">
-                        ${cell}
+                        ${displayValue}
                     </span>
                 `)}
             },
             { 
+                id:'2',
                 name: "FY Target", 
-                width: '100px',
-                formatter: (cell) => { 
+                width: '130px',
+                formatter: (cell,row) => {
+                    // cell = value of the first item in the array
+                    // row.cells[1].data = value of the second item (index 1) in the array
+                    const displayValue = row.cells[2].data;  
+                    
                     return gridjs.html(`
-                    <span style="background: #f1f5f9; color: #64748b; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: bold; border: 1px solid #e2e8f0;">
-                        ${cell}
+                    <span style="background: #f1f5f9; color: #1e293b; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: bold; border: 1px solid #e2e8f0;">
+                        ${displayValue}
                     </span>
                 `)}
             },
@@ -70,53 +103,168 @@ export function initGrid() {
         //sort: true,
         resizable: false,
         //search: true,
-        width: '100%',
+        width: 'auto',       // Change from 100%
         autoWidth: false,
         style:{
             table: {
-                'min-width':'1200px',
+                'table-layout': 'fixed', // Ensures column widths are strictly followed
+                    'min-width':'1200px',
                 'font-size': '12px',
-                //'white-space': 'nowrap' // Prevent text from wrapping in cells
+                'table-layout':'fixed',
+                'white-space': 'nowrap' // Prevent text from wrapping in cells
             }
         },
         className: {
             //table: 'table table-bordered' // This makes it look like a Bootstrap table
         }
-    }).render(document.getElementById("attendance-grid"));
+    }).render(el);
     
-    return xgrid;
+    // ATTACH THE GRID DIRECTLY TO THE DIV
+    // This makes the grid a "property" of the HTML element
+    el.gridInstance = instance;
+    
+    console.log(`Grid attached to #${divgrid}`);    
+    return instance ;
+
 
 }//end init grid
 
-//load data to grid from the backend API
-export async function loadGridData() {
-    util.toggleButtonLoading("adminInputModalLabel", "Loading pls wait...", true);
 
-    if((!xgrid)) {
-        console.error("Grid not initialized. Call initGrid() first.");
-        return;
-    }
+//load data to grid from the backend API
+// bgcgrid.js
+
+export async function loadGridData(title, divgrid, segment) {
+    const container = document.getElementById(divgrid);
+    if (!container) return;
+
+    // Show a small loader while fetching
+    container.innerHTML = `<div class="text-center p-5"><div class="spinner-border text-primary"></div><p>Loading ${title}...</p></div>`;
 
     try {
-        const response = await fetch(`${myIp}/bgc/get-target-grid`);
+        const response = await fetch(`${myIp}/bgc/get-target-grid/${segment}`);
         const result = await response.json();
 
-        if (result.ok) {
-            // result.data is already an array of arrays from our previous Node.js step
-            ccfgrid.xgrid.updateConfig({
-                data: result.data 
-            }).forceRender();
+        if (result.ok && result.data) {
+            // Inside loadGridData logic...
+            let html = `
+                <div class="custom-table-wrapper">
+                    <table class="wow-table">
+                        <thead>
+                            <tr>
+                                <th class="sticky-col">${title}</th>
+                                <th class="target-cell">FY Target</th>
+                                <th class="month-header">Jan</th><th class="month-header">Feb</th>
+                                <th class="month-header">Mar</th><th class="month-header">Apr</th>
+                                <th class="month-header">May</th><th class="month-header">Jun</th>
+                                <th class="month-header">Jul</th><th class="month-header">Aug</th>
+                                <th class="month-header">Sep</th><th class="month-header">Oct</th>
+                                <th class="month-header">Nov</th><th class="month-header">Dec</th>
+                                <th class="total-header">TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
 
-            //render chart
-            ccfgrid.renderPerformanceChart(result);
+            result.data.forEach(row => {
+                const label = row[1];
+                const target = Number(row[2]);
+                let rowTotal = 0; // Initialize total for this row
 
+                html += `<tr>`;
+                html += `<td class="sticky-col label-cell">${label}</td>`;
+                html += `<td class="target-cell">${target.toLocaleString()}</td>`;
+
+                // Month Loop (Index 3 to 14)
+                for (let i = 3; i <= 14; i++) {
+                    const val = Number(row[i]) || 0;
+                    rowTotal += val; // Add to running total
+
+                    if (val === 0) {
+                        html += `<td class="empty-cell">-</td>`;
+                    } else {
+                        // const isHit = val >= target;
+                        // const statusClass = isHit ? 'hit' : 'miss';
+                        // const icon = isHit ? '✓' : '✕';
+                        html += `
+                            <td class="month-cell">
+                                <div class="val-container">
+                                    ${val.toLocaleString()}
+                                </div>
+                            </td>`;
+                    }
+                }
+
+                // Add the Total Column at the end
+                html += `<td class="total-cell">${rowTotal.toLocaleString()}</td>`;
+                html += `</tr>`;
+            });
+
+            html += `</tbody></table></div>`;
+            container.innerHTML = html;
+
+            // Optional chart logic
+            if (segment === 'kpi' && typeof renderPerformanceChart === 'function') {
+                ///// TAKE OUT CHART FOR NOW renderPerformanceChart(result);
+            }
         }
     } catch (err) {
-        console.error("Grid Load Error:", err);
+        console.error("Table Build Error:", err);
+        container.innerHTML = `<div class="alert alert-danger">Failed to load ${title} data.</div>`;
     }
-    util.toggleButtonLoading("adminInputModalLabel", null, false);
-
 }
+
+
+// export async function loadGridData(segment) {
+//     util.toggleButtonLoading("adminInputModalLabel", "Loading pls wait...", true);
+
+//      console.log("DEBUG: loadGridData received segment:", segment);
+
+//     if (!segment) {
+//         console.error("DEBUG: segment is UNDEFINED in loadGridData call");
+//         return;
+//     }
+
+//     const divMap = {
+//         'kpi': 'kpi-grid',
+//         'ministry': 'ministry-grid',
+//         'mission': 'missional-grid' // Ensure this matches your HTML ID exactly
+//     };
+
+//     const divId = divMap[segment];
+//     console.log("DEBUG: looking for divId:", divId);
+
+//     const el = document.getElementById(divId);
+//     const targetGrid = el ? el.gridInstance : null;
+
+//     if (!targetGrid) {
+//         console.error(`DEBUG: Grid instance not found on element #${divId}`);
+//         return;
+//     }
+
+//     try {
+//         const response = await fetch(`${myIp}/bgc/get-target-grid/${segment}`);
+//         const result = await response.json();
+
+//         if (result.ok) {
+
+//             console.log( '*** MY DATA *** ', result.data )
+
+//             // Update the specific grid instance found in our object
+//             targetGrid.updateConfig({
+//                 data: result.data 
+//             }).forceRender();
+
+//             if(segment === 'kpi'){
+//                 ccfgrid.renderPerformanceChart(result);
+//             }
+//         }//eif
+
+//     } catch (err) {
+//         console.error("Grid Load Error:", err);
+//     }
+//     util.toggleButtonLoading("adminInputModalLabel", null, false);
+
+// }
 
 //==== for loading charts
 //tis is also new but a horizontal flat line for target instead of the spike
@@ -147,7 +295,7 @@ export function renderPerformanceChart(apiData) {
         const color =palette[index % palette.length]; // Cycle through the palette for each ministry
 
         const targetValue = Number(row[1]); // The 200 or 300
-        const ministryName = row[0];       // The Ministry Name
+        const ministryName = row[1];       // The Ministry Name
 
         const monthlyData = row.slice(2).map(v => {
             const n = Number(v);
@@ -310,13 +458,15 @@ export async function saveTarget(formData) {
             util.Toasted('Data Saved Successfully',2000,false)
             util.speak('data saved successfully!')
 
-            util.hideModal('targetModal',100)
+            /// DONT HIDE MUNA util.hideModal('targetModal',100)
 
-            const adminModalEl = document.getElementById('adminInputModal');
-            const adminModal = bootstrap.Modal.getInstance(adminModalEl) || new bootstrap.Modal(adminModalEl);
-            adminModal.show();  
+            ccfgrid.formReset('targetForm')
+
+            // const adminModalEl = document.getElementById('adminInputModal');
+            // const adminModal = bootstrap.Modal.getInstance(adminModalEl) || new bootstrap.Modal(adminModalEl);
+            // adminModal.show();  
             
-            ccfgrid.loadGridData() //refresh grid data after saving new target
+            ////  DONT LOAD MUNA ccfgrid.loadGridData() //refresh grid data after saving new target
 
 
             
@@ -328,11 +478,35 @@ export async function saveTarget(formData) {
     }
 }
 
+const formReset = ( frm ) => {
+    const form = document.getElementById(frm ); // assuming this is the form
+
+    // 1. Reset standard fields
+    form.reset();
+
+    // 2. Remove Bootstrap validation states
+    form.querySelectorAll('.is-invalid, .is-valid').forEach(el => {
+        el.classList.remove('is-invalid', 'is-valid');
+    });
+
+    // 3. Clear hidden inputs (reset() ignores these)
+    form.querySelectorAll('input[type="hidden"]').forEach(el => {
+        el.value = '';
+    });
+
+    // 4. Manually trigger change for selects (if using select2 or similar plugins)
+    form.querySelectorAll('select').forEach(sel => {
+        sel.dispatchEvent(new Event('change'));
+    });
+
+}
+
 //======== Exported API ========
 export const ccfgrid = {
-     get xgrid() { return xgrid; },
-     loadGridData,
+     loadGridData: (title,div,segment) => loadGridData(title,div,segment), // Explicitly call the local function
+     
      renderPerformanceChart,
      getlinks,
-     saveTarget
+     saveTarget,
+     formReset
 }

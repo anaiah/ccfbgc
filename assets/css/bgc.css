@@ -586,29 +586,151 @@ html, body {
   width: 10%;
 } */
 
-/* 1. Freeze Column 1 (Ministry) */
-.gridjs-th:nth-child(1), 
-.gridjs-td:nth-child(1) {
-    position: sticky !important;
-    left: 0; /* Starts at the very left edge */
-    z-index: 3 !important;
-    background-color: #f8fafc !important; 
-    width: 150px !important;
-    min-width: 150px !important;
+/*===== table css */
+/* Container scroll handling */
+/* Container scroll handling */
+.custom-table-wrapper {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    background: white;
 }
 
-/* 2. Freeze Column 2 (FY Target) */
-/* This MUST be 150px because that is where Column 1 ends */
-.gridjs-th:nth-child(2), 
-.gridjs-td:nth-child(2) {
-    position: sticky !important;
-    left: 150px; /* Starts exactly where the first column finishes */
-    z-index: 3 !important;
-    background-color: #ffffff !important;
-    width: 100px !important;
-    min-width: 100px !important;
-    border-right: 2px solid #64748b; /* The 'divider' line */
+.wow-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 11px; /* Base font size */
 }
+
+/* Sticky First Column (Category) */
+.sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 10;
+    min-width: 180px; /* Slightly tighter for smaller font */
+    text-align: left !important;
+    padding-left: 12px !important;
+}
+
+/* Header Sticky Col */
+th.sticky-col { 
+    background: #0f172a !important; 
+    color: white; 
+}
+
+/* Body Sticky Col */
+td.sticky-col { 
+    background: #f8fafc !important; 
+    font-size: 11px; 
+    font-weight: 600; 
+    color: #1e293b;
+    border-right: 2px solid #e2e8f0 !important; 
+}
+
+/* General Table Headers */
+.wow-table th {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 8px 4px;
+    font-size: 10px; /* Slightly smaller headers look better with uppercase */
+    text-transform: uppercase;
+    text-align:center;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #334155;
+    white-space: nowrap;
+}
+/* Keep the first header left-aligned (The Category/Title) */
+.wow-table th.sticky-col {
+    text-align: left !important;
+    padding-left: 12px !important;
+}
+
+/* General Table Cells */
+.wow-table td {
+    padding: 6px 4px; /* Tighter padding for a compact dashboard feel */
+    text-align: center;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 11px; /* Matches the table base size */
+    vertical-align: middle;
+}
+
+/* FY Target Column */
+.target-cell { 
+    background: #fdfdfd; 
+    font-weight: 700; 
+    width: 90px; 
+    border-right: 1px solid #f1f5f9;
+}
+
+/* Add a green color to the text inside */
+.target-cell {
+    color: #059669;
+}
+
+/* Change Jan to Dec font color (Normal state) */
+.month-cell {
+    color: #475569; /* A professional slate blue/gray */
+    font-weight: 500;
+}
+
+/* Specific styling for the Total Column */
+.total-header {
+    background: #334155 !important; /* Darker than other months */
+    color: #f1f5f9 !important;
+    font-weight: 800;
+    width: 100px;
+}
+
+.total-cell {
+    background: #f1f5f9; /* Light gray background to distinguish from months */
+    font-weight: 800;
+    color: #1e293b;
+    border-left: 2px solid #e2e8f0; /* Visual separator */
+}
+
+/* Month Header color (Optional) */
+.month-header {
+    color: #94a3b8; /* Dimmed headers so the data pops more */
+}
+
+/* Keep Hit/Miss colors strong */
+.val-container.hit { color: #059669 !important; }
+.val-container.miss { color: #e11d48 !important; }
+
+/* Empty Values (-) */
+.empty-cell { 
+    color: #cbd5e1; 
+    font-weight: 300; 
+}
+
+/* Hit/Miss Styling for Month Values */
+.val-container { 
+    font-weight: 700; 
+    font-size: 11px; 
+    display: inline-block;
+}
+
+
+/* Small icon adjustment */
+.val-container small {
+    font-size: 9px;
+    margin-left: 2px;
+}
+
+/* Hover Effect */
+.wow-table tr:hover td { 
+    background-color: #f8fafc; 
+}
+
+/* Ensure sticky column stays gray on hover */
+.wow-table tr:hover td.sticky-col {
+    background-color: #f1f5f9 !important;
+}
+
+/*=== end table css */
 
 /* 3. Global fixes to prevent 'Ghosting' */
 .gridjs-wrapper {

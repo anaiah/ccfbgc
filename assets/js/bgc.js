@@ -565,8 +565,6 @@ document.addEventListener("DOMContentLoaded", function() {
     
     window.bgc = bgc; //set global
 
-    initGrid() ; //import grid.js and initialize grid
-
     const logoutLi = document.getElementById('logoutLi');
     const loginli = document.getElementById('loginli');
 
@@ -848,8 +846,38 @@ document.addEventListener("DOMContentLoaded", function() {
                     const adminModal = bootstrap.Modal.getInstance(adminModalEl) || new bootstrap.Modal(adminModalEl);
 
                     if (adminModalEl) {
-                        adminModalEl.addEventListener('shown.bs.modal', function () {   
-                            ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
+                        adminModalEl.addEventListener('shown.bs.modal', function () {
+                            
+                            // const aTitle = ['KPIs', 'MINISTRY EVENTS', 'MISSIONAL'];
+                            // const aDiv = ['kpi-grid', 'ministry-grid', 'missional-grid'];
+                            // const aSearch = ['kpi', 'ministry', 'mission'];
+
+                            // const aTitle = ['KPIs'];
+                            // const aDiv = ['kpi-grid'];
+                            // const aSearch = ['kpi'];
+
+                            
+                            // async function setupGrids() {
+                            //         console.log("Starting setupGrids...");
+                            //         for (let i = 0; i < aSearch.length; i++) {
+                            //             const segment = aSearch[i];
+                            //             const title = aTitle[i];
+                            //             const divId = aDiv[i];
+
+                            //             console.log(`Loop ${i}: Initializing ${segment}`);
+
+                            //             // 1. Initialize
+                            //             initGrid(title, divId, segment); 
+                            //         // 2. Tiny delay to ensure DOM and object are ready
+                            //         await new Promise(resolve => setTimeout(resolve, 50));
+
+                            //         // 3. Load
+                            //         await ccfgrid.loadGridData(segment); 
+                            //     }
+                            // }
+
+                            // setupGrids();
+
                         });
                     }
 
@@ -1055,10 +1083,77 @@ document.addEventListener("DOMContentLoaded", function() {
     //================LISTENER FOR CHART MODAL SHOW
     if (adminInputModalElement) {
         adminInputModalElement.addEventListener('shown.bs.modal', function () {
-            ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
+            //ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
             console.log('Admin Modal is fully open. Time to load chart data!');
+
+            const aTitle = ['KPIs', 'MINISTRY EVENTS', 'MISSIONAL'];
+            const aDiv = ['kpi-grid', 'ministry-grid', 'missional-grid'];
+            const aSearch = ['kpi', 'ministry', 'mission'];
+
+            // const aTitle = ['KPIs'];
+            // const aDiv = ['kpi-grid'];
+            // const aSearch = ['kpi'];
+            
+            async function setupGrids() {
+                    console.log("Starting setupGrids...");
+                    for (let i = 0; i < aSearch.length; i++) {
+                        const segment = aSearch[i];
+                        const title = aTitle[i];
+                        const divId = aDiv[i];
+
+                        console.log(`Loop ${i}: Initializing ${segment}`);
+
+                        // 1. Initialize
+                        //initGrid(title, divId, segment); 
+                    // 2. Tiny delay to ensure DOM and object are ready
+                    await new Promise(resolve => setTimeout(resolve, 50));
+
+                    // 3. Load
+                    await ccfgrid.loadGridData(title, divId, segment); 
+                }
+
+                 console.log("All grids loaded successfully.");
+            }
+
+            setupGrids();
+
         });
     }
         
 });
+
+/* css
+/* 1. Freeze Column 1 (Ministry) */
+// .gridjs-th:nth-child(1), 
+// .gridjs-td:nth-child(1) {
+//     position: sticky !important;
+//     left: 0; /* Starts at the very left edge */
+//     z-index: 4 !important;
+//     background-color: #f8fafc !important; 
+//     width: 180px !important;
+//     min-width: 180px !important;
+// }
+
+/* 2. Freeze Column 2 (FY Target) */
+/* This MUST be 150px because that is where Column 1 ends */
+// .gridjs-th:nth-child(2), 
+// .gridjs-td:nth-child(2) {
+//     position: sticky !important;
+//     left: 180px; /* Starts exactly where the first column finishes */
+//     z-index: 4 !important;
+//     background-color: #ffffff !important;
+//     width: 130px !important;
+//     min-width: 130px !important;
+//     border-right: 2px solid #64748b; /* The 'divider' line */
+// }
+
+// @media (max-width: 600px) {
+//     /* Un-freeze the second column on small phones */
+//     .gridjs-th:nth-child(2), 
+//     .gridjs-td:nth-child(2) {
+//         position: static !important;
+//         border-right: none;
+//     }
+// }
+
 
