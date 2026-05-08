@@ -516,6 +516,42 @@ const formReset = ( frm ) => {
 
 }
 
+const downloadReport = async () => {
+    try {
+        const response = await fetch(`${myIp}/bgc/downloadExcel`);
+        
+        if (!response.ok) throw new Error('Download failed');
+
+        const blob = await response.blob();
+
+        // --- Generate Date String MMDDYYYY ---
+        const now = new Date();
+        const mm = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const dd = String(now.getDate()).padStart(2, '0');
+        const yyyy = now.getFullYear();
+        const dateString = `${mm}${dd}${yyyy}`;
+
+        const url = window.URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        
+        a.download = `Ministry_Report_${dateString}.xlsx`;
+
+        document.body.appendChild(a);
+        a.click();
+        
+        // Cleanup
+        window.URL.revokeObjectURL(url);
+        a.remove();
+    } catch (err) {
+        console.error("Error downloading excel:", err);
+        alert("Could not download the report.");
+    }
+}
+
+
+
 //======== Exported API ========
 export const ccfgrid = {
      loadGridData: (title,div,segment) => loadGridData(title,div,segment), // Explicitly call the local function
@@ -525,3 +561,22 @@ export const ccfgrid = {
      saveTarget,
      formReset
 }
+
+//========add another listener===========//
+document.addEventListener('click', (event) => {
+    switch (event.target.id) {
+        case 'export-btn':
+            downloadReport()
+            util.speak('DOWNLOADING REPORT!!!')
+            console.log('Exporting data...');
+            break;
+            
+        case 'cancelAction':
+            console.log('Action cancelled.');
+            break;
+            
+        default:
+            // Do nothing if the clicked element doesn't match an ID
+            break;
+    }
+});
