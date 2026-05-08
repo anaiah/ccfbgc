@@ -752,3 +752,8 @@ td.sticky-col {
     max-height:350px; /* Set a minimum width for the chart to prevent squishing */
     touch-action: pan-y !important;
 }
+
+/* :modal */
+.modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
