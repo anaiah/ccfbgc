@@ -895,15 +895,44 @@ document.addEventListener("DOMContentLoaded", function() {
                         util.Toasted(`From ${data.sender}, ${data.message}`, 3000, true);
                         util.speak(data.message)
 
-                        ccfgrid.loadGridData(); // Refresh grid with new data when a personal alert is received
-                        
-                        if(adminModalEl.classList.contains('show')){ //only pop up if not already open
-                            //adminModal.show(); // Show the admin modal when a personal alert is received
-                            ccfgrid.loadGridData(); // Refresh grid with new data when a personal alert is received
+                        ///ccfgrid.loadGridData(); // Refresh grid with new data when a personal alert is received
 
-                        }else{
-                            adminModal.show(); // Show the admin modal when a personal alert is received
-                        } // Refresh grid with new data
+                        const aTitle = ['KPIs', 'MINISTRY EVENTS', 'MISSIONAL'];
+                        const aDiv = ['kpi-grid', 'ministry-grid', 'missional-grid'];
+                        const aSearch = ['kpi', 'ministry', 'mission'];
+
+                        async function setupGrid() {
+                                
+                            console.log("Starting setupGrids...");
+
+                            for (let i = 0; i < aSearch.length; i++) {
+                                const segment = aSearch[i];
+                                const title = aTitle[i];
+                                const divId = aDiv[i];
+
+                                console.log(`Loop ${i}: Initializing ${segment}`);
+
+                                // 1. Initialize
+                                //initGrid(title, divId, segment); 
+                                // 2. Tiny delay to ensure DOM and object are ready
+                                await new Promise(resolve => setTimeout(resolve, 50));
+
+                                // 3. Load
+                                await ccfgrid.loadGridData(title, divId, segment); 
+                            }
+
+                            console.log("All grids loaded successfully.");
+                        }
+
+                        setupGrid();
+                        
+                        // if(adminModalEl.classList.contains('show')){ //only pop up if not already open
+                        //     //adminModal.show(); // Show the admin modal when a personal alert is received
+                        //     //ccfgrid.loadGridData(); // Refresh grid with new data when a personal alert is received
+
+                        // }else{
+                        //     adminModal.show(); // Show the admin modal when a personal alert is received
+                        // } // Refresh grid with new data
 
                     });
 
