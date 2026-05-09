@@ -137,6 +137,8 @@ export async function loadGridData(title, divgrid, segment) {
     const container = document.getElementById(divgrid);
     if (!container) return;
 
+    container.innerHTML = "" // clear first
+    
     // Show a small loader while fetching
     container.innerHTML = `<div class="text-center p-5"><div class="spinner-border text-primary"></div><p>Loading ${title}...</p></div>`;
 
