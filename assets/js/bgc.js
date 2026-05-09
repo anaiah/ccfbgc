@@ -823,6 +823,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 case 6: //ministry head
                 //case 7:  //ministry admin
                 case 8:
+                case 9: //admin
 
                     bgc.getSegments() //minnistry segments
                     bgc.getCredentials();
