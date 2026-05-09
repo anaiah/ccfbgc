@@ -855,6 +855,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         const adminModalEl = document.getElementById('adminInputModal');
                         
                         if(adminModalEl.classList.contains('show')){ //only pop up if not already open
+
+                            console.log('handling handlepush()')
+                            
                             ccfgrid.handlePush()
                         } // Refresh grid with new data
 
