@@ -1709,9 +1709,9 @@ const util = {
         })
         .then((data) => {
 
-            console.log('login here data', data, data.found)
+            console.log('login here data', data, 'hre...', data.found)
 
-            if (data.found || data.data) {
+            if (data.found ) {
 
                 const user = {
                     id: data.data[0].id,
@@ -1750,9 +1750,10 @@ const util = {
                 document.dispatchEvent(evt); //=== AFTER DISPATCHING  EVENT CALL GOOGLEAUTH ===//
 
             }else{
+                util.Toasted('NO RECORD FOUND! CHECK YOUR  ENTRY AND PLEASE TRY AGAIN!', 3000, false);
                 util.toggleButtonLoading("loginBtn", null, false);
                 util.speak('NO RECORD FOUND! PLEASE TRY AGAIN...')
-                return;
+                return false;
             }
 
                 
@@ -2066,9 +2067,6 @@ const util = {
         }
     },
     
-
-
-
     //utility toastify
     Toasted:async(msg,nDuration,lClose)=>{
         Toastify({
@@ -2151,7 +2149,6 @@ const util = {
             btn.disabled = false;
         }
     }
-
     
 }//****** end obj */
 
