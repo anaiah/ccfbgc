@@ -443,6 +443,7 @@ export const getlinks = (grp) => {
         case 6:
         case 7:
         case 8:
+        case 9:
             document.getElementById('loginli').classList.add('d-none')//hide login already
             document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
             
