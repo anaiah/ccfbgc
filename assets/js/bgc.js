@@ -841,104 +841,24 @@ document.addEventListener("DOMContentLoaded", function() {
                     break;    
 
                 case 4: //load for admin/ovrseer
-
-                    //after login get modal listener for displaying grid
-                    const adminModalEl = document.getElementById('adminInputModal');
-                    const adminModal = bootstrap.Modal.getInstance(adminModalEl) || new bootstrap.Modal(adminModalEl);
-
-                    if (adminModalEl) {
-                        adminModalEl.addEventListener('shown.bs.modal', function () {
-                            
-                            // const aTitle = ['KPIs', 'MINISTRY EVENTS', 'MISSIONAL'];
-                            // const aDiv = ['kpi-grid', 'ministry-grid', 'missional-grid'];
-                            // const aSearch = ['kpi', 'ministry', 'mission'];
-
-                            // const aTitle = ['KPIs'];
-                            // const aDiv = ['kpi-grid'];
-                            // const aSearch = ['kpi'];
-
-                            
-                            // async function setupGrids() {
-                            //         console.log("Starting setupGrids...");
-                            //         for (let i = 0; i < aSearch.length; i++) {
-                            //             const segment = aSearch[i];
-                            //             const title = aTitle[i];
-                            //             const divId = aDiv[i];
-
-                            //             console.log(`Loop ${i}: Initializing ${segment}`);
-
-                            //             // 1. Initialize
-                            //             initGrid(title, divId, segment); 
-                            //         // 2. Tiny delay to ensure DOM and object are ready
-                            //         await new Promise(resolve => setTimeout(resolve, 50));
-
-                            //         // 3. Load
-                            //         await ccfgrid.loadGridData(segment); 
-                            //     }
-                            // }
-
-                            // setupGrids();
-
-                        });
-                    }
-
-                    //console.log('Login simulated for admin user.');
-
-                    // document.getElementById('loginli').classList.add('d-none')//show logout link already
-                    // document.getElementById('gridli').classList.remove('d-none')//show logout link already
-                    // document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
-                   
-                     //to bossings/owners only....
+                    
+                    //to bossings/owners only....
                     const privychannel = pusher.subscribe(`users-owners`); //subscribe to private channel for this user
 
                     privychannel.bind('personal-alert', function(data) {
                         console.log('Received Pusher event for Owners:', data);
-                        util.Toasted(`From ${data.sender}, ${data.message}`, 3000, true);
+                        //util.Toasted(`From ${data.sender}, ${data.message}`, 3000, true);
+                        util.Toasted('Received Update!!!',3000, false)
                         util.speak(data.message)
 
-                        ///ccfgrid.loadGridData(); // Refresh grid with new data when a personal alert is received
-
-                        const aTitle = ['KPIs', 'MINISTRY EVENTS', 'MISSIONAL'];
-                        const aDiv = ['kpi-grid', 'ministry-grid', 'missional-grid'];
-                        const aSearch = ['kpi', 'ministry', 'mission'];
-
-                        async function setupGrid() {
-                                
-                            console.log("Starting setupGrids...");
-
-                            for (let i = 0; i < aSearch.length; i++) {
-                                const segment = aSearch[i];
-                                const title = aTitle[i];
-                                const divId = aDiv[i];
-
-                                console.log(`Loop ${i}: Initializing ${segment}`);
-
-                                // 1. Initialize
-                                //initGrid(title, divId, segment); 
-                                // 2. Tiny delay to ensure DOM and object are ready
-                                await new Promise(resolve => setTimeout(resolve, 50));
-
-                                // 3. Load
-                                await ccfgrid.loadGridData(title, divId, segment); 
-                            }
-
-                            console.log("All grids loaded successfully.");
-                        }
-
-                        setupGrid();
+                        //after login get modal listener for displaying grid
+                        const adminModalEl = document.getElementById('adminInputModal');
                         
-                        // if(adminModalEl.classList.contains('show')){ //only pop up if not already open
-                        //     //adminModal.show(); // Show the admin modal when a personal alert is received
-                        //     //ccfgrid.loadGridData(); // Refresh grid with new data when a personal alert is received
-
-                        // }else{
-                        //     adminModal.show(); // Show the admin modal when a personal alert is received
-                        // } // Refresh grid with new data
+                        if(adminModalEl.classList.contains('show')){ //only pop up if not already open
+                            ccfgrid.handlePush()
+                        } // Refresh grid with new data
 
                     });
-
-                    //adminInputModal.show(); //on show chart loadheadcountchart()
-                    //bgc.checkNavLinks(); //update nav links immediately
 
                     break;
             }//ENDSWITCH
@@ -1116,36 +1036,7 @@ document.addEventListener("DOMContentLoaded", function() {
             //ccfgrid.loadGridData(); // Refresh grid with new data when admin modal is shown
             console.log('Admin Modal is fully open. Time to load chart data!');
 
-            const aTitle = ['KPIs', 'MINISTRY EVENTS', 'MISSIONAL'];
-            const aDiv = ['kpi-grid', 'ministry-grid', 'missional-grid'];
-            const aSearch = ['kpi', 'ministry', 'mission'];
-
-            // const aTitle = ['KPIs'];
-            // const aDiv = ['kpi-grid'];
-            // const aSearch = ['kpi'];
-            
-            async function setupGrids() {
-                    console.log("Starting setupGrids...");
-                    for (let i = 0; i < aSearch.length; i++) {
-                        const segment = aSearch[i];
-                        const title = aTitle[i];
-                        const divId = aDiv[i];
-
-                        console.log(`Loop ${i}: Initializing ${segment}`);
-
-                        // 1. Initialize
-                        //initGrid(title, divId, segment); 
-                    // 2. Tiny delay to ensure DOM and object are ready
-                    await new Promise(resolve => setTimeout(resolve, 50));
-
-                    // 3. Load
-                    await ccfgrid.loadGridData(title, divId, segment); 
-                }
-
-                 console.log("All grids loaded successfully.");
-            }
-
-            setupGrids();
+            ccfgrid.handlePush()
 
         });
     }

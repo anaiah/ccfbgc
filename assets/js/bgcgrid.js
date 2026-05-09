@@ -137,7 +137,6 @@ export async function loadGridData(title, divgrid, segment) {
     const container = document.getElementById(divgrid);
     if (!container) return;
 
-    container.innerHTML = "" // clear first
     
     // Show a small loader while fetching
     container.innerHTML = `<div class="text-center p-5"><div class="spinner-border text-primary"></div><p>Loading ${title}...</p></div>`;
@@ -228,6 +227,40 @@ export async function loadGridData(title, divgrid, segment) {
         console.error("Table Build Error:", err);
         container.innerHTML = `<div class="alert alert-danger">Failed to load ${title} data.</div>`;
     }
+}
+
+//recreat loadgriddata
+const handlePush = () => {
+
+    const aTitle = ['KPIs', 'MINISTRY EVENTS', 'MISSIONAL'];
+    const aDiv = ['kpi-grid', 'ministry-grid', 'missional-grid'];
+    const aSearch = ['kpi', 'ministry', 'mission'];
+
+    async function setupGrid() {
+            
+        console.log("Starting setupGrids...");
+
+        for (let i = 0; i < aSearch.length; i++) {
+            const segment = aSearch[i];
+            const title = aTitle[i];
+            const divId = aDiv[i];
+
+            console.log(`Loop ${i}: Initializing ${segment}`);
+
+            // 1. Initialize
+            //initGrid(title, divId, segment); 
+            // 2. Tiny delay to ensure DOM and object are ready
+            await new Promise(resolve => setTimeout(resolve, 50));
+
+            // 3. Load
+            await loadGridData(title, divId, segment); 
+        }
+
+        console.log("All grids loaded successfully.");
+    }
+
+    setupGrid();
+
 }
 
 
@@ -553,16 +586,14 @@ const downloadReport = async () => {
     }
 }
 
-
-
 //======== Exported API ========
 export const ccfgrid = {
      loadGridData: (title,div,segment) => loadGridData(title,div,segment), // Explicitly call the local function
-     
      renderPerformanceChart,
      getlinks,
      saveTarget,
-     formReset
+     formReset,
+     handlePush
 }
 
 //========add another listener===========//
