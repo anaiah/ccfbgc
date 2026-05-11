@@ -765,3 +765,35 @@ td.sticky-col {
     text-transform: uppercase;
     font-size: 16px;
 }
+/* for dgrp */
+/* Enhanced Wow-Factor Glass Card */
+.glass-card {
+    background: rgba(40, 40, 40, 0.7); /* Deep dark semi-transparent */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 4rem 2rem;
+    max-width: 900px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.glass-card li {
+    list-style: none;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+/* Make the button really pop against the dark card */
+.btn-warning {
+    background-color: #f1c40f;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    transform: scale(1.05);
+    background-color: #f39c12;
+    box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+}

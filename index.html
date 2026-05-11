@@ -48,14 +48,24 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto me-2 gap-2 fw-semibold">
-        <li class="nav-item" id="loginli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
-        <li class="nav-item d-none" id="kpili"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#targetModal">KPI Entry</a></li>
-        <li class="nav-item d-none" id="gridchartli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#adminInputModal">Report</a></li>
-        <li class="nav-item d-none" id="dataentryli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#dataInputModal">Data Entry</a></li>
-        <li class="nav-item d-none" id="roomresLi"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#calendarModal">Room Reservation</a></li>
         <li class="nav-item"><a class="nav-link px-3" href="#about">About Us</a></li>
+        
         <li class="nav-item"><a class="nav-link px-3" href="#contact">Contact Us</a></li>
+
+        <li class="nav-item"><a class="nav-link px-3" href="#dgroup">D-Group</a></li>
+        
+        <li class="nav-item" id="loginli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
+        
+        <li class="nav-item d-none" id="kpili"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#targetModal">KPI Entry</a></li>
+        
+        <li class="nav-item d-none" id="gridchartli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#adminInputModal">Report</a></li>
+        
+        <li class="nav-item d-none" id="dataentryli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#dataInputModal">Data Entry</a></li>
+        
+        <li class="nav-item d-none" id="roomresLi"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#calendarModal">Room Reservation</a></li>
+        
         <li class="nav-item d-none" id="logoutLi"><a id='logoutBtn' class="nav-link px-3 text-danger" href="javascript:void(0)">LogOut</a></li>
+      
       </ul>
     </div>
   </div>
@@ -206,6 +216,54 @@
     </div>
   </div>
 </section>
+
+<!-- dgroup section -->
+<!-- Remove any 'bg-white' or 'bg-light' classes from this section -->
+<section id="dgroup" class="py-5" style="background-color: #121212; position: relative; overflow: hidden;">
+    
+    <!-- Optional: Add a subtle glow behind the card for the "Wow" factor -->
+    <div style="position: absolute; top: 50%; left: 50%; width: 300px; height: 300px; background: rgba(241, 196, 15, 0.1); filter: blur(100px); transform: translate(-50%, -50%);"></div>
+
+    <div class="container position-relative">
+        <div class="glass-card mx-auto text-center">
+            <h2 class="display-5 fw-bold mb-3 text-white">Ready to grow?</h2>
+            <p class="lead mb-5 px-lg-5" style="color: #ccc;">
+                Our D-Groups are small circles of people meeting across the city to study the Word and share life. Whether you're a professional in High Street or a student nearby, there's a group for you.
+            </p>
+            <p class="lead mb-5 px-lg-5" style="color: #ccc;">
+            Growth happens best in circles, not rows. By joining a small group, you’ll find a safe space to share life, study the Word, and find true community. Whether you're a student, a professional, or a parent, there’s a place for you.
+          </p>
+              
+            
+            <div class="row text-start mb-5 justify-content-center">
+                <div class="col-md-5 mb-2"><li>✨ Spiritual Accountability</li></div>
+                <div class="col-md-5 mb-2"><li>🙏 Constant Prayer Support</li></div>
+                <div class="col-md-5 mb-2"><li>📖 Deeper Bible Study</li></div>
+                <div class="col-md-5 mb-2"><li>💛 Lifelong Friendships</li></div>
+            </div>
+
+            <button id="dgroupActionBtn" class="btn btn-warning btn-lg px-5 py-3 fw-bold shadow-lg">
+                FIND MY GROUP
+            </button>
+        </div>
+    </div>
+</section>
+
+
+<!-- The Modal for D-Group System -->
+<div class="modal fade" id="dgroupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">D-Group Portal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be injected here via JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Contact Section -->
