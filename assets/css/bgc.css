@@ -778,7 +778,7 @@ td.sticky-col {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
-.glass-card li {
+.wow-glass-card li {
     list-style: none;
     font-size: 1.1rem;
     color: #fff;
@@ -796,4 +796,40 @@ td.sticky-col {
     transform: scale(1.05);
     background-color: #f39c12;
     box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+}
+#dgroup-section {
+    position: relative;
+    /* Insert your image URL here */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                      url('../img/GLC_0537.JPG');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Parallax effect: image stays still while scrolling */
+    padding: 100px 0;
+    overflow: hidden;
+}
+
+/* Add a glowing border to the glass card to make it pop against the image */
+.wow-glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+    /* transition: all 0.4s ease; */
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother transition */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Keep the base border very faint */
+
+}
+
+
+.wow-glass-card:hover {
+    transform: translateY(-8px);
+    
+    /* This creates the 'diffused/scattered' glow */
+    /* 0px offset X, 0px offset Y, 40px blur, 10px spread */
+    box-shadow: 0 0 50px 10px rgba(241, 196, 15, 0.25); 
+    
+    /* Slightly lighten the border so it feels like the light is hitting the edge */
+    border: 1px solid rgba(241, 196, 15, 0.4); 
 }
