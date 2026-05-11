@@ -801,7 +801,7 @@ td.sticky-col {
     position: relative;
     /* Insert your image URL here */
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                      url('../img/GLC_0537.JPG');
+                      url('../img/mydgrp.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed; /* Parallax effect: image stays still while scrolling */
