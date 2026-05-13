@@ -608,6 +608,61 @@ document.addEventListener('click', (event) => {
         case 'cancelAction':
             console.log('Action cancelled.');
             break;
+        
+        case 'dgroupActionBtn':
+            
+            const isRegistered = localStorage.getItem('isRegistered');
+            const modalBody = document.getElementById('modalBody');
+            const modalTitle = document.getElementById('modalTitle');
+            const myModal = new bootstrap.Modal(document.getElementById('dgroupModal'));
+
+            if (isRegistered) {
+                // User is already registered - Show the Management Module
+                modalTitle.innerText = "My D-Group Dashboard";
+                modalBody.innerHTML = `
+                    <div class="text-center">
+                        <h6>Welcome back!</h6>
+                        <p>Loading your group details...</p>
+                        <div class="list-group">
+                            <a href="#" class="list-group-item list-group-item-action">View Weekly Study</a>
+                            <a href="#" class="list-group-item list-group-item-action">Submit Prayer Request</a>
+                        </div>
+                    </div>`;
+            } else {
+                // Not registered - Show Registration Form
+                modalTitle.innerText = "Join a D-Group";
+                modalBody.innerHTML = `
+                    <form id="regForm">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" required id="userName">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Life Stage</label>
+                            <select class="form-select" id="userCategory">
+                                <option value="single">Single</option>
+                                <option value="couple">Couple</option>
+                                <option value="student">Student</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Register & Find Group</button>
+                    </form>`;
+                
+                // Handle the form submission
+                document.getElementById('regForm').onsubmit = function(e) {
+                    e.preventDefault();
+                    localStorage.setItem('isRegistered', 'true');
+                    localStorage.setItem('userName', document.getElementById('userName').value);
+                    alert("Registration successful! You can now access the management module.");
+                    location.reload(); // Refresh to see the dashboard view
+                };
+            }
+
+            myModal.show();
+
+        
+        break;
+
             
         default:
             // Do nothing if the clicked element doesn't match an ID

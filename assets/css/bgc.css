@@ -766,18 +766,75 @@ td.sticky-col {
     font-size: 16px;
 }
 /* for dgrp */
-/* Enhanced Wow-Factor Glass Card */
-.glass-card {
-    background: rgba(40, 40, 40, 0.7); /* Deep dark semi-transparent */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
-    padding: 4rem 2rem;
-    max-width: 900px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+
+/* ==========================================
+   D-GROUP SECTION & RESPONSIVE LAYOUT
+   ========================================== */
+#dgroup-section {
+    position: relative;
+    background-image: linear-gradient(rgba(11, 12, 16, 0.85), rgba(11, 12, 16, 0.85)), 
+                      url('../img/mydgrp.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Smooth parallax scroll depth */
+    padding: 120px 0;
+    overflow: hidden;
+    color: #ffffff;
 }
 
+/* Tracking Spacing Utility for Headers */
+.tracking-wider {
+    letter-spacing: 2px;
+}
+
+/* ==========================================
+   LEFT SIDE: HORIZONTAL IMAGE FRAME MATRIX
+   ========================================== */
+.image-frame-container {
+    border-radius: 24px; /* Matches modern asymmetrical look */
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image-frame-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+}
+
+/* Interactive zoom frame layer */
+.image-frame-container:hover {
+    transform: translateY(-5px);
+}
+
+.image-frame-container:hover img {
+    transform: scale(1.03);
+}
+
+/* ==========================================
+   RIGHT SIDE: MULTI-COLUMN COMPONENT ITEMS
+   ========================================== */
+.feature-icon-circle {
+    width: 48px;
+    height: 48px;
+    background: rgba(241, 196, 15, 0.1);
+    border: 1px solid rgba(241, 196, 15, 0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom list items inside grid cells */
 .wow-glass-card li {
     list-style: none;
     font-size: 1.1rem;
@@ -785,52 +842,60 @@ td.sticky-col {
     margin-bottom: 10px;
 }
 
-/* Make the button really pop against the dark card */
+/* ==========================================
+   INTERACTIVE REFACTOR: PILL CALL TO ACTION
+   ========================================== */
 .btn-warning {
     background-color: #f1c40f;
     border: none;
-    transition: all 0.3s ease;
+    color: #000000 !important;
+    font-weight: 700;
+    border-radius: 50px; /* Transforms shape into pill layout */
+    padding: 12px 35px;
+    letter-spacing: 0.5px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
+/* Implements your custom diffused/scattered glow aura configuration */
 .btn-warning:hover {
-    transform: scale(1.05);
     background-color: #f39c12;
-    box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
-}
-#dgroup-section {
-    position: relative;
-    /* Insert your image URL here */
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                      url('../img/mydgrp.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed; /* Parallax effect: image stays still while scrolling */
-    padding: 100px 0;
-    overflow: hidden;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 0 40px 8px rgba(241, 196, 15, 0.35) !important;
 }
 
-/* Add a glowing border to the glass card to make it pop against the image */
-.wow-glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-    /* transition: all 0.4s ease; */
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother transition */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Keep the base border very faint */
-    border-radius: 15px;
-
+/* ==========================================
+   MOBILE ALIGNMENT CONFIGURATIONS (Responsive)
+   ========================================== */
+@media (max-width: 991px) {
+    #dgroup-section {
+        padding: 60px 0;
+    }
+    .image-frame-container {
+        margin-bottom: 40px; /* Separates stacked elements on small displays */
+    }
+}
+/* ==========================================
+   RIGHT COLUMN GLASSMORPHISM CONTAINER
+   ========================================== */
+.text-glass-card {
+    background: rgba(20, 20, 20, 0.5); /* Subtle dark base tint */
+    backdrop-filter: blur(16px); /* Heavy frosting for absolute text clarity */
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Minimal light border */
+    border-radius: 24px; /* Matches the left image frame rounding */
+    padding: 3rem; /* Generous internal spacing for breathing room */
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4); /* Smooth ambient drop shadow */
 }
 
+/* Ensure sub-labels pop against the frosted element */
+.text-glass-card .text-muted {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
 
-.wow-glass-card:hover {
-    transform: translateY(-8px);
-    
-    /* This creates the 'diffused/scattered' glow */
-    /* 0px offset X, 0px offset Y, 40px blur, 10px spread */
-    box-shadow: 0 0 50px 10px rgba(241, 196, 15, 0.25); 
-    
-    /* Slightly lighten the border so it feels like the light is hitting the edge */
-    border: 1px solid rgba(241, 196, 15, 0.4); 
+/* Smooth padding adjustments for smaller viewports */
+@media (max-width: 576px) {
+    .text-glass-card {
+        padding: 2rem 1.5rem;
+    }
 }
