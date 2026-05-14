@@ -474,7 +474,7 @@ export const getlinks = (grp) => {
             break;
         case 1:
         case 2:
-        case 5:
+        //case 5:
         case 6:
         case 7:
         case 8:
@@ -484,6 +484,18 @@ export const getlinks = (grp) => {
             
             document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
             document.getElementById('dataentryli').classList.remove('d-none')//show data entry link already     //owner
+            break;
+
+        case 5://dgrp leaader
+            document.getElementById('loginli').classList.add('d-none')//hide login already
+            document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
+            //give roomres
+            document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
+            
+            break;
+
+
+
     }//endswitch
                 
 }
@@ -611,56 +623,145 @@ document.addEventListener('click', (event) => {
         
         case 'dgroupActionBtn':
             
-            const isRegistered = localStorage.getItem('isRegistered');
-            const modalBody = document.getElementById('modalBody');
-            const modalTitle = document.getElementById('modalTitle');
+            const dgroupActionBtn = document.getElementById("dgroupActionBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            const prevBtn = document.getElementById("prevBtn");
+            const progress = document.getElementById("formProgress");
+            
+            let currentStep = 1;
+            const totalSteps = 4; // Expanded step footprint
             const myModal = new bootstrap.Modal(document.getElementById('dgroupModal'));
 
-            if (isRegistered) {
-                // User is already registered - Show the Management Module
-                modalTitle.innerText = "My D-Group Dashboard";
-                modalBody.innerHTML = `
-                    <div class="text-center">
-                        <h6>Welcome back!</h6>
-                        <p>Loading your group details...</p>
-                        <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action">View Weekly Study</a>
-                            <a href="#" class="list-group-item list-group-item-action">Submit Prayer Request</a>
-                        </div>
-                    </div>`;
-            } else {
-                // Not registered - Show Registration Form
-                modalTitle.innerText = "Join a D-Group";
-                modalBody.innerHTML = `
-                    <form id="regForm">
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" required id="userName">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Life Stage</label>
-                            <select class="form-select" id="userCategory">
-                                <option value="single">Single</option>
-                                <option value="couple">Couple</option>
-                                <option value="student">Student</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-success w-100">Register & Find Group</button>
-                    </form>`;
+            // 1. Initial Launch Evaluation Check
+            
+                const isRegistered = localStorage.getItem("dg_registered");
                 
-                // Handle the form submission
-                document.getElementById('regForm').onsubmit = function(e) {
-                    e.preventDefault();
-                    localStorage.setItem('isRegistered', 'true');
-                    localStorage.setItem('userName', document.getElementById('userName').value);
-                    alert("Registration successful! You can now access the management module.");
-                    location.reload(); // Refresh to see the dashboard view
-                };
+                if (isRegistered === "true") {
+                    const modalBody = document.querySelector("#dgroupModal .modal-body");
+                    const modalFooter = document.querySelector("#dgroupModal .modal-footer");
+                    document.getElementById("modalTitle").innerText = "💛 My D-Group Hub";
+                    
+                    // Cleanly clear out wizard decorations for registered leaders
+                    if(document.getElementById("formProgress")) {
+                        document.getElementById("formProgress").parentElement.remove();
+                    }
+                    
+                    modalBody.innerHTML = `
+                        <div class="text-center py-3">
+                            <h5>Welcome Back, ${localStorage.getItem("dg_name") || 'Leader'}!</h5>
+                            <p class="text-white-50 small">Your catalog entry status is active in the CCF BGC database.</p>
+                            <div class="list-group mt-4 bg-transparent border-0">
+                                <button type="button" class="list-group-item list-group-item-action bg-dark text-white border-secondary mb-2 text-start">📖 Access Weekly Study Material</button>
+                                <button type="button" class="list-group-item list-group-item-action bg-dark text-white border-secondary mb-2 text-start">🙏 Submit Ministry Request</button>
+                            </div>
+                        </div>`;
+                    modalFooter.innerHTML = `<button type="button" class="btn btn-secondary" style="border-radius: 50px;" data-bs-dismiss="modal">Close</button>`;
+                }
+                myModal.show();
+            
+
+            // 2. Wizard Stepping Logic Navigation 
+            nextBtn.addEventListener("click", () => {
+                // Enforce input tracking validations inside the visible element step context
+                const inputs = document.getElementById(`step${currentStep}`).querySelectorAll("input, select");
+                let stepValid = true;
+
+                inputs.forEach(input => {
+                    if(!input.checkValidity()) {
+                        input.reportValidity();
+                        stepValid = false;
+                    }
+                });
+
+                if (!stepValid) return;
+
+                if (currentStep < totalSteps) {
+                    document.getElementById(`step${currentStep}`).classList.add("d-none");
+                    currentStep++;
+                    document.getElementById(`step${currentStep}`).classList.remove("d-none");
+                    updateWizardState();
+                } else {
+                    // 1. Prevent multiple rapid clicks by disabling the button immediately
+                    nextBtn.disabled = true;
+                    nextBtn.innerText = "Processing...";
+                    
+                    // Step 4 final action confirmed execution
+                    submitRegistrationPayload();
+                    return;
+
+                }
+            });
+
+            prevBtn.addEventListener("click", () => {
+                if (currentStep > 1) {
+                    document.getElementById(`step${currentStep}`).classList.add("d-none");
+                    currentStep--;
+                    document.getElementById(`step${currentStep}`).classList.remove("d-none");
+                    updateWizardState();
+                }
+            });
+
+            function updateWizardState() {
+                // Track visual linear width state calculations
+                progress.style.width = `${(currentStep / totalSteps) * 100}%`;
+                
+                // Toggle backward structural element visibility bounds
+                prevBtn.disabled = currentStep === 1;
+                prevBtn.classList.toggle("opacity-50", currentStep === 1);
+                
+                // Dynamically shift labels for data step confirmation
+                if (currentStep === totalSteps) {
+                    nextBtn.innerText = "I Understand & Submit";
+                    nextBtn.classList.replace("btn-warning", "btn-success");
+                } else {
+                    nextBtn.innerText = "Continue";
+                    nextBtn.classList.replace("btn-success", "btn-warning");
+                }
             }
 
-            myModal.show();
+            // 3. API Database Payload Route Dispatcher
+            function submitRegistrationPayload() {
+                console.log('Submitting form...')
 
-        
+                const payload = {
+                    name: document.getElementById("regFullName").value,
+                    email: document.getElementById("regEmail").value,
+                    role: document.getElementById("regRole").value,
+                    description: document.getElementById("regDescription").value,
+                    ageBracket: document.getElementById("regAgeBracket").value,
+                    day: document.getElementById("regDay").value,
+                    time: document.getElementById("regTime").value,
+                    place: document.getElementById("regPlace").value
+                };
+
+                // Fire transaction call to your Express server API node
+                fetch(`${myIp}/bgc/register-leader`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error("Database validation error cluster");
+                    return res.json();
+                })
+                .then(data => {
+                    // Save local registration tokens to prevent re-prompting
+                    localStorage.setItem("dg_registered", "true");
+                    localStorage.setItem("dg_name", payload.name);
+                    
+                    util.Toasted(`🎉 You are Registered!, ${payload.name}.`,3000,false);
+                    util.speak(`You are Registered! God Bless you.., ${payload.name}.` )
+                    //window.location.reload();
+                    util.hideModal('dgroupModal')
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Network connection error dispatching data down to the Express database endpoint.");
+                });
+            }            
+
+            //myModal.show();
+
         break;
 
             
