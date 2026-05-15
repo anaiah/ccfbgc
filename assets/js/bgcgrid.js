@@ -741,6 +741,28 @@ document.addEventListener('click', (event) => {
                     body: JSON.stringify(payload)
                 })
                 .then(res => {
+
+                    // 1. Catch the 400 Bad Request instantly
+                    if (res.status === 400) {
+                        alert('Duplicate email address! Please use a different one.');
+                        
+                        // Reset the submit button so they can try again
+                        const nextBtn = document.getElementById("nextBtn");
+                        nextBtn.disabled = false;
+                        nextBtn.innerText = "I Understand & Submit";
+                        
+                        // Take them back to Step 1 to fix the email
+                        document.getElementById("step4").classList.add("d-none");
+                        document.getElementById("step1").classList.remove("d-none");
+                        currentStep = 1;
+                        document.getElementById("formProgress").style.width = "25%";
+                        document.getElementById("prevBtn").disabled = true;
+                        document.getElementById("prevBtn").classList.add("opacity-50");
+
+                        // Stop execution right here so it doesn't go to the next .then()
+                        throw new Error("Duplicate submission blocked"); 
+                    }
+
                     if (!res.ok) throw new Error("Database validation error cluster");
                     return res.json();
                 })
