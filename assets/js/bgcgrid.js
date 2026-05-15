@@ -749,11 +749,15 @@ document.addEventListener('click', (event) => {
                         // Reset the submit button so they can try again
                         const nextBtn = document.getElementById("nextBtn");
                         nextBtn.disabled = false;
-                        nextBtn.innerText = "I Understand & Submit";
+
+                         // FIX: Force the button properties back to Step 1 standards
+                        nextBtn.innerText = "Continue"; 
+                        nextBtn.classList.replace("btn-success", "btn-warning"); // Changes color back to yellow
                         
+                     
                         // Take them back to Step 1 to fix the email
                         document.getElementById("step4").classList.add("d-none");
-                        document.getElementById("step1").classList.remove("d-none");
+                         document.getElementById("step1").classList.remove("d-none");
                         currentStep = 1;
                         document.getElementById("formProgress").style.width = "25%";
                         document.getElementById("prevBtn").disabled = true;
