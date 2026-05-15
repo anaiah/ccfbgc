@@ -777,7 +777,7 @@ document.addEventListener('click', (event) => {
                     
                     util.Toasted(`🎉 You are Registered!, ${payload.name}.`,3000,false);
                     util.speak(`You are Registered! God Bless you.., ${payload.name}.` )
-                    //window.location.reload();
+                    
                     util.hideModal('dgroupModal')
 
                     // 3. Wait for the modal fade-out transition to completely finish before scrolling
@@ -800,10 +800,7 @@ document.addEventListener('click', (event) => {
                 });
             }            
 
-            //myModal.show();
-
         break;
-
             
         default:
             // Do nothing if the clicked element doesn't match an ID
