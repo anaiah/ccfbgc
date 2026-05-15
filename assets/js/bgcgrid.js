@@ -779,6 +779,20 @@ document.addEventListener('click', (event) => {
                     util.speak(`You are Registered! God Bless you.., ${payload.name}.` )
                     //window.location.reload();
                     util.hideModal('dgroupModal')
+
+                    // 3. Wait for the modal fade-out transition to completely finish before scrolling
+                    const modalElement = document.getElementById('dgroupModal');
+                    modalElement.addEventListener('hidden.bs.modal', function onModalClose() {
+                        
+                        // Smoothly scroll the entire window back to the absolute top coordinate
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Remove this temporary listener so it doesn't fire accidentally later
+                        modalElement.removeEventListener('hidden.bs.modal', onModalClose);
+                    });
                 })
                 .catch(err => {
                     console.error(err);
