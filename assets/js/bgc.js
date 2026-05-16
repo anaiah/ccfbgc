@@ -773,10 +773,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     channel.bind('entry-updated', function(data) {
         //console.log('Received Pusher event:', data);
+        
         util.Toasted(`${data.message}`, 3000, true);
         util.speak(data.message)
         
-        //bgc.loadHeadcountChart(); // Refresh chart with new data
     })
  
     //===============WINDOW EVENT FOR GOOGLE OAUTH2==============//
@@ -853,7 +853,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         //util.Toasted('Received Update!!!',3000, false)
                         //util.speak(data.message)
                         util.speak('Update Received!')
-                        
+
                         //after login get modal listener for displaying grid
                         const adminModalEl = document.getElementById('adminInputModal');
                         
@@ -875,6 +875,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 300);
 
         //=========PUSHER NOTIFICATION
+        /*   take out for now who just joined 
         bgc.broadCast(); //send test broadcast to trigger update for all clients (including self)
         
 
