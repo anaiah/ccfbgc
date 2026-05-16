@@ -848,10 +848,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     privychannel.bind('personal-alert', function(data) {
                         console.log('Received Pusher event for Owners:', data);
+                        
                         //util.Toasted(`From ${data.sender}, ${data.message}`, 3000, true);
-                        util.Toasted('Received Update!!!',3000, false)
-                        util.speak(data.message)
-
+                        //util.Toasted('Received Update!!!',3000, false)
+                        //util.speak(data.message)
+                        util.speak('Update Received!')
+                        
                         //after login get modal listener for displaying grid
                         const adminModalEl = document.getElementById('adminInputModal');
                         

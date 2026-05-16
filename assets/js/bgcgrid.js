@@ -494,8 +494,6 @@ export const getlinks = (grp) => {
             
             break;
 
-
-
     }//endswitch
                 
 }
@@ -753,8 +751,7 @@ document.addEventListener('click', (event) => {
                          // FIX: Force the button properties back to Step 1 standards
                         nextBtn.innerText = "Continue"; 
                         nextBtn.classList.replace("btn-success", "btn-warning"); // Changes color back to yellow
-                        
-                     
+                                             
                         // Take them back to Step 1 to fix the email
                         document.getElementById("step4").classList.add("d-none");
                          document.getElementById("step1").classList.remove("d-none");
