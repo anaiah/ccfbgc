@@ -389,7 +389,7 @@ const calendar = {
         
     },
 
-    // RENDER TO GRID /table THE DAY CLICKD INFO
+    // RENDER TO GRID /table THE DAY CLICKD INFO // rnder al room info and reservation for that day
     renderDayGrid : () => {
         const tbody = document.querySelector('#dayReservationsTable tbody');
         const title  = document.getElementById('dayReservationsTitle');
@@ -422,14 +422,29 @@ const calendar = {
 
                 // REPLACED MINISTRY COLUMNS WITH YOUR REMARKS DATA COLUMN
                 // Added text styling to prevent extra-long words from breaking layouts
+                // Inside your renderDayGrid loop:
                 tr.innerHTML = `
-                    <td class="ps-3 fw-semibold text-secondary">#${resv.id}</td>
+                    <td class="ps-3">
+                        <!-- Interactive Delete Button -->
+                        <button type="button" class="btn btn-link link-danger p-0 border-0 text-decoration-none small fw-bold" onclick="calendar.deleteooking(${resv.id})">
+                            <i class="fas fa-trash-alt me-1"></i>#${resv.id}
+                        </button>
+                    </td>
                     <td class="fw-bold text-dark">${room.room_description}</td>
                     <td><span class="badge bg-light text-primary border border-primary-subtle px-2 py-1">${fromStr}</span></td>
                     <td><span class="badge bg-light text-danger border border-danger-subtle px-2 py-1">${toStr}</span></td>
                     <td>${resv.added_by_name || ''}</td>
                     <td class="ps-2 pe-3 text-wrap text-break" style="max-width: 250px;">${resv.remarks || '<span class="text-muted italic">None</span>'}</td>
                 `;
+
+                //  tr.innerHTML = `
+                //     <td class="ps-3 fw-semibold text-secondary">#${resv.id}</td>
+                //     <td class="fw-bold text-dark">${room.room_description}</td>
+                //     <td><span class="badge bg-light text-primary border border-primary-subtle px-2 py-1">${fromStr}</span></td>
+                //     <td><span class="badge bg-light text-danger border border-danger-subtle px-2 py-1">${toStr}</span></td>
+                //     <td>${resv.added_by_name || ''}</td>
+                //     <td class="ps-2 pe-3 text-wrap text-break" style="max-width: 250px;">${resv.remarks || '<span class="text-muted italic">None</span>'}</td>
+                // `;
 
                 tbody.appendChild(tr);
             });
@@ -566,36 +581,34 @@ const calendar = {
     },
 
 
-    deletebooking: async()=>{
-    
-        const btn = e.target.closest('.btn-delete-booking');
-        if (!btn) return;
-
-        // delete booking
-        const id = btn.getAttribute('data-booking-id');
+        //=========================== DELETE/CANCEL RESERVATION
+    // CHANGE: Pass the row ID directly as a parameter instead of relying on broken event scopes
+    deleteBooking: async (id) => {
         if (!id) return;
 
         if (!confirm('Delete this booking?')) return;
 
         try {
-        const res = await fetch(`${myIp}/bgc/deletebooking/${id}`, {
-            method: 'DELETE'
-        });
-        const data = await res.json();
+            const res = await fetch(`${myIp}/bgc/deleteBooking/${id}`, {
+                method: 'DELETE'
+            });
+            const data = await res.json();
 
-        if (!data.success) {
+            if (!data.success) {
                 alert(data.error || 'Failed to delete booking');
                 return;
             }
 
-            // refresh data for current date
-            const dateStr = formatDateLocalYYYYMMDD(calendar.selectedDate);
+            util.Toasted('Reservation deleted!', 3000, false);
+
+            // Fetch the updated dataset for the active date
+            const dateStr = calendar.formatDateLocalYYYYMMDD(calendar.selectedDate);
             
-            await calendar.getRooms(dateStr);      // reload rooms + reservations
-            calendar.renderDayGrid();             // rebuild grid
-            calendar.updateTimeSelectsForRoom();  // recompute blocked hours
+            // Reload dataset. (getRooms automatically runs updateTimeSelectsForRoom and renderDayGrid internally)
+            await calendar.getRooms(dateStr);      
+
         } catch (err) {
-            console.error(err);
+            console.error('Error in delete booking sequence:', err);
             alert('Server error while deleting booking');
         }
     },
@@ -618,8 +631,6 @@ const calendar = {
 
         return `${hourStr}:${mm.toString().padStart(2, '0')}${suffix}`;
     },
-
-
 
     formatDateLocalYYYYMMDD : (d) => {
         const year  = d.getFullYear();
