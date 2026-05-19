@@ -68,22 +68,21 @@ const calendar = {
             const cell = document.createElement('div');
             cell.className = 'calendar-cell border';
             
-            // Check if the current loop date is exactly today
-            const isToday = year === todayY && month === todayM && d === todayD;
+            const isToday =
+            year === todayY && month === todayM && d === todayD;
 
-            // CHANGE: Treat both past days AND today as disabled/invalid for bookings
-            const isPastOrToday = (year === todayY && month === todayM && d < todayD) || isToday;
+            const isPast =
+            year === todayY && month === todayM && d < todayD;
 
-            // Keep visual 'today' badge if you still want users to see which day is today
-            if (isToday) cell.classList.add('today'); 
+            if (isToday) cell.classList.add('today');
+            if (isPast)  cell.classList.add('disabled-day');
             
-            // Use your updated condition here to disable the cells visually
-            if (isPastOrToday) cell.classList.add('disabled-day');
+            if (d === todayDate) cell.classList.add('today');
 
             cell.textContent = d;
 
-            // CHANGE: Only attach the click handler if the day is strictly tomorrow or later
-            if (!isPastOrToday) {
+            // ADD CLICK HANDLER HERE
+            if (!isPast) {
                 cell.addEventListener('click', () => {
                     const selectedDate = new Date(year, month, d);
                     calendar.onDayClick(selectedDate, cell);
@@ -109,7 +108,7 @@ const calendar = {
     onDayClick : (dateObj, cellEl) => {
         calendar.selectedDate = dateObj;
 
-        // Highlight selected cell
+        // highlight selected cell
         document.querySelectorAll('.calendar-cell.selected-day')
             .forEach(c => c.classList.remove('selected-day'));
         if (cellEl) cellEl.classList.add('selected-day');
@@ -133,17 +132,32 @@ const calendar = {
             day: '2-digit'
         });
 
-        textPretty.textContent = pretty;   
-        textRaw.textContent = raw;         
+        textPretty.textContent = pretty;   // big title
+        textRaw.textContent = raw;         // small badge
 
-        // FIX: Ensure the section unhides cleanly by explicitly forcing bootstrap displays
         section.classList.remove('d-none');
-        section.style.display = 'block'; // <-- ADD THIS LINE to bypass any hidden CSS rules!
 
         const dateStr = calendar.formatDateLocalYYYYMMDD(dateObj);
         calendar.getRooms(dateStr);
-    },
 
+        section.classList.remove('d-none');
+        section.classList.add('show-card');
+        
+        // calendar.selectedDate = dateObj;  // <-- store full Date here
+
+        // const section = document.getElementById('dateTimeSection');
+        // const text = document.getElementById('selectedDateText');
+
+        // if (!section || !text) return;
+
+        // text.textContent = dateObj.toDateString();
+        // section.classList.remove('d-none'); // show the time dropdown
+
+        // const dateStr = calendar.formatDateLocalYYYYMMDD( calendar.selectedDate ) ;
+
+        // calendar.getRooms(dateStr);
+    },
+    
     //=========this controls what's inside time select
     fillSelect : (select, minHour = 9, blockedHours = new Set()) => {
         select.innerHTML = '';
@@ -352,6 +366,17 @@ const calendar = {
             select.appendChild(placeholder);
 
             const seenIds = new Set();
+            // const uniqueById = [];
+
+            // //check for duplicates
+            // data.rooms.forEach(r => {
+            //     if (!seenIds.has(r.id)) {
+            //         seenIds.add(r.id);
+            //         uniqueById.push({ room_description: r.room_description, id: r.id, reservations : r.reservations });
+            //     }
+            // });
+            
+            //console.log( uniqueById )
 
             data.rooms.forEach(room => {
 
@@ -389,102 +414,34 @@ const calendar = {
         
     },
 
-    // RENDER TO GRID /table THE DAY CLICKD INFO
-    renderDayGrid : () => {
-        const tbody = document.querySelector('#dayReservationsTable tbody');
-        const title  = document.getElementById('dayReservationsTitle');
-        
-        if (!tbody || !title) return;
-        
-        tbody.innerHTML = '';
-
-        // format: Sun, Mar 22, 2026
-        if (calendar.selectedDate) {
-            const nice = calendar.selectedDate.toLocaleDateString('en-US', {
-                weekday: 'short',
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric'
-            });
-            title.textContent = `Reservations for ${nice}`;
-        } else {
-            title.textContent = 'Reservations for this day';
-        }
-
-        console.log('=====renderdaygrid(()', calendar.roomsData)
-
-        calendar.roomsData.forEach(room => {
-            (room.reservations || []).forEach(resv => {
-                const tr = document.createElement('tr');
-
-                const fromStr = calendar.formatTime12hShort(resv.date_from);
-                const toStr   = calendar.formatTime12hShort(resv.date_to);
-
-                // REPLACED MINISTRY COLUMNS WITH YOUR REMARKS DATA COLUMN
-                // Added text styling to prevent extra-long words from breaking layouts
-                tr.innerHTML = `
-                    <td class="ps-3 fw-semibold text-secondary">#${resv.id}</td>
-                    <td class="fw-bold text-dark">${room.room_description}</td>
-                    <td><span class="badge bg-light text-primary border border-primary-subtle px-2 py-1">${fromStr}</span></td>
-                    <td><span class="badge bg-light text-danger border border-danger-subtle px-2 py-1">${toStr}</span></td>
-                    <td>${resv.added_by_name || ''}</td>
-                    <td class="ps-2 pe-3 text-wrap text-break" style="max-width: 250px;">${resv.remarks || '<span class="text-muted italic">None</span>'}</td>
-                `;
-
-                tbody.appendChild(tr);
-            });
-        });
-
-        // FIX: Changed colspan from 4 to 6 so it stretches perfectly across your 6 headers
-        if (!tbody.hasChildNodes()) {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td colspan="6" class="text-center text-muted py-4 small">No reservations scheduled for this date.</td>`;
-            tbody.appendChild(tr);
-        }
-    },
-
     //=========================== SAVE ROOMS TO DB
-    saveRoom: async () => {
-        // 1. Fetch the remarks input value first
-        const remarksInput = document.getElementById('bookingRemarks');
-        const remarksValue = remarksInput ? remarksInput.value.trim() : '';
+    saveRoom: async()=>{
 
-        // 2. NEW: Validation check for blank remarks box (HALTS PROCESS)
-        if (!remarksValue) {
-            if (remarksInput) {
-                remarksInput.classList.add('is-invalid');
-                remarksInput.focus();
-                
-                // Clear the red border style when the user types a correction
-                remarksInput.addEventListener('input', function removeErr() {
-                    remarksInput.classList.remove('is-invalid');
-                    remarksInput.removeEventListener('input', removeErr);
-                });
-            }
-            alert('Please provide booking remarks or a purpose before reserving.');
-            return; // Halt here BEFORE activating loaders or saving
-        }
+        util.toggleButtonLoading('btnReserve','Saving Reservation',true)
 
-        // Activate the button loading spinner state
-        util.toggleButtonLoading('btnReserve', 'Saving Reservation', true);
-
-        // Fetch user metadata from local storage
+        //get localstorage
         const user = JSON.parse(localStorage.getItem('bgc_user')) || {};
         
-        console.log('saveRoom()', calendar.selectedDate);
+        console.log('saveRoom()', calendar.selectedDate)
         
         if (!calendar.selectedDate) {
             alert('Please select a date.');
-            util.toggleButtonLoading('btnReserve', null, false); // Fix: Kill loader on early exit
             return;
         }
+
+       // const selectedDate = calendar.selectedDate;
 
         const roomIdEl = document.getElementById('roomSelect');
         const fromEl   = document.getElementById('timeFrom');
         const toEl     = document.getElementById('timeTo');
 
         const roomId   = roomIdEl.value;
+        
         const roomName = roomIdEl.options[roomIdEl.selectedIndex].text;
+
+        // Replace "(has reservations)" with an empty string and update the option
+        //roomIdEl.options[roomIdEl.selectedIndex].text = roomName.replace("(has reservations)", "").trim();
+
         const roomNames = roomName.replace("(has reservations)", "").trim();
 
         const fromHour = parseInt(fromEl.value, 10);
@@ -492,12 +449,10 @@ const calendar = {
 
         if (!roomId) {
             alert('Please select a room.');
-            util.toggleButtonLoading('btnReserve', null, false); // Fix: Kill loader on early exit
             return;
         }
         if (isNaN(fromHour) || isNaN(toHour) || toHour <= fromHour) {
             alert('Please select a valid time range.');
-            util.toggleButtonLoading('btnReserve', null, false); // Fix: Kill loader on early exit
             return;
         }
 
@@ -511,14 +466,15 @@ const calendar = {
             return `${y}-${m}-${day} ${hh}:${mm}:${ss}`;
         }
 
+        // use this instead of toISOString()
         const buildDateTime = (baseDate, hour) => {
             const d = new Date(baseDate);
             d.setHours(hour, 0, 0, 0);
-            return formatLocalDateTime(d); 
+            return formatLocalDateTime(d);  // local time, no timezone
         };
 
-        const date_from = buildDateTime(calendar.selectedDate, fromHour);
-        const date_to   = buildDateTime(calendar.selectedDate, toHour);
+        const date_from = buildDateTime( calendar.selectedDate, fromHour);
+        const date_to   = buildDateTime( calendar.selectedDate, toHour);
 
         try {
             const res = await fetch(`${myIp}/bgc/room-reserve`, {
@@ -532,8 +488,9 @@ const calendar = {
                     ministry: user.ministry_id,
                     room_name: roomNames.toUpperCase(),
                     addedby_name: user.full_name,
-                    ministry_name: user.ministry_description.toUpperCase(),
-                    remarks: remarksValue // <-- NEW: Injected Remarks into Payload
+                    ministry_name: user.ministry_description.toUpperCase()
+                    
+                    // replace with real user
                 })
             });
 
@@ -541,30 +498,29 @@ const calendar = {
 
             if (!data.success) {
                 alert(data.error || 'Failed to save reservation.');
-                util.toggleButtonLoading('btnReserve', null, false); // Fix: Turn OFF loading state on server errors
+                util.toggleButtonLoading('btnReserve','Saving Reservation',true)
+      
                 return;
             }
 
-            util.Toasted('Reservation saved!', 3000, false);
-            util.speak('Reservation successfully saved!');
+            util.Toasted('Reservation saved!',3000,false);
+            util.speak('Reservation successfully saved!')
             
-            // Clear out the remarks text input box completely on database success
-            if (remarksInput) remarksInput.value = '';
-            
-            util.toggleButtonLoading('btnReserve', null, false);
+            util.toggleButtonLoading('btnReserve',null,false)
                   
-            const dateStr = calendar.formatDateLocalYYYYMMDD(calendar.selectedDate);
-            console.log(dateStr);
+            // optional: refresh rooms for that date
+            const dateStr = calendar.formatDateLocalYYYYMMDD( calendar.selectedDate ) ;
+
+            console.log( dateStr )
 
             calendar.getRooms(dateStr);
 
         } catch (err) {
             console.error(err);
             alert('Network/server error while saving reservation.');
-            util.toggleButtonLoading('btnReserve', null, false); // Fix: Turn OFF loading state on crash
         }
-    },
 
+    },
 
     deletebooking: async()=>{
     
@@ -619,7 +575,75 @@ const calendar = {
         return `${hourStr}:${mm.toString().padStart(2, '0')}${suffix}`;
     },
 
+    // RENDER TO GRID /table  THE DAY CLICKD INFO
+    renderDayGrid : () => {
+        const tbody = document.querySelector('#dayReservationsTable tbody');
+        const title  = document.getElementById('dayReservationsTitle');
+        
+        if (!tbody || !title) return;
+        
+        tbody.innerHTML = '';
 
+        // format: Sun, Mar 22, 2026
+        if (calendar.selectedDate) {
+            const nice = calendar.selectedDate.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+            });
+            title.textContent = `Reservations for ${nice}`;
+        } else {
+            title.textContent = 'Reservations for this day';
+        }
+
+        // flatten all reservations for that day
+        //console.log( 'DITO',calendar.roomsData.length)
+        //let countReservation = 0
+         console.log('=====renderdaygrid(()', calendar.roomsData)
+
+        calendar.roomsData.forEach(room => {
+            (room.reservations || []).forEach(resv => {
+            const tr = document.createElement('tr');
+
+            // const fromStr = calendar.formatTime12hShort(resv.date_from.substring(11, 16)); // "HH:MM"
+            // const toStr   = calendar.formatTime12hShort(resv.date_to.substring(11, 16));   // "HH:MM"
+
+            const fromStr = calendar.formatTime12hShort(resv.date_from);
+            const toStr   = calendar.formatTime12hShort(resv.date_to);
+            //countReservation ++
+
+            //IMPORTANT!  ADD THE TH HEADERS in index.html
+            tr.innerHTML = `
+                <td>${resv.id}</td>
+                <td>${room.room_description}</td>
+                <td>${fromStr}</td>
+                <td>${toStr}</td>
+                <td>${resv.added_by_name || ''}</td>
+                <td>${resv.ministry || ''}</td>
+            `;
+
+            tbody.appendChild(tr);
+            });
+        });
+
+        // const statusBadge = document.getElementById('roomStatusBadge');
+        // if (statusBadge) {
+        // if (countReservation === 0) {
+        //     statusBadge.textContent = 'No reservations yet';
+        //     statusBadge.className = 'badge bg-success-subtle text-success';
+        // } else {
+        //     statusBadge.textContent = `${countReservation} reservation(s)`;
+        //     statusBadge.className = 'badge bg-warning-subtle text-warning';
+        // }
+        // }
+        // no reservations?
+        if (!tbody.hasChildNodes()) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td colspan="4" class="text-center text-muted">No reservations</td>`;
+            tbody.appendChild(tr);
+        }
+    },
 
     formatDateLocalYYYYMMDD : (d) => {
         const year  = d.getFullYear();
