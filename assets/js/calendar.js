@@ -426,7 +426,7 @@ const calendar = {
                 tr.innerHTML = `
                     <td class="ps-3">
                         <!-- Interactive Delete Button -->
-                        <button type="button" class="btn btn-link link-danger p-0 border-0 text-decoration-none small fw-bold" onclick="calendar.deleteooking(${resv.id})">
+                        <button type="button" class="btn btn-link link-danger p-0 border-0 text-decoration-none small fw-bold" onclick="calendar.deleteBooking(${resv.id})">
                             <i class="fas fa-trash-alt me-1"></i>#${resv.id}
                         </button>
                     </td>
