@@ -833,12 +833,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 case 2: //admin Pat?
                     //OPEN  GOOGLE AUTH if admin
+                    /*  turn  off for now oauth from google
                     const popup = window.open(
                         `${myIp}/bgc/google/auth`,
                         'googleAuth',
                         'width=500,height=500'
                     );
-
+                    */                     
                     break;    
 
                 case 4: //load for admin/ovrseer

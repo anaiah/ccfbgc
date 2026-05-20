@@ -470,6 +470,9 @@ export const getlinks = (grp) => {
             
             document.getElementById('gridchartli').classList.remove('d-none')//show grid chart
             document.getElementById('kpili').classList.remove('d-none')//show kpi data entry
+
+             //give roomres
+            document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
             
             break;
         case 1:

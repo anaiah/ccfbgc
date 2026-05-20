@@ -547,6 +547,7 @@ const calendar = {
                     ministry: user.ministry_id,
                     room_name: roomNames.toUpperCase(),
                     addedby_name: user.full_name,
+                    addedby_email: user.email,
                     ministry_name: user.ministry_description.toUpperCase(),
                     remarks: remarksValue // <-- NEW: Injected Remarks into Payload
                 })
