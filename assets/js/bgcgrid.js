@@ -475,6 +475,16 @@ export const getlinks = (grp) => {
             document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
             
             break;
+
+        //temp user
+        case 3: //temp admin for segment testing
+            document.getElementById('loginli').classList.add('d-none')//hide login already
+            document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
+            
+            //document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
+            document.getElementById('dataentryli').classList.remove('d-none')//show data entry link already     //owner
+            break;
+    
         case 1:
         case 2:
         //case 5:

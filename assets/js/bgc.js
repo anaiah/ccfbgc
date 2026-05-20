@@ -822,6 +822,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 case 1: //volunteer
                 case 5: //dgrp leader
                 case 6: //ministry head
+                case 3: //temp admin for segment testing
                 //case 7:  //ministry admin
                 case 8:
                 case 9: //admin
