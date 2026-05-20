@@ -308,8 +308,8 @@ const calendar = {
     roomsData:[],
     getRooms: async( dateStr ) => {
 
-        util.scrollsTo('dateTimeSection'); // scroll to time and room selection when we get rooms for that day
-        
+        util.scrollsTo('timeRow'); // scroll to time and room selection when we get rooms for that day
+
         const select = document.getElementById('roomSelect');
 
         if (!select) return;
