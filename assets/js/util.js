@@ -38,12 +38,13 @@ let voices = []
 	
 const util = {
 	
-	scrollsTo:(cTarget)=>{
-        //asn.collapz()
-		const elem = document.getElementById(cTarget)
-		elem.scrollIntoView(true,{ behavior: 'smooth', block:'start', inline:'nearest' });
-
-	},
+    scrollsTo: (cTarget) => {
+        const elem = document.getElementById(cTarget);
+        if (elem) {
+            // Remove the 'true' argument to enable the smooth configuration
+            elem.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+        }
+    },
 
     //=========================START VOICE SYNTHESIS ===============
     getVoice: async () => {
