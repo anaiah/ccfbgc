@@ -478,7 +478,7 @@ export const getlinks = (grp) => {
 
         //temp user
         case 3: //temp admin for segment testing
-        alert('here temp admin')
+            //alert('here temp admin')
             document.getElementById('loginli').classList.add('d-none')//hide login already
             document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
             
