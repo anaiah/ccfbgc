@@ -308,16 +308,8 @@ const calendar = {
     roomsData:[],
     getRooms: async( dateStr ) => {
 
-        //util.scrollsTo('timeRow'); // scroll to time and room selection when we get rooms for that day
+        util.scrollsTo('timeRow'); // scroll to time and room selection when we get rooms for that day
         
-        const targetElement = document.getElementById('timeRow');
-        const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
-
-        // 2. Perform the smooth scroll
-        window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-        });
         const select = document.getElementById('roomSelect');
 
         if (!select) return;
