@@ -588,6 +588,18 @@ const calendar = {
         //=========================== DELETE/CANCEL RESERVATION
     // CHANGE: Pass the row ID directly as a parameter instead of relying on broken event scopes
     deleteBooking: async (id) => {
+
+        const user = JSON.parse(localStorage.getItem('bgc_user')) || {};
+        if (!user || !user.grp_id) {
+            alert('User not authenticated. Please log in again.');
+            return;
+        }
+
+        if (user.grp_id !== 4 && user.grp_id !== 9) { // Only allow if admin or overseer
+            alert('You are not authorized to delete this booking.');
+            return;
+        }
+
         if (!id) return;
 
         if (!confirm('Delete this booking?')) return;
