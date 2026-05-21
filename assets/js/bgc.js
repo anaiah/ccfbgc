@@ -873,7 +873,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
             //getlinks
             ccfgrid.getlinks(e.detail.data.grp_id) //get links for grid display
-                    
+
+            //make room res month selector visible
+            //=====CREATE MONTH SELECTOR
+            calendar.buildMonthSelector(e.detail.data.grp_id) //build month selector for room reservation;
+                            
         }, 300);
 
         //=========PUSHER NOTIFICATION
