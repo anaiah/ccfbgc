@@ -937,12 +937,17 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = './'  //https://ccfbgc.org/';
     });
 
-    //**** room reservation */
+    //**** room reservation, calendar modal shows */
     const calendarModal = document.getElementById('calendarModal');
     calendarModal.addEventListener('show.bs.modal', () => {
+        console.log('Calendar modal is about to be shown. Initializing calendar...');
+
+        //draw calndar
         calendar.buildCurrentMonthCalendar(); // your calendar
+
         calendar.initTimeSelects(); // time select
-        //calendar.getRooms(); // room select
+
+        
     });
 
     //********* room reservation when changing rooms */

@@ -16,84 +16,215 @@ const calendar = {
 
     },
 
-    // // ==== MAIN write calendar in modals
-    buildCurrentMonthCalendar : () => {
+    /*==== MAIN write calendar in modals */
+    /*==== MAIN write calendar in modals */
+buildCurrentMonthCalendar: (targetDate = new Date()) => { // Default to 'now' if no date provided
 
-        //build time options first
-        calendar.buildTimeOptionsArray()
+    // Build time options first
+    calendar.buildTimeOptionsArray();
 
-        const container = document.getElementById('calendarContainer');
-        container.innerHTML = '';
+    const container = document.getElementById('calendarContainer');
+    container.innerHTML = '';
 
+    // Get "Real Today" for disabling past days
+    const now = new Date();
+    const todayY = now.getFullYear();
+    const todayM = now.getMonth();
+    const todayD = now.getDate();
+
+    // Use targetDate for the view (the month the user selected)
+    const year = targetDate.getFullYear();
+    const month = targetDate.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const monthName = firstDay.toLocaleString('default', { month: 'long' });
+    const daysInMonth = lastDay.getDate();
+
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    const title = document.createElement('h4');
+    title.className = 'text-center mb-3';
+    title.textContent = `${monthName} ${year}`;
+    container.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'calendar-grid';
+
+    weekdays.forEach(d => {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell header';
+        cell.textContent = d;
+        grid.appendChild(cell);
+    });
+
+    const startWeekday = firstDay.getDay();
+    for (let i = 0; i < startWeekday; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-cell empty';
+        grid.appendChild(emptyCell);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell border';
+        
+        // 1. Logic to check if "Today" (visually)
+        const isToday = (year === todayY && month === todayM && d === todayD);
+
+        // 2. Logic to disable: check if the date is in the past OR is today
+        // This handles cases where user looks at FUTURE months (all days enabled) 
+        // vs CURRENT month (past/today disabled)
+        let isPastOrToday = false;
+        if (year < todayY) {
+            isPastOrToday = true;
+        } else if (year === todayY) {
+            if (month < todayM) {
+                isPastOrToday = true;
+            } else if (month === todayM && d <= todayD) {
+                isPastOrToday = true;
+            }
+        }
+
+        if (isToday) cell.classList.add('today'); 
+        if (isPastOrToday) cell.classList.add('disabled-day');
+
+        cell.textContent = d;
+
+        if (!isPastOrToday) {
+            cell.addEventListener('click', () => {
+                const selectedDate = new Date(year, month, d);
+                calendar.onDayClick(selectedDate, cell);
+            });
+        }
+
+        grid.appendChild(cell);
+    }
+
+    container.appendChild(grid);
+},
+
+    // buildCurrentMonthCalendar : () => {
+
+    //     //build time options first
+    //     calendar.buildTimeOptionsArray()
+
+    //     const container = document.getElementById('calendarContainer');
+    //     container.innerHTML = '';
+
+    //     const now = new Date();
+    //     const todayY = now.getFullYear();
+    //     const todayM = now.getMonth();
+    //     const todayD = now.getDate();
+
+    //     const year = now.getFullYear();
+    //     const month = now.getMonth();
+
+    //     const firstDay = new Date(year, month, 1);
+    //     const lastDay = new Date(year, month + 1, 0);
+    //     const monthName = firstDay.toLocaleString('default', { month: 'long' });
+    //     const daysInMonth = lastDay.getDate();
+
+    //     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    //     const title = document.createElement('h4');
+    //     title.className = 'text-center mb-3';
+    //     title.textContent = `${monthName} ${year}`;
+    //     container.appendChild(title);
+
+    //     const grid = document.createElement('div');
+    //     grid.className = 'calendar-grid';
+
+    //     weekdays.forEach(d => {
+    //         const cell = document.createElement('div');
+    //         cell.className = 'calendar-cell header';
+    //         cell.textContent = d;
+    //         grid.appendChild(cell);
+    //     });
+
+    //     const startWeekday = firstDay.getDay();
+    //     for (let i = 0; i < startWeekday; i++) {
+    //         const emptyCell = document.createElement('div');
+    //         emptyCell.className = 'calendar-cell empty';
+    //         grid.appendChild(emptyCell);
+    //     }
+
+    //     const todayDate = now.getDate();
+
+    //     for (let d = 1; d <= daysInMonth; d++) {
+    //         const cell = document.createElement('div');
+    //         cell.className = 'calendar-cell border';
+            
+    //         // Check if the current loop date is exactly today
+    //         const isToday = year === todayY && month === todayM && d === todayD;
+
+    //         // CHANGE: Treat both past days AND today as disabled/invalid for bookings
+    //         const isPastOrToday = (year === todayY && month === todayM && d < todayD) || isToday;
+
+    //         // Keep visual 'today' badge if you still want users to see which day is today
+    //         if (isToday) cell.classList.add('today'); 
+            
+    //         // Use your updated condition here to disable the cells visually
+    //         if (isPastOrToday) cell.classList.add('disabled-day');
+
+    //         cell.textContent = d;
+
+    //         // CHANGE: Only attach the click handler if the day is strictly tomorrow or later
+    //         if (!isPastOrToday) {
+    //             cell.addEventListener('click', () => {
+    //                 const selectedDate = new Date(year, month, d);
+    //                 calendar.onDayClick(selectedDate, cell);
+    //             });
+    //         }
+
+    //         grid.appendChild(cell);
+    //     }
+
+    //     container.appendChild(grid);
+        
+    // },
+
+    buildMonthSelector:() => {
+        console.log('building month selector dropdown')
+
+        const monthJumpSelector = document.getElementById('monthJumpSelector');
         const now = new Date();
-        const todayY = now.getFullYear();
-        const todayM = now.getMonth();
-        const todayD = now.getDate();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"];
 
-        const year = now.getFullYear();
-        const month = now.getMonth();
+        // 1. Populate the dropdown from current month to December
+        for (let i = currentMonth; i <= 11; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = `${monthNames[i]} ${currentYear}`;
+            monthJumpSelector.appendChild(option);
+        }
 
-        const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
-        const monthName = firstDay.toLocaleString('default', { month: 'long' });
-        const daysInMonth = lastDay.getDate();
+        // 2. Listen for changes
+        monthJumpSelector.addEventListener('change', function(e) {
+            const selectedMonth = parseInt(e.target.value);
+            
+            // This is where we trigger your existing calendar drawing logic
+            // We create a date object for the 1st of the selected month
+            const targetDate = new Date(currentYear, selectedMonth, 1);
+            
+            // rebuild calendar for the selected month
+            calendar.buildCurrentMonthCalendar(targetDate);
 
-        const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-        const title = document.createElement('h4');
-        title.className = 'text-center mb-3';
-        title.textContent = `${monthName} ${year}`;
-        container.appendChild(title);
-
-        const grid = document.createElement('div');
-        grid.className = 'calendar-grid';
-
-        weekdays.forEach(d => {
-            const cell = document.createElement('div');
-            cell.className = 'calendar-cell header';
-            cell.textContent = d;
-            grid.appendChild(cell);
+            // CALL YOUR EXISTING FUNCTION HERE
+            // Based on your previous code, it's likely named something like:
+            if (typeof renderCalendar === "function") {
+                renderCalendar(targetDate); 
+            } else if (typeof generateGrid === "function") {
+                generateGrid(targetDate);
+            }
+            // Note: Make sure your render function clears the #calendarContainer 
+            // before appending the new squares.
         });
 
-        const startWeekday = firstDay.getDay();
-        for (let i = 0; i < startWeekday; i++) {
-            const emptyCell = document.createElement('div');
-            emptyCell.className = 'calendar-cell empty';
-            grid.appendChild(emptyCell);
-        }
-
-        const todayDate = now.getDate();
-
-        for (let d = 1; d <= daysInMonth; d++) {
-            const cell = document.createElement('div');
-            cell.className = 'calendar-cell border';
-            
-            // Check if the current loop date is exactly today
-            const isToday = year === todayY && month === todayM && d === todayD;
-
-            // CHANGE: Treat both past days AND today as disabled/invalid for bookings
-            const isPastOrToday = (year === todayY && month === todayM && d < todayD) || isToday;
-
-            // Keep visual 'today' badge if you still want users to see which day is today
-            if (isToday) cell.classList.add('today'); 
-            
-            // Use your updated condition here to disable the cells visually
-            if (isPastOrToday) cell.classList.add('disabled-day');
-
-            cell.textContent = d;
-
-            // CHANGE: Only attach the click handler if the day is strictly tomorrow or later
-            if (!isPastOrToday) {
-                cell.addEventListener('click', () => {
-                    const selectedDate = new Date(year, month, d);
-                    calendar.onDayClick(selectedDate, cell);
-                });
-            }
-
-            grid.appendChild(cell);
-        }
-
-        container.appendChild(grid);
+        
     },
 
     selectedDate:null,
@@ -205,31 +336,6 @@ const calendar = {
         }
         });
 
-
-        // replace this one
-        // const room = calendar.roomsData.find(r => String(r.id) === selectedId);
-        // console.log('selected room', selectedId, room);
-
-        // const reservations = room ? room.reservations || [] : [];
-        // console.log('reservations for room', selectedId, reservations);
-
-        // const blockedHours = new Set();       
-        
-        // reservations.forEach(resv => {
-        //     // Expect 'YYYY-MM-DD HH:MM:SS'
-        //     const fromStr = resv.date_from;
-        //     const toStr   = resv.date_to;
-
-        //     const fromH = parseInt(fromStr.substring(11, 13), 10); // '09' -> 9
-        //     const toH   = parseInt(toStr.substring(11, 13), 10);   // '10' -> 10
-
-        //     console.log('resv range', fromStr, toStr, '=>', fromH, 'to', toH);
-
-        //     for (let h = fromH; h < toH; h++) {
-        //         blockedHours.add(h);
-        //     }
-        // });
-
         console.log('blockedHours =', Array.from(blockedHours));
 
         calendar.initTimeSelects(blockedHours);
@@ -246,8 +352,8 @@ const calendar = {
         }
     },
 
-     // CALleD FROM updatetimeselectsforRoom()
-     // this also controls the time in select
+    // CALleD FROM updatetimeselectsforRoom()
+    // this also controls the time in select
     initTimeSelects:(blockedHours = new Set()) => {
         const fromSel = document.getElementById('timeFrom');
         const toSel   = document.getElementById('timeTo');

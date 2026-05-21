@@ -473,6 +473,12 @@ export const getlinks = (grp) => {
 
              //give roomres
             document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
+
+            //make room res month selector visible
+            //CREATE MONTH SELECTOR
+            calendar.buildMonthSelector();
+        
+            document.getElementById('monthSelector').classList.remove('d-none')
             
             break;
 
@@ -488,7 +494,6 @@ export const getlinks = (grp) => {
     
         case 1:
         case 2:
-        //case 5:
         case 6:
         case 7:
         case 8:
