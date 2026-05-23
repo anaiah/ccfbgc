@@ -518,15 +518,7 @@ const calendar = {
                     <td class="ps-2 pe-3 text-wrap text-break" style="max-width: 250px;">${resv.remarks || '<span class="text-muted italic">None</span>'}</td>
                 `;
 
-                //  tr.innerHTML = `
-                //     <td class="ps-3 fw-semibold text-secondary">#${resv.id}</td>
-                //     <td class="fw-bold text-dark">${room.room_description}</td>
-                //     <td><span class="badge bg-light text-primary border border-primary-subtle px-2 py-1">${fromStr}</span></td>
-                //     <td><span class="badge bg-light text-danger border border-danger-subtle px-2 py-1">${toStr}</span></td>
-                //     <td>${resv.added_by_name || ''}</td>
-                //     <td class="ps-2 pe-3 text-wrap text-break" style="max-width: 250px;">${resv.remarks || '<span class="text-muted italic">None</span>'}</td>
-                // `;
-
+               
                 tbody.appendChild(tr);
             });
         });
@@ -636,11 +628,27 @@ const calendar = {
 
             const data = await res.json();
 
+            // === REFACTORED: SERVER RESPONSE GATES ACCORDING TO BACKEND LIMITS ===
+            console.log('Server response object structure:', data);
+
             if (!data.success) {
-                alert(data.error || 'Failed to save reservation.');
-                util.toggleButtonLoading('btnReserve', null, false); // Fix: Turn OFF loading state on server errors
+                console.log('Backend rejected request. Let us inspect the values:');
+                console.log('Type of limitExceeded:', typeof data.limitExceeded);
+                console.log('Value of limitExceeded:', data.limitExceeded);
+
+                // SIMPLIFIED: Just check if limitExceeded exists and is truthy!
+                if (data.limitExceeded) {
+                    console.log('Gate Triggered: Booking limit restriction active.');
+                    alert(data.message); 
+                } else {
+                    // Fall back to general server errors or missing fields errors
+                    alert(data.error || 'Failed to save reservation.');
+                }
+                
+                util.toggleButtonLoading('btnReserve', null, false); 
                 return;
             }
+
 
             util.Toasted('Reservation saved!', 3000, false);
             util.speak('Reservation successfully saved!');
