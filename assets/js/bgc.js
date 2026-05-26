@@ -583,8 +583,6 @@ document.addEventListener("DOMContentLoaded", function() {
         bgc.getCredentials();
         
         ccfgrid.getlinks(user.grp_id) //get links for grid display
-
-
     }  
 
     /* FOR HERO CAROUSEL */
@@ -791,6 +789,19 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log('closing oAuth2')
         }
     });
+
+    //=== change dgrup button 
+    const dgroupBtn = document.getElementById('dgroupActionBtn');
+
+    // Safety check to ensure the button exists on the current page
+    if (dgroupBtn) {
+        const savedGroupName = localStorage.getItem('dg_name');
+        
+        // Check if dg_name exists and is not an empty string
+        if (savedGroupName) {
+        dgroupBtn.innerHTML = 'My DGroup <span class="ms-2">→</span>';
+        }
+    }
 
     // ***************EVENT FIRED FOR LOGIN / USER LOGGED************
     document.addEventListener('userLoggedIn', (e) => {
