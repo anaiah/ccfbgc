@@ -681,10 +681,12 @@ const calendar = {
             return;
         }
 
+        /*take out delete for now
         if (user.grp_id !== 4 && user.grp_id !== 9) { // Only allow if admin or overseer
             alert('You are not authorized to delete this booking.');
             return;
         }
+        */
 
         if (!id) return;
 

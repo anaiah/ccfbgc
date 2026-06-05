@@ -286,10 +286,22 @@
                       </div>
                   </div>
 
-                  <!-- Call To Action Action Button -->
-                  <button id="dgroupActionBtn" class="btn btn-warning btn-lg px-5 py-3 shadow">
-                      DGroup Registration <span class="ms-2">→</span>
-                  </button>
+                  <!-- Call To Action Action Button Container -->
+<div class="d-flex flex-column align-items-center gap-3 w-100">
+    
+    <!-- PRIMARY BUTTON: For New Believers to Find/Join a Group -->
+    <button id="findDgrpBtn" class="btn btn-warning btn-lg px-5 py-3 shadow" data-bs-toggle="modal" data-bs-target="#filterDgroupModal">
+        Find a DGroup to Join <span class="ms-2">→</span>
+    </button>
+    
+    <!-- SECONDARY BUTTON: For DGroup Leaders to Register in Database -->
+    <button id="dgroupActionBtn" class="btn btn-warning btn-lg px-5 py-3 shadow">
+        DGroup Leader Registration <span class="ms-2">→</span>
+    </button>
+    
+</div>
+
+
               </div> <!-- END GLASS CARD WRAPPER -->
           </div>
 
@@ -783,6 +795,127 @@
                 </div>
             </form>
             
+        </div>
+    </div>
+</div>
+
+<!-- Modal for D-Group Filters (For New Believers to Find a Group) -->
+ <!-- Modified Primary Action Button Trigger -->
+<button id="dgroupActionBtn" class="btn btn-warning btn-lg px-5 py-3 shadow" data-bs-toggle="modal" data-bs-target="#filterDgroupModal">
+    Find a DGroup to Join <span class="ms-2">→</span>
+</button>
+
+<!-- FILTER DGROUP MODAL DIALOG BOX -->
+<div class="modal fade" id="filterDgroupModal" tabindex="-1" aria-labelledby="filterDgroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <!-- Styled Container Box Matching the Card Aesthetic -->
+        <div class="modal-content bg-dark text-white border-secondary shadow-lg" style="border-radius: 1.25rem;">
+            
+            <!-- Modal Header Window -->
+            <div class="modal-header border-0 pb-0 pt-4 px-4 d-flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="modal-title fw-bold text-warning fs-4" id="filterDgroupModalLabel">Find a Small Group</h5>
+                    <p class="text-white-50 small mb-0">Filter our church database to find a bible study group that matches your life stage.</p>
+                </div>
+                <button type="button" class="btn-close btn-close-white align-self-start mt-1" data-bs-toggle="modal" data-bs-target="#filterDgroupModal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body Container -->
+            <div class="modal-body p-4">
+                
+                <!-- Filter Section Grid Elements (2 Columns on Large Monitors) -->
+                <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">
+                    
+                    <!-- Column 1: Target Category Profile -->
+                    <div>
+                        <div class="mb-3">
+                            <label class="form-label small text-white-50">D-Group Type / Target Group</label>
+                            <select class="form-select bg-dark border-secondary text-white search-filter" id="regDescription" required>
+                                <option value="" disabled selected hidden>Select category dynamic...</option>
+                                <option value="Singles (All Men)">Singles (All Men)</option>
+                                <option value="Singles (All Women)">Singles (All Women)</option>
+                                <option value="Singles (Mix)">Singles (Mix)</option>
+                                <option value="Couples">Couples</option>
+                                <option value="Mix (Youth/Campus)">Mix (Youth/Campus)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small text-white-50">Target Age Bracket</label>
+                            <select class="form-select bg-dark border-secondary text-white search-filter" id="regAgeBracket" required>
+                                <option value="" disabled selected hidden>Select age bracket...</option>
+                                <option value="15-20">15 - 20 (Students / Campus)</option>
+                                <option value="21-30">21 - 30 (Young Professionals)</option>
+                                <option value="30-40">30 - 40 (Adults / Young Families)</option>
+                                <option value="40-above">40 and above (Senior Adults)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Schedule & Timings Profile -->
+                    <div>
+                        <div class="mb-3">
+                            <label class="form-label small text-white-50 text-uppercase tracking-wider" style="letter-spacing: 1px; font-size: 0.75rem;">Schedule & Venue</label>
+                            <select class="form-select bg-dark border-secondary text-white search-filter" id="regDay" required>
+                                <option value="" disabled selected hidden>Select meeting day...</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label small text-white-50">Meeting Time</label>
+                            <select class="form-select bg-dark border-secondary text-white search-filter" id="regTime" required>
+                                <option value="" disabled selected hidden>Select meeting time...</option>
+                                <option value="6:00 AM">6:00 AM (Early Morning)</option>
+                                <option value="7:00 AM">7:00 AM</option>
+                                <option value="8:00 AM">8:00 AM</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="1:00 PM">1:00 PM (Afternoon)</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="4:00 PM">4:00 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                                <option value="6:00 PM">6:00 PM (Evening)</option>
+                                <option value="6:30 PM">6:30 PM</option>
+                                <option value="7:00 PM">7:00 PM</option>
+                                <option value="7:30 PM">7:30 PM</option>
+                                <option value="8:00 PM">8:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4-COLUMN TABULAR GRID FOR SEARCH RESULTS -->
+                <div class="table-responsive rounded shadow-sm border border-secondary" style="max-height: 250px; overflow-y: auto;">
+                    <table class="table table-dark table-hover table-striped mb-0 align-middle">
+                        <thead class="table-secondary text-dark sticky-top">
+                            <tr>
+                                <th scope="col" class="py-2 small fw-bold">DGRP Leader</th>
+                                <th scope="col" class="py-2 small fw-bold">Day</th>
+                                <th scope="col" class="py-2 small fw-bold">Time</th>
+                                <th scope="col" class="py-2 small fw-bold">Place</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dgroupTableBody">
+                            <!-- Live search data rows are injected here dynamically via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer Controls Box -->
+            <div class="modal-footer border-0 pt-0 pb-4 px-4 d-flex justify-content-between">
+                <button type="button" id="resetFiltersBtn" class="btn btn-sm btn-outline-secondary text-white-50">Reset Filters</button>
+                <button type="button" class="btn btn-warning px-4 text-dark font-weight-bold" data-bs-dismiss="modal">Close Window</button>
+            </div>
         </div>
     </div>
 </div>
