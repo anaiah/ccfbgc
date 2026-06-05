@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
+    console.log("D-Groups module loaded successfully.");
+    
     // 1. Mock Local Church Database Structure
     const dgroupDatabase = [
         { leader: "Bro. Jun Santos", type: "Singles (All Men)", age: "21-30", day: "Tuesday", time: "7:00 PM", place: "CCF Main / Zoom" },
