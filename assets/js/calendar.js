@@ -507,7 +507,7 @@ const calendar = {
                 tr.innerHTML = `
                     <td class="ps-3">
                         <!-- Interactive Delete Button -->
-                        <button type="button" class="btn btn-link link-danger p-0 border-0 text-decoration-none small fw-bold" onclick="calendar.deleteBooking(${resv.id})">
+                        <button type="button" class="btn btn-link link-danger p-0 border-0 text-decoration-none small fw-bold" onclick="calendar.deleteBooking(${resv.id}, ${resv.added_by})">
                             <i class="fas fa-trash-alt me-1"></i>#${resv.id}
                         </button>
                     </td>
@@ -673,7 +673,7 @@ const calendar = {
 
         //=========================== DELETE/CANCEL RESERVATION
     // CHANGE: Pass the row ID directly as a parameter instead of relying on broken event scopes
-    deleteBooking: async (id) => {
+    deleteBooking: async (id, added_by) => {
 
         const user = JSON.parse(localStorage.getItem('bgc_user')) || {};
         if (!user || !user.grp_id) {
@@ -687,6 +687,11 @@ const calendar = {
             return;
         }
         */
+
+        if (user.id !== added_by) { // Only allow if admin
+            alert('You are not authorized to delete this booking.');    
+            return;
+        }
 
         if (!id) return;
 
