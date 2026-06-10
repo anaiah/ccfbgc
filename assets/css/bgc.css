@@ -1800,3 +1800,88 @@ td.sticky-col {
         padding: 2rem 1.5rem;
     }
 }
+
+/* grid js */
+/* Removes Grid.js default card borders and white background wrappers */
+/* 1. Main Grid Wrappers */
+/* 1. Force the footer wrapper to respect your dark background */
+/* ==========================================================================
+   COMPLETE DARK THEME OVERRIDES FOR GRID.JS (REPLACE YOUR ENTIRE CSS WITH THIS)
+   ========================================================================== */
+
+/* 1. Main Table Outer Containers */
+.gridjs-wrapper {
+    background-color: #212529 !important;
+    border: 1px solid #495057 !important;
+    border-radius: 6px;
+    box-shadow: none !important;
+}
+
+.gridjs-container {
+    color: #f8f9fa !important;
+}
+
+/* 2. The Sticky Header Cell Tweaks */
+.gridjs-th {
+    box-shadow: inset 0 -1px 0 #495057 !important; /* Protects boundary borders during scroll */
+}
+
+/* 3. Table Rows Hover State Mechanics */
+.gridjs-tr:hover td.gridjs-td {
+    background-color: #2c3034 !important;
+    color: #ffffff !important;
+}
+
+.gridjs-td {
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* 4. Complete Footer Container Layout (Beats the White Background Bug) */
+.gridjs-container .gridjs-footer {
+    background-color: #1A1D20 !important;
+    background-image: none !important;
+    border-top: 1px solid #495057 !important;
+    box-shadow: none !important; /* Strips out the hardcoded white/gray glow box */
+    color: #adb5bd !important;
+    padding: 10px 16px !important;
+}
+
+/* 5. Pagination Text / Record Summary Description */
+.gridjs-container .gridjs-pagination .gridjs-summary {
+    color: #adb5bd !important;
+}
+
+/* 6. Navigation Buttons Styling */
+.gridjs-container .gridjs-pagination .gridjs-pages button {
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 1px solid #495057 !important;
+    color: #f8f9fa !important;
+    padding: 5px 12px !important;
+    font-size: 0.85rem !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    margin: 0 2px !important;
+}
+
+/* 7. Active / Current Selection Highlight */
+.gridjs-container .gridjs-pagination .gridjs-pages button.gridjs-currentPage {
+    background-color: #495057 !important;
+    border-color: #6c757d !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+}
+
+/* 8. Selection Buttons Hover State */
+.gridjs-container .gridjs-pagination .gridjs-pages button:hover:not(.gridjs-currentPage):not(:disabled) {
+    background-color: #2c3034 !important;
+    color: #ffffff !important;
+}
+
+/* 9. Disabled Layout Navigation Control states (e.g. Previous arrow on Page 1) */
+.gridjs-container .gridjs-pagination .gridjs-pages button:disabled {
+    background-color: transparent !important;
+    color: #495057 !important;
+    border-color: #343a40 !important;
+    cursor: not-allowed !important;
+}
