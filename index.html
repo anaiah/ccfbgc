@@ -826,7 +826,7 @@
                         <div class="mb-3">
                             <label class="form-label small text-white-50">D-Group Type / Target Group</label>
                             <select class="form-select bg-dark border-secondary text-white search-filter" id="xregDescription" name="xregDescription" required>
-                                <option value="" disabled selected hidden>Select category dynamic...</option>
+                                <option value="" disabled selected >Select category dynamic...</option>
                                 <option value="Singles (All Men)">Singles (All Men)</option>
                                 <option value="Singles (All Women)">Singles (All Women)</option>
                                 <option value="Singles (Mix)">Singles (Mix)</option>
@@ -838,7 +838,7 @@
                         <div class="mb-3">
                             <label class="form-label small text-white-50">Target Age Bracket</label>
                             <select class="form-select bg-dark border-secondary text-white search-filter" id="xregAgeBracket" name="xregAgeBracket" required>
-                                <option value="" disabled selected hidden>Select age bracket...</option>
+                                <option value="" disabled selected >Select age bracket...</option>
                                 <option value="15-20">15 - 20 (Students / Campus)</option>
                                 <option value="21-30">21 - 30 (Young Professionals)</option>
                                 <option value="30-40">30 - 40 (Adults / Young Families)</option>
@@ -852,7 +852,7 @@
                         <div class="mb-3">
                             <label class="form-label small text-white-50 text-uppercase tracking-wider" style="letter-spacing: 1px; font-size: 0.75rem;">Schedule & Venue</label>
                             <select class="form-select bg-dark border-secondary text-white search-filter" id="xregDay" name="xregDay" required>
-                                <option value="" disabled selected hidden>Select meeting day...</option>
+                                <option value="" disabled selected >Select meeting day...</option>
                                 <option value="Monday">Monday</option>
                                 <option value="Tuesday">Tuesday</option>
                                 <option value="Wednesday">Wednesday</option>
@@ -866,7 +866,7 @@
                         <div class="mb-3">
                             <label class="form-label small text-white-50">Meeting Time</label>
                             <select class="form-select bg-dark border-secondary text-white search-filter" id="xregTime" name="xregTime" required>
-                                <option value="" disabled selected hidden>Select meeting time...</option>
+                                <option value="" disabled selected >Select meeting time...</option>
                                 <option value="6:00 AM">6:00 AM (Early Morning)</option>
                                 <option value="7:00 AM">7:00 AM</option>
                                 <option value="8:00 AM">8:00 AM</option>
@@ -888,11 +888,10 @@
                 </div>
 
                 <!-- 4-COLUMN TABULAR GRID FOR SEARCH RESULTS -->
-<!-- REMOVED max-height and overflow-y inline styles to fix the sticky header clash -->
-<div class="table-responsive rounded shadow-sm border border-secondary">
-    <div id="dgrp-grid"></div>
-</div>
-
+                <!-- REMOVED max-height and overflow-y inline styles to fix the sticky header clash -->
+                <div class="table-responsive rounded shadow-sm border border-secondary">
+                    <div id="dgrp-grid"></div>
+                </div>
 
             </div>
 
