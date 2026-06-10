@@ -198,10 +198,10 @@ document.getElementById('joinGroupForm').addEventListener('submit', function(e) 
 // Attach click listener to your Reset Filters button element
 document.getElementById('resetFiltersBtn').addEventListener('click', function() {
   // 1. Reset each dropdown back to the first empty option ""
-  document.getElementById('regDescription').value = "";
+  document.getElementById('xregDescription').value = "";
   document.getElementById('xregAgeBracket').value = "";
   document.getElementById('xregDay').value = "";
-  document.getElementById('regTime').value = "";
+  document.getElementById('xregTime').value = "";
 
   // 2. Trigger the fetch function (it will automatically send "NA/NA/NA/NA" to your backend now)
   loadFilteredData();
