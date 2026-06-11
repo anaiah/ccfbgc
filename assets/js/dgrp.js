@@ -291,12 +291,11 @@ document.getElementById('resetFiltersBtn').addEventListener('click', function() 
 
   // 2. Trigger the fetch function (it will automatically send "NA/NA/NA/NA" to your backend now)
   //loadFilteredData();
-    // 1. Clear current table grid rows down to zero data immediately on filter change
-  //grid.updateConfig({ data: [] }).forceRender();
- grid.updateConfig({ 
-          data: [["", "", "No matching records found.", "", "", "", ""]] 
-          // data: [],
-        }).forceRender();
+  // 1. Clear current table grid rows down to zero data immediately on filter change
+  grid.updateConfig({ 
+    data: [["", "", "No matching records found.", "", "", "", ""]] 
+    // data: [],
+  }).forceRender();
    
 });
 
@@ -315,7 +314,7 @@ document.getElementById('filterDgroupModal').addEventListener('hidden.bs.modal',
 
     // 1. Clear the grid array to zero data in the UI
    grid.updateConfig({ 
-          data: [["", "", "No matching records found.", "", "", "", ""]] 
-          // data: [],
-        }).forceRender();
+      data: [["", "", "No matching records found.", "", "", "", ""]] 
+      // data: [],
+    }).forceRender();
 });
