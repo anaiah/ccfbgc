@@ -233,10 +233,12 @@ document.getElementById('resetFiltersBtn').addEventListener('click', function() 
 });
 
 // Detect when the Join D-Group Modal closes completely
-document.getElementById('joinGroupModal').addEventListener('hidden.bs.modal', function () {
-  // 1. Clear the grid array to zero data in the UI
-  grid.updateConfig({ data: [] }).forceRender();
+document.getElementById('filterDgroupModal').addEventListener('hidden.bs.modal', function () {
+  console.log("modal closed")
   
   // 2. Clear out your input forms so it is clean for the next user interaction
-  document.getElementById('joinGroupForm').reset();
+  //document.getElementById('joinGroupForm').reset();
+
+    // 1. Clear the grid array to zero data in the UI
+  grid.updateConfig({ data: [] }).forceRender();
 });
