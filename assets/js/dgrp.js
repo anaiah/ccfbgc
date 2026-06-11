@@ -12,6 +12,15 @@ const grid = new gridjs.Grid({
         formatter: (cell, row) => {
         const leaderName = row.cells[0].data;
         const leaderEmail = row.cells[1].data;
+
+         // Safety check to ensure we don't format the custom empty state row
+        if (leaderName === "NO_DATA_FOUND") {
+          return gridjs.html(`
+            <div class="text-center text-white-50 w-100 py-4" style="grid-column: span 7;">
+               No matching records found
+            </div>
+          `);
+        }
         
         // Escape strings to prevent syntax breakages inside the onclick string
         const escapedName = leaderName.replace(/'/g, "\\'");
@@ -63,22 +72,22 @@ const grid = new gridjs.Grid({
   }
 }).render(document.getElementById("dgrp-grid"));
 
-// Native mouse interactions for dark-theme hovers
-document.getElementById("dgrp-grid").addEventListener("mouseover", (e) => {
-  const cell = e.target.closest(".gridjs-td");
-  if (cell) {
-    cell.style.backgroundColor = "#2c3034";
-    cell.style.color = "#ffffff";
-  }
-});
+// // Native mouse interactions for dark-theme hovers
+// document.getElementById("dgrp-grid").addEventListener("mouseover", (e) => {
+//   const cell = e.target.closest(".gridjs-td");
+//   if (cell) {
+//     cell.style.backgroundColor = "#2c3034";
+//     cell.style.color = "#ffffff";
+//   }
+// });
 
-document.getElementById("dgrp-grid").addEventListener("mouseout", (e) => {
-  const cell = e.target.closest(".gridjs-td");
-  if (cell) {
-    cell.style.backgroundColor = "#212529";
-    cell.style.color = "#f8f9fa";
-  }
-});
+// document.getElementById("dgrp-grid").addEventListener("mouseout", (e) => {
+//   const cell = e.target.closest(".gridjs-td");
+//   if (cell) {
+//     cell.style.backgroundColor = "#212529";
+//     cell.style.color = "#f8f9fa";
+//   }
+// });
 
 // Helper function to toggle a custom Bootstrap loading overlay
 // Helper function to show/hide a full loading overlay inside the grid wrapper
@@ -113,40 +122,93 @@ function toggleLoading(isLoading) {
 
 
 // Main Core Fetch Function
-function loadFilteredData() {
+// function loadFilteredData() {
 
   
+//   const description = document.getElementById('xregDescription').value.trim() || "NA";
+//   const ageBracket  = document.getElementById('xregAgeBracket').value.trim()  || "NA";
+//   const day         = document.getElementById('xregDay').value.trim()         || "NA";
+//   const time        = document.getElementById('xregTime').value.trim()        || "NA";
+
+//   // 3. Show Loading Indicator right before fetching
+//   toggleLoading(true);
+
+//   const finalUrl = `${myIp}/bgc/getdgrp/${encodeURIComponent(description)}/${encodeURIComponent(ageBracket)}/${encodeURIComponent(day)}/${encodeURIComponent(time)}`;
+//   console.log("Fetching D-Group data with URL:", finalUrl);
+
+
+//   fetch(finalUrl)
+//     .then(res => res.json())
+//     .then(serverRows => {
+//       const formattedRows = serverRows.map(row => [
+//         row.full_name.toUpperCase(),
+//         row.email,
+//         row.group_description.toUpperCase(),
+//         row.age_bracket.toUpperCase(),
+//         row.meeting_day.toUpperCase(),
+//         row.meeting_time.toUpperCase(),
+//         row.meeting_place.toUpperCase()
+//       ]);
+      
+//       // Clear data and apply fresh array references cleanly
+//       grid.updateConfig({ data: [...formattedRows] }).forceRender();
+//     })
+//     .catch(error => console.error("API Fetch Error:", error))
+//     .finally(() => {
+//       // Hide Loading Indicator when done (success or failure)
+//       toggleLoading(false);
+//     });
+// }
+function loadFilteredData() {
+  // 1. Get raw dropdown selection inputs
   const description = document.getElementById('xregDescription').value.trim() || "NA";
   const ageBracket  = document.getElementById('xregAgeBracket').value.trim()  || "NA";
   const day         = document.getElementById('xregDay').value.trim()         || "NA";
   const time        = document.getElementById('xregTime').value.trim()        || "NA";
 
-  // 3. Show Loading Indicator right before fetching
+  // 2. Bring up the loading indicator overlay BEFORE wiping out old records
   toggleLoading(true);
 
   const finalUrl = `${myIp}/bgc/getdgrp/${encodeURIComponent(description)}/${encodeURIComponent(ageBracket)}/${encodeURIComponent(day)}/${encodeURIComponent(time)}`;
-  console.log("Fetching D-Group data with URL:", finalUrl);
-
 
   fetch(finalUrl)
     .then(res => res.json())
     .then(serverRows => {
+
+       // 2. Force-remove the loading overlay text element BEFORE updating the data configuration
+      // This stops any overlay artifacts from masking or burying your zero results message
+      toggleLoading(false);
+
+      if (!serverRows || serverRows.length === 0) {
+        // Handle explicit empty data swap to force GridJS to build its native warning text block
+        toggleLoading(false);
+        grid.updateConfig({ data: [] }).forceRender();
+        return;
+      }
+
+      // 3. Map the raw server elements into standard table rows
       const formattedRows = serverRows.map(row => [
-        row.full_name.toUpperCase(),
-        row.email,
-        row.group_description.toUpperCase(),
-        row.age_bracket.toUpperCase(),
-        row.meeting_day.toUpperCase(),
-        row.meeting_time.toUpperCase(),
-        row.meeting_place.toUpperCase()
+        row.full_name, 
+        row.email, 
+        row.group_description, 
+        row.age_bracket, 
+        row.meeting_day, 
+        row.meeting_time, 
+        row.meeting_place
       ]);
       
-      // Clear data and apply fresh array references cleanly
+      // 4. Update the data array inside a single frame swap
+      // If serverRows is empty [], Grid.js draws the dark empty message state instantly
       grid.updateConfig({ data: [...formattedRows] }).forceRender();
     })
-    .catch(error => console.error("API Fetch Error:", error))
+    .catch(error => {
+      console.error("API Error:", error);
+      // Clean canvas in case the endpoint fails
+      toggleLoading(false); // Ensure loading overlay is removed on error
+      grid.updateConfig({ data: [] }).forceRender();
+    })
     .finally(() => {
-      // Hide Loading Indicator when done (success or failure)
+      // 5. Turn off the loading animation cleanly
       toggleLoading(false);
     });
 }

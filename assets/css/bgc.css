@@ -1813,6 +1813,11 @@ td.sticky-col {
    ========================================================================== */
 
 /* Outer structural boundaries */
+/* ==========================================================================
+   COMPLETE COMPACT DARK THEME DESIGN SYSTEM FOR GRID.JS
+   ========================================================================== */
+
+/* Outer structural boundaries */
 .gridjs-wrapper {
     background-color: #212529 !important;
     border: 1px solid #495057 !important;
@@ -1829,6 +1834,7 @@ td.sticky-col {
 .gridjs-container table.gridjs-table {
     background-color: #212529 !important;
     background-image: none !important;
+    color:#f8f9fa !important;
 }
 
 /* Structural Cell Lines & Sticky Top Header Locking */
@@ -1899,11 +1905,14 @@ td.sticky-col {
     cursor: not-allowed !important;
 }
 
-/* Resolves empty search and initial transition styling overrides */
+/* Updated Empty Message Row Context to guarantee text remains fully visible */
 .gridjs-container td.gridjs-message {
     background-color: #212529 !important; 
-    color: #adb5bd !important;
-    border: none !important;
+    color: #f8f9fa !important;            
+    border: none !important;              
     text-align: center !important;
-    padding: 40px 16px !important;
+    font-size: 0.9rem !important;          
+    font-weight: 500 !important;
+    padding: 50px 16px !important;       
 }
+
