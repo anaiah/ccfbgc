@@ -114,6 +114,10 @@ function toggleLoading(isLoading) {
 
 // Main Core Fetch Function
 function loadFilteredData() {
+
+    // 1. Clear current table grid rows down to zero data immediately on filter change
+  grid.updateConfig({ data: [] }).forceRender();
+  
   const description = document.getElementById('xregDescription').value.trim() || "NA";
   const ageBracket  = document.getElementById('xregAgeBracket').value.trim()  || "NA";
   const day         = document.getElementById('xregDay').value.trim()         || "NA";
@@ -225,4 +229,13 @@ document.getElementById('resetFiltersBtn').addEventListener('click', function() 
 
   // 2. Trigger the fetch function (it will automatically send "NA/NA/NA/NA" to your backend now)
   loadFilteredData();
+});
+
+// Detect when the Join D-Group Modal closes completely
+document.getElementById('joinGroupModal').addEventListener('hidden.bs.modal', function () {
+  // 1. Clear the grid array to zero data in the UI
+  grid.updateConfig({ data: [] }).forceRender();
+  
+  // 2. Clear out your input forms so it is clean for the next user interaction
+  document.getElementById('joinGroupForm').reset();
 });
