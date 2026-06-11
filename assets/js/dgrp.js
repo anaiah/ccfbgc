@@ -81,16 +81,36 @@ document.getElementById("dgrp-grid").addEventListener("mouseout", (e) => {
 });
 
 // Helper function to toggle a custom Bootstrap loading overlay
+// Helper function to show/hide a full loading overlay inside the grid wrapper
 function toggleLoading(isLoading) {
   const gridContainer = document.getElementById("dgrp-grid");
+  
   if (isLoading) {
-    gridContainer.style.opacity = "0.5";
-    gridContainer.style.pointerEvents = "none";
+    // Check if an overlay is already active to prevent duplicates
+    if (document.getElementById("grid-loading-overlay")) return;
+
+    // Create a dark glass overlay container with a Bootstrap spinner and text
+    const overlay = document.createElement("div");
+    overlay.id = "grid-loading-overlay";
+    overlay.className = "d-flex flex-column align-items-center justify-content-center position-absolute top-0 start-0 w-100 h-100";
+    overlay.style.backgroundColor = "rgba(33, 37, 41, 0.75)"; // Matches your #212529 dark theme background
+    overlay.style.zIndex = "1050"; // Places it over sticky headers
+    
+    overlay.innerHTML = `
+      <div class="spinner-border text-info" role="status" style="width: 2.5rem; height: 2.5rem;"></div>
+      <span class="text-white-50 mt-2 small text-uppercase tracking-wider" style="letter-spacing: 1px;">Loading D-Groups...</span>
+    `;
+    
+    // Ensure the parent container can hold absolute positioning bounds
+    gridContainer.style.position = "relative";
+    gridContainer.appendChild(overlay);
   } else {
-    gridContainer.style.opacity = "1";
-    gridContainer.style.pointerEvents = "auto";
+    // Safely strip away the loading layout once data arrives
+    const overlay = document.getElementById("grid-loading-overlay");
+    if (overlay) overlay.remove();
   }
 }
+
 
 // Main Core Fetch Function
 function loadFilteredData() {
@@ -194,3 +214,15 @@ document.getElementById('joinGroupForm').addEventListener('submit', function(e) 
   });
 });
 
+//=====reset filter
+// Attach click listener to your Reset Filters button element
+document.getElementById('resetFiltersBtn').addEventListener('click', function() {
+  // 1. Reset each dropdown back to the first empty option ""
+  document.getElementById('xregDescription').value = "";
+  document.getElementById('xregAgeBracket').value = "";
+  document.getElementById('xregDay').value = "";
+  document.getElementById('xregTime').value = "";
+
+  // 2. Trigger the fetch function (it will automatically send "NA/NA/NA/NA" to your backend now)
+  loadFilteredData();
+});
