@@ -225,4 +225,8 @@ document.getElementById('resetFiltersBtn').addEventListener('click', function() 
 
   // 2. Trigger the fetch function (it will automatically send "NA/NA/NA/NA" to your backend now)
   loadFilteredData();
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 5898b1445c0593f425954aba7bd45ae49bb09127
