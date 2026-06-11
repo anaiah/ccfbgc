@@ -177,13 +177,13 @@ function loadFilteredData() {
 
       // 3. Map the raw server elements into standard table rows
       const formattedRows = serverRows.map(row => [
-        row.full_name, 
+        row.full_name.toUpperCase(), 
         row.email, 
-        row.group_description, 
-        row.age_bracket, 
-        row.meeting_day, 
-        row.meeting_time, 
-        row.meeting_place
+        row.group_description.toUpperCase(), 
+        row.age_bracket.toUpperCase(), 
+        row.meeting_day.toUpperCase(), 
+        row.meeting_time.toUpperCase(), 
+        row.meeting_place.toUpperCase()
       ]);
       
       // 4. Update the data array inside a single frame swap
