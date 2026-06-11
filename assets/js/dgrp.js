@@ -235,6 +235,12 @@ document.getElementById('resetFiltersBtn').addEventListener('click', function() 
 // Detect when the Join D-Group Modal closes completely
 document.getElementById('filterDgroupModal').addEventListener('hidden.bs.modal', function () {
   console.log("modal closed")
+
+  // 1. Reset each dropdown back to the first empty option ""
+  document.getElementById('xregDescription').value = "";
+  document.getElementById('xregAgeBracket').value = "";
+  document.getElementById('xregDay').value = "";
+  document.getElementById('xregTime').value = "";
   
   // 2. Clear out your input forms so it is clean for the next user interaction
   //document.getElementById('joinGroupForm').reset();
