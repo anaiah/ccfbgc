@@ -12,6 +12,7 @@ const grid = new gridjs.Grid({
   columns: [
     {
         name: "Name",
+        width: "280px",
         formatter: (cell, row) => {
         const leaderName = row.cells[0].data;
         const leaderEmail = row.cells[1].data;
@@ -41,7 +42,7 @@ const grid = new gridjs.Grid({
             `);
             
         }else {
-         return gridjs.html(`
+          return gridjs.html(`
             <div class="d-flex flex-column align-items-start gap-1">
             <span class="fw-bold">${leaderName}</span>
             <button type="button" 
@@ -51,7 +52,6 @@ const grid = new gridjs.Grid({
                 Email to Join
             </button>
             </div>`)
-       
         
         }//eif
       }
@@ -139,45 +139,6 @@ function toggleLoading(isLoading) {
   }
 }
 
-
-// Main Core Fetch Function
-// function loadFilteredData() {
-
-  
-//   const description = document.getElementById('xregDescription').value.trim() || "NA";
-//   const ageBracket  = document.getElementById('xregAgeBracket').value.trim()  || "NA";
-//   const day         = document.getElementById('xregDay').value.trim()         || "NA";
-//   const time        = document.getElementById('xregTime').value.trim()        || "NA";
-
-//   // 3. Show Loading Indicator right before fetching
-//   toggleLoading(true);
-
-//   const finalUrl = `${myIp}/bgc/getdgrp/${encodeURIComponent(description)}/${encodeURIComponent(ageBracket)}/${encodeURIComponent(day)}/${encodeURIComponent(time)}`;
-//   console.log("Fetching D-Group data with URL:", finalUrl);
-
-
-//   fetch(finalUrl)
-//     .then(res => res.json())
-//     .then(serverRows => {
-//       const formattedRows = serverRows.map(row => [
-//         row.full_name.toUpperCase(),
-//         row.email,
-//         row.group_description.toUpperCase(),
-//         row.age_bracket.toUpperCase(),
-//         row.meeting_day.toUpperCase(),
-//         row.meeting_time.toUpperCase(),
-//         row.meeting_place.toUpperCase()
-//       ]);
-      
-//       // Clear data and apply fresh array references cleanly
-//       grid.updateConfig({ data: [...formattedRows] }).forceRender();
-//     })
-//     .catch(error => console.error("API Fetch Error:", error))
-//     .finally(() => {
-//       // Hide Loading Indicator when done (success or failure)
-//       toggleLoading(false);
-//     });
-// }
 function loadFilteredData() {
   // 1. Get raw dropdown selection inputs
   const description = document.getElementById('xregDescription').value.trim() || "NA";
