@@ -73,48 +73,18 @@
 
 
 <!-- Hero Section -->
-<section class="hero-section text-center d-flex align-items-center justify-content-center overflow-hidden">
+<!-- Hero Section -->
+<section class="hero-section text-center d-flex align-items-center justify-content-center overflow-hidden position-relative" style="min-height: 100vh;">
   
-  <!-- Hero Carousel - This will serve as the dynamic background -->
-  <div id="heroCarousel" class="carousel slide position-absolute h-100 w-100" data-bs-ride="carousel" style="top: 0; left: 0; z-index: 0;">
-    <!-- Carousel Indicators (dots at the bottom) -->
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-
-    <!-- Carousel Inner (the slides themselves with background images) -->
-    <div class="carousel-inner h-100 w-100">
-      <!-- Slide 1 -->
-      <div class="carousel-item active h-100">
-        <div class="hero-carousel-slide hero-slide-1 h-100 w-100"></div>
-      </div>
-      <!-- Slide 2 -->
-      <div class="carousel-item h-100">
-        <div class="hero-carousel-slide hero-slide-2 h-100 w-100"></div>
-      </div>
-      <!-- Slide 3 -->
-      <div class="carousel-item h-100">
-        <div class="hero-carousel-slide hero-slide-3 h-100 w-100"></div>
-      </div>
-    </div>
-
-    <!-- Carousel Controls (Previous/Next buttons) -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+  <!-- Background Video Container -->
+  <div class="video-container position-absolute top-0 start-0 w-100 h-100" style="z-index: 0;">
+    <video id="heroVideo" class="w-100 h-100" autoplay loop muted playsinline style="object-fit: cover;"></video>
   </div>
 
-  <!-- Hero Overlay - This sits between the carousel and the text content -->
-  <div class="hero-overlay" style="z-index: 1;"></div> 
+  <!-- Hero Overlay -->
+  <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100" style="z-index: 1; background: rgba(0,0,0,0.5);"></div> 
 
-  <!-- Hero Content - This remains static on top of the carousel and overlay -->
+  <!-- Hero Content -->
   <div class="container position-relative py-5" style="z-index: 2;">
     <h1 class="display-3 fw-bolder mb-4 text-white text-shadow tracking-tight">
       Connect. Grow. Multiply
@@ -125,7 +95,6 @@
     <div class="d-flex justify-content-center gap-3 flex-column flex-sm-row">
         <a href="#about" class="btn btn-light btn-lg px-5 rounded-pill shadow-sm">Learn More</a>
         <a href="#dgroup-section" class="btn btn-light btn-lg px-5 rounded-pill shadow-sm">Join Us Now</a>
-        
     </div>
   </div>
 </section>
