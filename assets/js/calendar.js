@@ -687,12 +687,14 @@ const calendar = {
             return;
         }
         */
+        // Allow if user is group 4 OR group 9 OR they are the creator
+        const isAuthorized = user.grp_id === 4 || user.grp_id === 9 || user.id === added_by;
 
-        if (user.id !== added_by) { // Only allow if admin
-            alert('You are not authorized to delete this booking.');    
+        if (!isAuthorized) {
+            alert('You are not authorized to delete this booking.');
             return;
         }
-
+        
         if (!id) return;
 
         if (!confirm('Delete this booking?')) return;
