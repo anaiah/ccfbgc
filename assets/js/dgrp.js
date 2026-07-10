@@ -8,11 +8,12 @@ document.getElementById("dgrp-grid").innerHTML = ""; // Clear any existing conte
 let gridInstance = null;
 
 // Global Grid.js Initialization with all 3 requested features
+//*** old july 6, 2026 */
 const grid = new gridjs.Grid({
   columns: [
     {
         name: "Name",
-        width: "280px",
+        width: "100%",
         formatter: (cell, row) => {
         const leaderName = row.cells[0].data;
         const leaderEmail = row.cells[1].data;
@@ -43,16 +44,71 @@ const grid = new gridjs.Grid({
             
         }else {
           return gridjs.html(`
-            <div class="d-flex flex-column align-items-start gap-1">
-            <span class="fw-bold">${leaderName}</span>
-            <button type="button" 
-                    class="btn btn-sm btn-outline-info py-0 px-2" 
-                    style="font-size: 0.7rem; letter-spacing: 0.5px;"
-                    onclick="openJoinModal('${escapedName}', '${escapedEmail}')">
-                Email to Join
-            </button>
-            </div>`)
-        
+              <div class="d-flex flex-column gap-3 p-3 w-100 glass-card-inner text-white animate-fade-in">
+                  
+                  <!-- ROW 1: Header (Name & High-Contrast Visual Age Pill) -->
+                  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 border-bottom border-secondary border-opacity-20 pb-2">
+                      <h6 class="m-0 fw-extrabold text-uppercase tracking-wider" style="color: #0dcaf0; font-size: 0.95rem;">
+                          ${leaderName}
+                      </h6>
+                      <!--
+                      <span class="badge rounded-pill bg-info bg-opacity-10 text-info border border-info border-opacity-20 px-2.5 py-1" style="font-size: 0.68rem; font-weight: 600; letter-spacing: 0.5px;">
+                          <i class="bi bi-person-fill me-1"></i>${row.cells[3].data} 
+                      </span>
+                      -->
+                  </div>
+                  
+                  <!-- ROW 2: Description / Core Category 
+                  // <div class="d-flex align-items-start gap-2">
+                  //     <i class="bi bi-bookmark-star-fill text-warning mt-0.5" style="font-size: 0.85rem;"></i>
+                  //     <p class="m-0 fw-medium text-white-50 text-uppercase tracking-wide" style="font-size: 0.78rem;">
+                  //         ${row.cells[2].data}
+                  //     </p>
+                  // </div>
+                  //-->
+
+                  <!-- ROW 3: Logistics Grid (Schedule & Venue Grouped with Micro Icons) -->
+                  <div class="d-flex flex-column gap-2 bg-black bg-opacity-20 p-2.5 rounded-3 border border-secondary border-opacity-10">
+                      
+                      <div class="d-flex align-items-center gap-2" style="font-size: 0.78rem;">
+                          <i class="bi bi-calendar3-event text-info" style="width: 14px;"></i>
+                          <span class="text-secondary fw-semibold text-uppercase" style="width: 75px;">Age:</span>
+                          <span class="text-white-50 fw-medium">${row.cells[3].data}</span>
+                      </div>
+
+                      <div class="d-flex align-items-center gap-2" style="font-size: 0.78rem;">
+                          <i class="bi bi-calendar3-event text-info" style="width: 14px;"></i>
+                          <span class="text-secondary fw-semibold text-uppercase" style="width: 75px;">DGrp Type:</span>
+                          <span class="text-white-50 fw-medium">${row.cells[2].data}</span>
+                      </div>
+                  
+                      <div class="d-flex align-items-center gap-2" style="font-size: 0.78rem;">
+                          <i class="bi bi-calendar3-event text-info" style="width: 14px;"></i>
+                          <span class="text-secondary fw-semibold text-uppercase" style="width: 75px;">Schedule:</span>
+                          <span class="text-white-50 fw-medium">${row.cells[4].data} • ${row.cells[5].data}</span>
+                      </div>
+                      
+                      <div class="d-flex align-items-start gap-2" style="font-size: 0.78rem;">
+                          <i class="bi bi-geo-alt-fill text-danger" style="width: 14px; margin-top: 1px;"></i>
+                          <span class="text-secondary fw-semibold text-uppercase" style="width: 75px;">Venue:</span>
+                          <span class="text-white-50 fw-medium flex-1 text-truncate-multiline">${row.cells[6].data}</span>
+                      </div>
+                  </div>
+                  
+                  <!-- ROW 4: Action Interactive Button (Modern Full-Width Touch Boundary) -->
+                  <div class="mt-1">
+                      <button type="button" 
+                              class="btn btn-sm btn-info text-dark fw-bold w-100 py-2 d-flex align-items-center justify-content-center gap-2 glass-action-btn" 
+                              style="font-size: 0.75rem; letter-spacing: 0.5px; border-radius: 8px; transition: all 0.2s ease-in-out;"
+                              onclick="openJoinModal('${escapedName}', '${escapedEmail}')">
+                          <i class="bi bi-envelope-check-fill" style="font-size: 0.85rem;"></i> 
+                          <span>EMAIL TO JOIN GROUP</span>
+                      </button>
+                  </div>
+                  
+              </div>
+          `);
+
         }//eif
       }
     },
@@ -61,11 +117,11 @@ const grid = new gridjs.Grid({
         name: "Email",
         hidden: true // <-- THIS COMPLETELY HIDES THE COLUMN FROM THE UI [1]
     }, 
-    { name: "Description" }, 
-    { name: "Age Bracket" }, 
-    { name: "Day" }, 
-    { name: "Time" }, 
-    { name: "Location" }
+    { name: "Description",hidden: true  }, 
+    { name: "Age Bracket",hidden: true  }, 
+    { name: "Day",hidden: true  }, 
+    { name: "Time",hidden: true  }, 
+    { name: "Location",hidden: true  }
 
     ],
   data: [],
@@ -90,6 +146,7 @@ const grid = new gridjs.Grid({
     // REMOVED custom paginationButton attributes that were breaking selectors!
   }
 }).render(document.getElementById("dgrp-grid"));
+
 
 // Native mouse interactions for dark-theme hovers
 document.getElementById("dgrp-grid").addEventListener("mouseover", (e) => {

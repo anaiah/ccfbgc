@@ -1339,61 +1339,39 @@ const util = {
         }
     },
 
-    //====== AUTO VALIDATE FONE NUMBER ===//
-    
-    autoFormatPhone:(input) => {
-        let value = input.value;
-        const oldSelectionStart = input.selectionStart; // Store cursor position
+    autoFormatPhone: (input) => {
+        const value = input.value;
+        const selectionStart = input.selectionStart;
 
-        // 1. Remove all non-digit characters
-        let cleanedValue = value.replace(/\D/g, '');
-
-        // 2. Limit to 11 digits (4 + 3 + 4)
-        cleanedValue = cleanedValue.substring(0, 11);
-
-        // 3. Apply the formatting (add spaces)
-        let formattedValue = '';
-        if (cleanedValue.length > 0) {
-            formattedValue = cleanedValue.substring(0, 4); // First 4 digits
-        }
-        if (cleanedValue.length > 4) {
-            formattedValue += ' ' + cleanedValue.substring(4, 7); // Space then next 3 digits
-        }
-        if (cleanedValue.length > 7) {
-            formattedValue += ' ' + cleanedValue.substring(7, 11); // Space then last 4 digits
+        let digitsBeforeCursor = 0;
+        for (let i = 0; i < selectionStart; i++) {
+            if (/\d/.test(value[i])) digitsBeforeCursor++;
         }
 
-        // Update the input field
+        let cleaned = value.replace(/\D/g, '').substring(0, 11);
+
+        let parts = [];
+        if (cleaned.length > 0) parts.push(cleaned.substring(0, 4));
+        if (cleaned.length > 4) parts.push(cleaned.substring(4, 7));
+        if (cleaned.length > 7) parts.push(cleaned.substring(7, 11));
+        let formattedValue = parts.join(' ');
+
         input.value = formattedValue;
 
-        // 4. Adjust cursor position
-        // This part is a bit tricky but essential for a good user experience
-        let newSelectionStart = oldSelectionStart;
-        const addedSpaces = (formattedValue.match(/ /g) || []).length - (value.match(/ /g) || []).length;
-        if (addedSpaces > 0 && formattedValue.length > value.length && oldSelectionStart === value.length) {
-            // If spaces were added at the end, move cursor with them
-            newSelectionStart = formattedValue.length;
-        } else if (addedSpaces > 0 && oldSelectionStart === 4) {
-            // If space was added at 4th digit mark
-            newSelectionStart = oldSelectionStart + 1;
-        } else if (addedSpaces > 0 && oldSelectionStart === 8) {
-            // If space was added at 8th digit mark
-            newSelectionStart = oldSelectionStart + 1;
-        } else if (addedSpaces < 0 && oldSelectionStart === 5 && value.charAt(4) === ' ' && formattedValue.charAt(4) !== ' ') {
-            // If a space was deleted
-            newSelectionStart = oldSelectionStart - 1;
-        } else if (addedSpaces < 0 && oldSelectionStart === 9 && value.charAt(8) === ' ' && formattedValue.charAt(8) !== ' ') {
-            // If a space was deleted
-            newSelectionStart = oldSelectionStart - 1;
+        let newCursorPosition = 0;
+        let digitCount = 0;
+        while (digitCount < digitsBeforeCursor && newCursorPosition < formattedValue.length) {
+            if (/\d/.test(formattedValue[newCursorPosition])) digitCount++;
+            newCursorPosition++;
         }
-        
-        // Fallback: Ensure cursor is not out of bounds
-        input.setSelectionRange(Math.min(newSelectionStart, formattedValue.length), Math.min(newSelectionStart, formattedValue.length));
+
+        if (formattedValue[newCursorPosition] === ' ') newCursorPosition++;
+
+        input.setSelectionRange(newCursorPosition, newCursorPosition);
     },
 
-    // Your existing util.validatePhone (make sure it's available)
-    validatePhone : (input)=> {
-        const phonePattern = /^\d{4} \d{3} \d{4}$/; // Regex for 0917 123 4567 format
+    validatePhone: (input) => {
+        const phonePattern = /^\d{4} \d{3} \d{4}$/; 
         const errorDiv = document.getElementById('phone-error');
 
         if (!phonePattern.test(input.value)) {
@@ -1408,7 +1386,6 @@ const util = {
             return true;
         }
     },
- 
     //==========WHEN SUBMIT BUTTON CLICKED ==================
     validateMe: async (frmModal, frm, classX)=>{
         console.log('validateMe()===', frmModal, frm)

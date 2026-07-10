@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        p {
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        #qrcode {
+            display: inline-block;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .url-display {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.85;
+            word-break: break-all;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <img src="assets/img/bgclogo.png" height="45" alt="CCF BGC logo">
+        <h1>QR Code</h1>
+        <p>Scan the code below to visit the link</p>
+        <div id="qrcode"></div>
+        <div class="url-display" id="urlDisplay"></div>
+    </div>
+
+    <script>
+        // Change this to the name you want
+        const user = JSON.parse(localStorage.getItem('bgc_user'));
+
+        if (!user) {
+            alert("Please ensure you are logged in.");
+            window.location.href = "https://ccfbgc.org"; // Redirect to login page
+        }else{
+            const name = user ? user.full_name : "your-name-here";
+
+            const url = `https://ccfbgc.org/${encodeURIComponent(name)}`;
+            
+            // Generate QR code
+            new QRCode(document.getElementById("qrcode"), {
+                text: url,
+                width: 256,
+                height: 256,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            
+            // Display the URL below the QR code
+            document.getElementById("urlDisplay").textContent = url;
+
+        }
+
+        
+    </script>
+</body>
+</html>

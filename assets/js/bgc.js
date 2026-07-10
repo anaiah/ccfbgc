@@ -582,7 +582,8 @@ document.addEventListener("DOMContentLoaded", function() {
         bgc.getSegments();
         bgc.getCredentials();
         
-        ccfgrid.getlinks(user.grp_id) //get links for grid display
+        //=================get links for grid display
+        ccfgrid.getlinks(user.grp_id) 
     }  
 
     /* FOR HERO CAROUSEL */
@@ -736,7 +737,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 case 3: //temp admin for segment testing
                 //case 7:  //ministry admin
                 case 8:
-                case 9: //admin
+                case 9: //dgrp member
 
                     bgc.getSegments() //minnistry segments
                     bgc.getCredentials();
@@ -874,6 +875,57 @@ document.addEventListener("DOMContentLoaded", function() {
         calendar.updateTimeSelectsForRoom();
     });
 
+    //====this is for qr code modal, only load the iframe when modal is shown, and clear it when closed
+    const qrcodeModal = document.getElementById('qrcodeModal');
+    const qrFrame = document.getElementById('qrcode-container');
+
+    // Only load the file when the modal is popping up
+    qrcodeModal.addEventListener('show.bs.modal', () => {
+        
+        qrFrame.innerHTML = "";
+
+        const user = JSON.parse(localStorage.getItem('bgc_user')); // has ministry_segment, etc.
+
+        const payload = {
+            id: user.id,
+            user: user.full_name,
+            url:`${myIp}/bgc/mark-attendance`
+        };
+
+        // Fire transaction call to your Express server API node
+        fetch(`${myIp}/bgc/generate-qr`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Received secure payload:", data.qrUrl);
+
+            // Generate the QR matrix inside our compact modal wrapper
+            const qrCodeInstance = new QRCode( qrFrame, {
+                text: data.qrUrl,
+                width: 256, // Slightly scaled down to fit 'modal-sm' comfortably
+                height: 256,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            console.log("user registered successfully:", data);
+        })
+        .catch(error => {
+            console.error("Error generating secure payload:", error);
+            qrFrame.innerHTML = `<span class="text-danger small">Failed to load payload.</span>`;
+        });
+
+        
+    });
+
+    // Clear the frame when closed so scripts stop running completely
+    qrcodeModal.addEventListener('hidden.bs.modal', () => {
+        qrFrame.innerHTML = '';
+    });
+
     // listener for admin chart when admin modal show
     // const adminModalEl = document.getElementById('adminInputModal');
     // if (adminModalEl) {
@@ -883,6 +935,24 @@ document.addEventListener("DOMContentLoaded", function() {
     //         }
     //     });
     // }
+
+    //===== this is for autoformat detect of phone number 
+    const phoneInput = document.getElementById("regCPNo");
+
+    if (phoneInput) {
+        // Trigger formatting in real-time on every keystroke
+        phoneInput.addEventListener("input", (e) => {
+            util.autoFormatPhone(e.target);
+        });
+
+        // Trigger visual error checks when they click/tap outside the input field
+        phoneInput.addEventListener("blur", (e) => {
+            util.validatePhone(e.target);
+        });
+    }
+
+
+
     // Smooth scroll for anchor links
     const links = document.querySelectorAll('a[href^="#"]');
     links.forEach(link => {

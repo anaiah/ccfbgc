@@ -461,7 +461,8 @@ export function renderPerformanceChart(apiData) {
 
 //======================get links for the user to show
 export const getlinks = (grp) => {
-    console.log('Getting links for group:', grp);
+    //console.log('Getting links for group:', grp);
+    const user = JSON.parse(localStorage.getItem('bgc_user'));
 
     switch(grp) {
         case 4: //bossing   
@@ -492,7 +493,7 @@ export const getlinks = (grp) => {
         case 6:
         case 7:
         case 8:
-        case 9:
+    
             document.getElementById('loginli').classList.add('d-none')//hide login already
             document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
             
@@ -501,12 +502,22 @@ export const getlinks = (grp) => {
             break;
 
         case 5://dgrp leaader
+        case 9://dgrp member
+            
             document.getElementById('loginli').classList.add('d-none')//hide login already
             document.getElementById('logoutLi').classList.remove('d-none')//show logout link already
+            
             //give roomres
             document.getElementById('roomresLi').classList.remove('d-none')//show room res link already
             
+            //show QR code link
+            //SHOW ONLY FOR EXALT
+            if(user && user.ministry_id === 1) { // Only show for D-Group Leaders
+                document.getElementById('qrLi').classList.remove('d-none')//show qr code link already
+            }//eif
+
             break;
+
 
     }//endswitch
                 
@@ -739,6 +750,9 @@ document.addEventListener('click', (event) => {
                     name: document.getElementById("regFullName").value,
                     email: document.getElementById("regEmail").value,
                     role: document.getElementById("regRole").value,
+                    cp: document.getElementById("regCPNo").value,
+                    upline: document.getElementById("regUplineName").value,
+                    ministry: document.getElementById("regCurrentMinistry").value,
                     description: document.getElementById("regDescription").value,
                     ageBracket: document.getElementById("regAgeBracket").value,
                     day: document.getElementById("regDay").value,
