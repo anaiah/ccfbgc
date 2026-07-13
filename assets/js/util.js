@@ -1390,6 +1390,47 @@ const util = {
         }
     },
     
+    //=======open bulletin=============
+    openBulletin(toolkitUrl) {
+        // 1. Convert standard Drive link layout to embeddable matrix pattern
+        // This ensures Google doesn't block the iframe container frame connection!
+        let embedUrl = toolkitUrl;
+        console.log(embedUrl)
+
+        // Use this to bypass cross-origin blocks safely:
+window.open(embedUrl, '_blank', 'noopener,noreferrer');
+        
+        // // 1. Check if the string matches a native Google Drive path pattern
+        // if (embedUrl.includes("drive.google.com")) {
+            
+        //     // Extract the alphanumeric folder identification hash code using regex matching rules
+        //     const folderIdMatch = embedUrl.match(/folders\/([a-zA-Z0-9-_]+)/) || embedUrl.match(/id=([a-zA-Z0-9-_]+)/);
+            
+        //     if (folderIdMatch && folderIdMatch[1]) {
+        //         const folderId = folderIdMatch[1];
+                
+        //         // 2. REFACTOR COMPONENT: Format into Google's whitelisted embedding pattern structure
+        //         // Appending '#list' forces a clean, lightning-fast rows view inside mobile/desktop modals
+        //         embedUrl = `https://google.com/drive/folders/${folderId}#list`;
+        //     }
+        // }
+
+        // // 3. Anchor pointers to your snippet's modal components
+        // const iframe = document.getElementById('modalIframeViewer');
+        // const modalElement = document.getElementById('iframeModal');
+
+        // if (iframe && modalElement) {
+        //     // Inject the clean embedded URL structure directly into the view frame context
+        //     iframe.src = embedUrl;
+
+        //     // Trigger and display your Bootstrap modal dialog box framework programmatically
+        //     const myModal = new bootstrap.Modal(modalElement);
+        //     myModal.show();
+        // } else {
+        //     console.error("Target iframe or modal elements missing from active DOM pool layout layout structure.");
+        // }    
+    },
+
     //==========WHEN SUBMIT BUTTON CLICKED ==================
     validateMe: async (frmModal, frm, classX)=>{
         console.log('validateMe()===', frmModal, frm)

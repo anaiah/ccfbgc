@@ -669,13 +669,15 @@ document.addEventListener('click', (event) => {
                         document.getElementById("formProgress").parentElement.remove();
                     }
                     
+                    const toolkit ='https://drive.google.com/drive/folders/1bP4vfVccSjP09ICsRfh4kAgRMBq2g2uP'
+                    
                     modalBody.innerHTML = `
                         <div class="text-center py-3">
                             <h5>Welcome Back, ${localStorage.getItem("dg_name") || 'Leader'}!</h5>
                             <p class="text-white-50 small">Your catalog entry status is active in the CCF BGC database.</p>
                             <div class="list-group mt-4 bg-transparent border-0">
-                                <button type="button" class="list-group-item list-group-item-action bg-dark text-white border-secondary mb-2 text-start">📖 Access Weekly Study Material</button>
-                                <button type="button" class="list-group-item list-group-item-action bg-dark text-white border-secondary mb-2 text-start">🙏 Submit Ministry Request</button>
+                                <button onclick="util.openBulletin('${toolkit}'); return false;" type="button" class="list-group-item list-group-item-action bg-dark text-white border-secondary mb-2 text-start">📖 Access DLeader's Toolkit</button>
+                               
                             </div>
                         </div>`;
                     modalFooter.innerHTML = `<button type="button" class="btn btn-secondary" style="border-radius: 50px;" data-bs-dismiss="modal">Close</button>`;

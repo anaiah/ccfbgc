@@ -1042,36 +1042,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
         });
     }
+    
+    //=========LISTENER FOR MODAL THAT HAS IFRAME, LOAD IFRAME WHEN MODAL IS SHOWN
+    const iframeModal = document.getElementById('iframeModal');
+    const iframeContainer = document.getElementById('modalIframeViewer');
 
-    //=======open bulletin=============
-    function openBulletin(e) {
-
-        if(e && e.preventDefault) {
-            e.preventDefault();
-        }
-
-        const url = "https://ccfbgc.updates.church"
-
-        const mwidth = screen.availWidth
-        const mheight = screen.availHeight
-
-        const winfeat = `noopener,
-        width=${mwidth},
-        height=${mheight},
-        top=0,
-        left=0,
-        noreferrer,
-        popup=yes`; // Remove whitespace for proper formatting
-
-
-        const appwin = window.open(url, "_blank", winfeat);
-        
-        if(!appwin || appwin.closed || typeof appwin.closed == 'undefined') {
-            window.location.href = url;
-        }
+    if (modalElement && iframeViewer) {
+        // 2. Hook into Bootstrap's termination cleanup lifecycle event
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            // Hard-wipe frame content to kill memory leaks, animations, or loop scripts instantly
+            iframeViewer.src = "about:blank";
+        });
     }
-
-        
 });
 
 /* css
