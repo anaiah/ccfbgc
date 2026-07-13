@@ -290,7 +290,7 @@ function openJoinModal(leaderName, leaderEmail) {
   joinModal.show();
 }
 
-// 2. Event interceptor handling form submission 
+// 2. Event interceptor handling form submission for join/joining dgroup
 document.getElementById('joinGroupForm').addEventListener('submit', function(e) {
   e.preventDefault(); // Stop default web page reload behaviors
 
@@ -299,10 +299,11 @@ document.getElementById('joinGroupForm').addEventListener('submit', function(e) 
   const emailTo = document.getElementById('modalLeaderEmail').value;
   const emailFrom = document.getElementById('modalUserFromEmail').value;
   const name = document.getElementById('modalUserFromName').value;
+  const cpno = document.getElementById('modalUserCPNo').value;
 
   // Your requested API endpoint address layout pattern
   // encodeURIComponent treats path segment spaces/characters like '@' or ' ' cleanly
-  const emailApiUrl = `${myIp}/bgc/emailer/${encodeURIComponent(emailTo)}/${encodeURIComponent(leaderName)}/${encodeURIComponent(emailFrom)}/${encodeURIComponent(name)}`;
+  const emailApiUrl = `${myIp}/bgc/emailer/${encodeURIComponent(emailTo)}/${encodeURIComponent(leaderName)}/${encodeURIComponent(emailFrom)}/${encodeURIComponent(name)}/${encodeURIComponent(cpno)}`;
 
   // Quick UI feedback context
   const submitBtn = e.target.querySelector('button[type="submit"]');

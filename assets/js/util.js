@@ -1372,7 +1372,10 @@ const util = {
 
     validatePhone: (input) => {
         const phonePattern = /^\d{4} \d{3} \d{4}$/; 
-        const errorDiv = document.getElementById('phone-error');
+
+        //const errorDiv = document.getElementById('phone-error');
+        // Finds the next HTML tag directly below the active input element
+        const errorDiv = input.nextElementSibling;
 
         if (!phonePattern.test(input.value)) {
             input.classList.add('is-invalid');
@@ -1386,6 +1389,7 @@ const util = {
             return true;
         }
     },
+    
     //==========WHEN SUBMIT BUTTON CLICKED ==================
     validateMe: async (frmModal, frm, classX)=>{
         console.log('validateMe()===', frmModal, frm)

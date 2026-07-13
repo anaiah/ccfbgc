@@ -937,21 +937,20 @@ document.addEventListener("DOMContentLoaded", function() {
     // }
 
     //===== this is for autoformat detect of phone number 
-    const phoneInput = document.getElementById("regCPNo");
+    // Trigger formatting in real-time on every keystroke
+    document.addEventListener("input", (e) => {
+        if (e.target.id === "regCPNo" || e.target.id === "modalUserCPNo") {
+            util.autoFormatPhone(e.target);            
+        }
+        
+    });
 
-    if (phoneInput) {
-        // Trigger formatting in real-time on every keystroke
-        phoneInput.addEventListener("input", (e) => {
-            util.autoFormatPhone(e.target);
-        });
-
-        // Trigger visual error checks when they click/tap outside the input field
-        phoneInput.addEventListener("blur", (e) => {
+    // Trigger visual error checks when they click/tap outside the input field
+    document.addEventListener("blur", (e) => {
+        if (e.target.id === "regCPNo" || e.target.id === "modalUserCPNo") {
             util.validatePhone(e.target);
-        });
-    }
-
-
+        }
+    });
 
     // Smooth scroll for anchor links
     const links = document.querySelectorAll('a[href^="#"]');
@@ -1043,6 +1042,35 @@ document.addEventListener("DOMContentLoaded", function() {
 
         });
     }
+
+    //=======open bulletin=============
+    function openBulletin(e) {
+
+        if(e && e.preventDefault) {
+            e.preventDefault();
+        }
+
+        const url = "https://ccfbgc.updates.church"
+
+        const mwidth = screen.availWidth
+        const mheight = screen.availHeight
+
+        const winfeat = `noopener,
+        width=${mwidth},
+        height=${mheight},
+        top=0,
+        left=0,
+        noreferrer,
+        popup=yes`; // Remove whitespace for proper formatting
+
+
+        const appwin = window.open(url, "_blank", winfeat);
+        
+        if(!appwin || appwin.closed || typeof appwin.closed == 'undefined') {
+            window.location.href = url;
+        }
+    }
+
         
 });
 

@@ -58,12 +58,14 @@
 
         <li class="nav-item"><a class="nav-link px-3" href="#dgroup-section">D-Group</a></li>
         
+        <li class="nav-item " id="bulletinli"><a class="nav-link px-3" href="https://ccfbgc.updates.church" target="_blank">Church Bulletin</a></li>
+
         <li class="nav-item" id="loginli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
         
         <li class="nav-item d-none" id="kpili"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#targetModal">KPI Entry</a></li>
         
         <li class="nav-item d-none" id="gridchartli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#adminInputModal">Report</a></li>
-        
+
         <li class="nav-item d-none" id="dataentryli"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#dataInputModal">Data Entry</a></li>
         
         <li class="nav-item d-none" id="roomresLi"><a class="nav-link px-3" href="#" data-bs-toggle="modal" data-bs-target="#calendarModal">Room Reservation</a></li>
@@ -939,10 +941,30 @@
             <label class="form-label small text-white-50">Your Full Name</label>
             <input type="text" class="form-control bg-secondary text-white border-dark" id="modalUserFromName" required placeholder="John Doe" required>
           </div>
+
           <div class="mb-3">
             <label class="form-label small text-white-50">Your Email Address</label>
             <input type="email" class="form-control bg-secondary text-white border-dark" id="modalUserFromEmail" required placeholder="you@example.com" required>
           </div>
+
+          <div class="mb-3">
+            <label class="form-label small text-white-50" for="modalUserCPNo">CP No. </label>
+            <input 
+                type="text" 
+                class="form-control bg-secondary text-white border-dark"
+                id="modalUserCPNo" 
+                name="modalUserCPNo"
+                required 
+                maxlength="13" 
+                placeholder="e.g., 0906 123 4567"
+                autocomplete="tel"
+            >
+            <!-- Hidden by default, your validatePhone logic will toggle this -->
+            <div class="invalid-feedback text-danger small mt-1" id="modaluser-phone-error" style="display: none;">
+                Please enter a valid phone number (e.g., 0906 123 4567).
+            </div>
+          </div>
+
         </div>
         <div class="modal-footer border-secondary">
           <button type="button" class="btn btn-outline-secondary text-white" data-bs-dismiss="modal">Cancel</button>
