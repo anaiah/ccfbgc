@@ -1047,11 +1047,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const iframeModal = document.getElementById('iframeModal');
     const iframeContainer = document.getElementById('modalIframeViewer');
 
-    if (modalElement && iframeViewer) {
+    if (iframeModal && iframeContainer) {
         // 2. Hook into Bootstrap's termination cleanup lifecycle event
-        modalElement.addEventListener('hidden.bs.modal', () => {
+        iframeModal.addEventListener('hidden.bs.modal', () => {
             // Hard-wipe frame content to kill memory leaks, animations, or loop scripts instantly
-            iframeViewer.src = "about:blank";
+            iframeContainer.src = "about:blank";
         });
     }
 });
