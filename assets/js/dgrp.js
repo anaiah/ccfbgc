@@ -300,10 +300,11 @@ document.getElementById('joinGroupForm').addEventListener('submit', function(e) 
   const emailFrom = document.getElementById('modalUserFromEmail').value;
   const name = document.getElementById('modalUserFromName').value;
   const cpno = document.getElementById('modalUserCPNo').value;
+  const invitedVia = document.getElementById('modalUserInvited').value;
 
   // Your requested API endpoint address layout pattern
   // encodeURIComponent treats path segment spaces/characters like '@' or ' ' cleanly
-  const emailApiUrl = `${myIp}/bgc/emailer/${encodeURIComponent(emailTo)}/${encodeURIComponent(leaderName)}/${encodeURIComponent(emailFrom)}/${encodeURIComponent(name)}/${encodeURIComponent(cpno)}`;
+  const emailApiUrl = `${myIp}/bgc/emailer/${encodeURIComponent(emailTo)}/${encodeURIComponent(leaderName)}/${encodeURIComponent(emailFrom)}/${encodeURIComponent(name)}/${encodeURIComponent(cpno)}/${encodeURIComponent(invitedVia)}`;
 
   // Quick UI feedback context
   const submitBtn = e.target.querySelector('button[type="submit"]');

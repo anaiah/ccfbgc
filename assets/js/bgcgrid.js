@@ -754,7 +754,7 @@ document.addEventListener('click', (event) => {
                     role: document.getElementById("regRole").value,
                     cp: document.getElementById("regCPNo").value,
                     upline: document.getElementById("regUplineName").value,
-                    invitedvia: document.getElementById("regInvited").value,
+                    //invitedvia: document.getElementById("regInvited").value,
                     ministry: document.getElementById("regCurrentMinistry").value,
                     description: document.getElementById("regDescription").value,
                     ageBracket: document.getElementById("regAgeBracket").value,
